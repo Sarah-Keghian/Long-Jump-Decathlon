@@ -30,15 +30,18 @@ public class DeServiceTests {
     public void createDe_Test(){
 
         Long idGroupe = 1L;
+        boolean frozenIni = false;
         De d1 = new De();
         d1.setIdGroupe(idGroupe);
+        d1.setFrozen(frozenIni);
 
         when(deRepo.save(d1)).thenReturn(d1);
 
         De deObtenu = deService.createDe(idGroupe);
 
         Assertions.assertNotNull(deObtenu);
-        Assertions.assertEquals(d1, deObtenu);
+        Assertions.assertEquals(idGroupe, deObtenu.getIdGroupe());
+        Assertions.assertEquals(frozenIni, deObtenu.isFrozen());
         Assertions.assertNull(deObtenu.getPosition());
     }
 
@@ -122,5 +125,58 @@ public class DeServiceTests {
 
         Assertions.assertDoesNotThrow(() -> deService.deleteDe(id1));
         Assertions.assertThrows(IllegalArgumentException.class, () -> deService.deleteDe(idFaux));
+    }
+
+    @Test
+    public void throwDe_Test(){
+
+        Long id1 = 1L;
+        Long id2 = 2L;
+        Long idFaux = 3L;
+        boolean frozen = true;
+        boolean notFrozen = false;
+
+        De d1 = De.builder().id(id1).frozen(notFrozen).build();
+        De d2 = De.builder().id(id2).frozen(frozen).build();
+
+        when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
+        when(deRepo.findById(id2)).thenReturn(Optional.of(d2));
+        when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
+        when(deRepo.save(d1)).thenReturn(d1);
+
+        De deLance1 = deService.throwDe(id1);
+        Assertions.assertNotNull(deLance1);
+        Assertions.assertNotNull(deLance1.getPosition());
+        Assertions.assertFalse(deLance1.isFrozen());
+        Assertions.assertTrue(1 <= deLance1.getPosition());
+        Assertions.assertTrue(deLance1.getPosition() <= 6);
+
+        Assertions.assertThrows(IllegalStateException.class, () -> deService.throwDe(id2));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.throwDe(idFaux));
+    }
+
+    @Test
+    public void freezeDe_Test(){
+
+        Long id1 = 1L;
+        Long id2 = 2L;
+        Long idFaux = 3L;
+        boolean frozen = true;
+        boolean notFrozen = false;
+
+        De d1 = De.builder().id(id1).frozen(notFrozen).build();
+        De d2 = De.builder().id(id2).frozen(frozen).build();
+
+        when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
+        when(deRepo.findById(id2)).thenReturn(Optional.of(d2));
+        when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
+        when(deRepo.save(d1)).thenReturn(d1);
+
+        De deFreeze1 = deService.freezeDe(id1);
+        Assertions.assertNotNull(deFreeze1);
+        Assertions.assertTrue(deFreeze1.isFrozen());
+
+        Assertions.assertThrows(IllegalStateException.class, () -> deService.throwDe(id2));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.throwDe(idFaux));
     }
 }
