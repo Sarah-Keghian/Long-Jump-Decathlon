@@ -21,4 +21,5 @@ public class De {
 
     private Long idGroupe;
     private Integer position;
+    private boolean frozen;
 }
