@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -117,7 +118,6 @@ public class GroupeDesServiceTests {
         Long id = 1L;
         Long idFaux = 2L;
 
-        GroupeDes groupeDes = GroupeDes.builder().id(id).build();
 
         when(groupeDesRepo.existsById(id)).thenReturn(true);
         when(groupeDesRepo.existsById(idFaux)).thenReturn(false);
@@ -127,5 +127,55 @@ public class GroupeDesServiceTests {
                 .assertDoesNotThrow(()->groupeDesService.deleteGroupe(id));
         Assertions
                 .assertThrows(IllegalArgumentException.class, ()->groupeDesService.deleteGroupe(idFaux));
+    }
+
+    @Test
+    public void throwGroupe_Test(){
+
+        Long id = 1L;
+        Long idFaux = 2L;
+        Long idD1 = 3L;
+        Long idD2 = 4L;
+
+        List<Long> listeDes = Arrays.asList(idD1, idD2);
+
+        GroupeDes groupeAttendu = GroupeDes.builder().id(id).listeDes(listeDes).build();
+
+        when(groupeDesRepo.findById(id)).thenReturn(Optional.of(groupeAttendu));
+        when(groupeDesRepo.findById(idFaux)).thenReturn(Optional.empty());
+        when(groupeDesRepo.save(any())).thenReturn(groupeAttendu);
+
+        GroupeDes groupeObtenu = groupeDesService.throwGroupe(id);
+        Assertions.assertNotNull(groupeObtenu);
+        Assertions.assertEquals(id, groupeObtenu.getId());
+        Assertions.assertEquals(listeDes.size(), groupeObtenu.getListeDes().size());
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> groupeDesService.throwGroupe(idFaux));
+    }
+
+    @Test
+    public void freezeDeGroupe_Test(){
+
+
+        Long id = 1L;
+        Long idD1 = 3L;
+        Long idD2 = 4L;
+        Long idFreeze = 5L;
+
+        List<Long> listeDes = Arrays.asList(idD1, idD2);
+        List<Long> listeDesFreeze = Arrays.asList(idD1, idFreeze);
+
+        GroupeDes groupe = GroupeDes.builder().id(id).listeDes(listeDes).build();
+        GroupeDes groupeFreeze = GroupeDes.builder().id(id).listeDes(listeDesFreeze).build();
+
+        when(groupeDesRepo.findById(id)).thenReturn(Optional.of(groupe));
+        when(groupeDesRepo.save(groupe)).thenReturn(groupeFreeze);
+
+        GroupeDes groupeObtenu = groupeDesService.freezeDeGroupe(id, idD2);
+        Assertions.assertNotNull(groupeObtenu);
+        Assertions.assertEquals(listeDes.size(), groupeObtenu.getListeDes().size());
+        Assertions.assertEquals(idFreeze, groupeObtenu.getListeDes().get(1));
+
+
     }
 }
