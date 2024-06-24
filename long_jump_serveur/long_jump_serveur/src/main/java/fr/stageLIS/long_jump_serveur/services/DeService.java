@@ -71,7 +71,7 @@ public class DeService {
                 return deRepo.save(de);
             }
             else {
-                throw new IllegalStateException("Le Dé est gelé : il ne peut plus être lancé");
+                return de;
             }
         }
         else {

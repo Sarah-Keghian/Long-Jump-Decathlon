@@ -148,6 +148,7 @@ public class DeServiceTests {
         Assertions.assertNotNull(deLance1);
         Assertions.assertNotNull(deLance1.getPosition());
         Assertions.assertFalse(deLance1.isFrozen());
+        Assertions.assertEquals(id1, deLance1.getId());
         Assertions.assertTrue(1 <= deLance1.getPosition());
         Assertions.assertTrue(deLance1.getPosition() <= 6);
 

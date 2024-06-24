@@ -50,15 +50,9 @@ public class GroupeDesService {
 
     public GroupeDes updateGroupe(Long id, GroupeDes newGroupe){
 
-        Optional<GroupeDes> groupeDes1 = groupeDesRepo.findById(id);
-        if (groupeDes1.isPresent()){
-            GroupeDes groupeDes2 = groupeDes1.get();
-            groupeDes2.setListeDes(newGroupe.getListeDes());
-            return groupeDesRepo.save(groupeDes2);
-        }
-        else {
-            throw new IllegalArgumentException("Aucun Groupe de Dés n'a l'id : " + id);
-        }
+        GroupeDes groupeDes = getGroupe(id);
+        groupeDes.setListeDes(newGroupe.getListeDes());
+        return groupeDesRepo.save(groupeDes);
     }
 
     public void deleteGroupe(Long id){
@@ -69,5 +63,31 @@ public class GroupeDesService {
         else {
             throw new IllegalArgumentException("Aucun Groupe de Dés n'a l'id : " + id);
         }
+    }
+
+    public GroupeDes throwGroupe(Long id){
+
+        GroupeDes groupeDes = this.getGroupe(id);
+        for (Long idDe : groupeDes.getListeDes()){
+            deService.throwDe(idDe);
+        }
+        return groupeDesRepo.save(groupeDes);
+    }
+
+
+    public GroupeDes freezeDeGroupe(Long id, Long idDeChoisi) {
+
+        GroupeDes groupeDes = this.getGroupe(id);
+
+        for (Long idDe : groupeDes.getListeDes()) {
+            if (idDe.equals(idDeChoisi)) {
+                try {
+                    deService.freezeDe(idDe);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException(e.getMessage());
+                }
+            }
+        }
+        return groupeDesRepo.save(groupeDes);
     }
 }
