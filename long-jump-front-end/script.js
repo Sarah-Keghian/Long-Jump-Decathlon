@@ -1,6 +1,7 @@
 const bouton_lancer = document.getElementById("bouton_lancer");
 const bouton_saut = document.getElementById("bouton_saut");
 let dans_run_up = true
+let actu_frozen = [false, false, false, false, false];
 
 bouton_lancer.addEventListener("click", function fetch_lancer() {
         fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json')
@@ -22,23 +23,33 @@ function affiche_content(texte) {
 bouton_saut.addEventListener("click", function() {
     bouton_saut.classList.add('invisible');
     dans_run_up = false
+    actu_frozen = [false, false, false, false, false];
 });
 
-document.querySelectorAll(".dice").forEach(dice => {
+document.querySelectorAll(".dice").forEach((dice, index) => {
     dice.addEventListener("click", function() {
         const conteneur_actif = document.getElementById("actif");
         const conteneur_gele = document.getElementById("gele");
         if (conteneur_actif.contains(dice)) {
             conteneur_actif.removeChild(dice);
             conteneur_gele.appendChild(dice);
-        };
-        if (dans_run_up) {
-            if (document.getElementById('score_run_up').textContent == 0) {
-                document.getElementById('score_run_up').textContent = parseInt(dice.textContent)
+            actu_frozen[index] = true
+            if (dans_run_up) {
+                if (document.getElementById('score_run_up').textContent == 0) {
+                    document.getElementById('score_run_up').textContent = parseInt(dice.textContent)
+                } else {
+                    document.getElementById('score_run_up').textContent = parseInt(document.getElementById('score_run_up').textContent) + parseInt(dice.textContent)
+                }
+            };
+        } else {
+            if (actu_frozen[index]) {
+                conteneur_gele.removeChild(dice);
+                conteneur_actif.appendChild(dice);
+                actu_frozen[index] = false
+                if (dans_run_up) {
+                    document.getElementById('score_run_up').textContent = parseInt(document.getElementById('score_run_up').textContent) - parseInt(dice.textContent)
+                }
             }
-            else {
-                document.getElementById('score_run_up').textContent = parseInt(document.getElementById('score_run_up').textContent) + parseInt(dice.textContent)
-            }
-        };
+        }
     });
 });
