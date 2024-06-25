@@ -11,10 +11,12 @@ import java.util.Optional;
 @Service
 public class ScoreService {
 
-    @Autowired
+
     private ScoreRepo scoreRepo;
     @Autowired
-    private JoueurService joueurService;
+    public ScoreService(ScoreRepo scoreRepo) {this.scoreRepo = scoreRepo;}
+//    @Autowired
+//    private JoueurService joueurService;
 
 
 

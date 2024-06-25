@@ -11,8 +11,10 @@ import java.util.Optional;
 @Service
 public class JoueurService {
 
-    @Autowired
+
     private JoueurRepo joueurRepo;
+    @Autowired
+    public JoueurService(JoueurRepo joueurRepo) {this.joueurRepo = joueurRepo;}
 
     public Joueur createJoueur(String nom){
 

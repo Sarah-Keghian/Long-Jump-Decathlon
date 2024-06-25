@@ -13,11 +13,14 @@ import java.util.Optional;
 @Service
 public class GroupeDesService {
 
-    @Autowired
-    private GroupeDesRepo groupeDesRepo;
 
-    @Autowired
+    private GroupeDesRepo groupeDesRepo;
     private DeService deService;
+    @Autowired
+    public GroupeDesService(GroupeDesRepo groupeDesRepo, DeService deService) {
+        this.groupeDesRepo = groupeDesRepo;
+        this.deService = deService;
+    }
 
     public GroupeDes createGroupe(Long id){
 
