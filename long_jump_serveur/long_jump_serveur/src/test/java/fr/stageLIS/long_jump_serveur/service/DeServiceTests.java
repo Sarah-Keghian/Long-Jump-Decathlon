@@ -1,5 +1,6 @@
 package fr.stageLIS.long_jump_serveur.service;
 
+import fr.stageLIS.long_jump_serveur.DTO.DeDto;
 import fr.stageLIS.long_jump_serveur.models.De;
 import fr.stageLIS.long_jump_serveur.repositories.DeRepo;
 import fr.stageLIS.long_jump_serveur.services.DeService;
@@ -68,9 +69,8 @@ public class DeServiceTests {
         }
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> deService.getDe(idFaux));
-
-
     }
+
 
     @Test
     public void updateDe_Test(){
@@ -114,10 +114,7 @@ public class DeServiceTests {
     public void deleteDe_Test(){
         Long id1 = 1L;
         Long idFaux = 2L;
-        De d1 = De.builder()
-                .id(id1)
-                .position(1)
-                .idGroupe(id1).build();
+
 
         when(deRepo.existsById(id1)).thenReturn(true);
         when(deRepo.existsById(idFaux)).thenReturn(false);
@@ -152,7 +149,7 @@ public class DeServiceTests {
         Assertions.assertTrue(1 <= deLance1.getPosition());
         Assertions.assertTrue(deLance1.getPosition() <= 6);
 
-        Assertions.assertThrows(IllegalStateException.class, () -> deService.throwDe(id2));
+        Assertions.assertEquals(d2, deService.throwDe(id2));
         Assertions.assertThrows(IllegalArgumentException.class, () -> deService.throwDe(idFaux));
     }
 
@@ -161,6 +158,7 @@ public class DeServiceTests {
 
         Long id1 = 1L;
         Long id2 = 2L;
+
         Long idFaux = 3L;
         boolean frozen = true;
         boolean notFrozen = false;
@@ -177,7 +175,40 @@ public class DeServiceTests {
         Assertions.assertNotNull(deFreeze1);
         Assertions.assertTrue(deFreeze1.isFrozen());
 
-        Assertions.assertThrows(IllegalStateException.class, () -> deService.throwDe(id2));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.throwDe(idFaux));
+        Assertions.assertThrows(IllegalStateException.class, () -> deService.freezeDe(id2));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.freezeDe(idFaux));
     }
+
+    @Test
+    public void convertToDTO_Test(){
+        De de = De.builder().id(1L).idGroupe(2L).position(2).frozen(true).build();
+
+        DeDto deDto = deService.convertToDTO(de);
+
+        Assertions.assertNotNull(deDto);
+        Assertions.assertEquals(DeDto.class, deDto.getClass());
+        Assertions.assertEquals(de.getId(), deDto.getId());
+        Assertions.assertEquals(de.getIdGroupe(), deDto.getIdGroupe());
+        Assertions.assertEquals(de.getPosition(), deDto.getPosition());
+        Assertions.assertEquals(de.isFrozen(), deDto.isFrozen());
+    }
+
+    @Test
+    public void convertToEntity_Test(){
+        DeDto deDto = DeDto.builder()
+                .id(1L).idGroupe(3L)
+                .position(6)
+                .frozen(false).build();
+
+        De de = deService.convertToEntity(deDto);
+
+        Assertions.assertNotNull(de);
+        Assertions.assertEquals(De.class, de.getClass());
+        Assertions.assertEquals(deDto.getId(), de.getId());
+        Assertions.assertEquals(deDto.getIdGroupe(), de.getIdGroupe());
+        Assertions.assertEquals(deDto.getPosition(), de.getPosition());
+        Assertions.assertEquals(deDto.isFrozen(), de.isFrozen());
+
+    }
+
 }

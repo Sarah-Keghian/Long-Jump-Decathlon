@@ -1,7 +1,10 @@
 package fr.stageLIS.long_jump_serveur.service;
 
+import fr.stageLIS.long_jump_serveur.DTO.DeDto;
+import fr.stageLIS.long_jump_serveur.DTO.GroupeDesDto;
 import fr.stageLIS.long_jump_serveur.models.De;
 import fr.stageLIS.long_jump_serveur.models.GroupeDes;
+import fr.stageLIS.long_jump_serveur.repositories.DeRepo;
 import fr.stageLIS.long_jump_serveur.repositories.GroupeDesRepo;
 import fr.stageLIS.long_jump_serveur.services.DeService;
 import fr.stageLIS.long_jump_serveur.services.GroupeDesService;
@@ -25,6 +28,8 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class GroupeDesServiceTests {
 
+    @Mock
+    DeRepo deRepo;
     @Mock
     GroupeDesRepo groupeDesRepo;
     @Mock
@@ -124,13 +129,13 @@ public class GroupeDesServiceTests {
         doNothing().when(groupeDesRepo).deleteById(id);
 
         Assertions
-                .assertDoesNotThrow(()->groupeDesService.deleteGroupe(id));
+                .assertDoesNotThrow(() -> groupeDesService.deleteGroupe(id));
         Assertions
-                .assertThrows(IllegalArgumentException.class, ()->groupeDesService.deleteGroupe(idFaux));
+                .assertThrows(IllegalArgumentException.class, () -> groupeDesService.deleteGroupe(idFaux));
     }
 
     @Test
-    public void throwGroupe_Test(){
+    public void throwGroupe_Test() {
 
         Long id = 1L;
         Long idFaux = 2L;
@@ -154,7 +159,7 @@ public class GroupeDesServiceTests {
     }
 
     @Test
-    public void freezeDeGroupe_Test(){
+    public void freezeDeGroupe_Test() {
 
 
         Long id = 1L;
@@ -175,7 +180,46 @@ public class GroupeDesServiceTests {
         Assertions.assertNotNull(groupeObtenu);
         Assertions.assertEquals(listeDes.size(), groupeObtenu.getListeDes().size());
         Assertions.assertEquals(idFreeze, groupeObtenu.getListeDes().get(1));
+    }
 
+
+    @Test
+    public void convertToDto_Test(){
+
+        Long id1 = 1L;
+        Long id2 = 2L;
+        De d1 = De.builder().id(id1).position(2).idGroupe(2L).frozen(false).build();
+        De d2 = De.builder().id(id2).position(4).idGroupe(2L).frozen(true).build();
+        List<Long> listeIdDes = Arrays.asList(id1, id2);
+        GroupeDes groupeDes = GroupeDes.builder()
+                .id(1L)
+                .listeDes(listeIdDes).build();
+
+
+        GroupeDesDto groupeDesDto = groupeDesService.convertToDto(groupeDes);
+        Assertions.assertNotNull(groupeDesDto);
+        Assertions.assertEquals(GroupeDesDto.class, groupeDesDto.getClass());
+        Assertions.assertEquals(groupeDes.getListeDes().size(), groupeDesDto.getListeDes().size());
+//        Assertions.assertNotNull(groupeDesDto.getListeDes().get(1));
+//        Assertions.assertNotNull(groupeDesDto.getListeDes().get(0));
+
+    }
+
+    @Test
+    public void convertToEntity_Test(){
+
+        DeDto d1Dto = DeDto.builder().id(1L).idGroupe(2L).position(5).frozen(false).build();
+        DeDto d2Dto = DeDto.builder().id(2L).idGroupe(2L).position(1).frozen(true).build();
+        List<DeDto> listeDtos = Arrays.asList(d1Dto, d2Dto);
+        GroupeDesDto groupeDto= GroupeDesDto.builder()
+                .id(1L)
+                .listeDes(listeDtos).build();
+
+        GroupeDes groupeDes = groupeDesService.convertToEntity(groupeDto);
+        Assertions.assertNotNull(groupeDes);
+        Assertions.assertEquals(GroupeDes.class, groupeDes.getClass());
+        Assertions.assertEquals(groupeDto.getId(), groupeDes.getId());
+        Assertions.assertEquals(groupeDto.getListeDes().stream().map(DeDto::getId).toList(), groupeDes.getListeDes());
 
     }
 }

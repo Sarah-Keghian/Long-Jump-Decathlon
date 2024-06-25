@@ -1,5 +1,7 @@
 package fr.stageLIS.long_jump_serveur.services;
 
+import fr.stageLIS.long_jump_serveur.DTO.DeDto;
+import fr.stageLIS.long_jump_serveur.DTO.GroupeDesDto;
 import fr.stageLIS.long_jump_serveur.models.De;
 import fr.stageLIS.long_jump_serveur.models.GroupeDes;
 import fr.stageLIS.long_jump_serveur.repositories.GroupeDesRepo;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupeDesService {
@@ -89,5 +92,36 @@ public class GroupeDesService {
             }
         }
         return groupeDesRepo.save(groupeDes);
+    }
+
+    public GroupeDesDto convertToDto(GroupeDes groupeDes){
+        GroupeDesDto groupeDesDto = new GroupeDesDto();
+        groupeDesDto.setId(groupeDes.getId());
+        List<De> listeDes = new ArrayList<>();
+        List<DeDto> listeDesDto = new ArrayList<>();
+
+        for (Long id : groupeDes.getListeDes()){
+            listeDes.add(deService.getDe(id));
+        }
+        for (De de : listeDes) {
+            listeDesDto.add(deService.convertToDTO(de));
+        }
+//        List<DeDto> listeDesDto = groupeDes.getListeDes().stream()
+//                .map(idDe -> deService.convertToDTO(deService.getDe(idDe)))
+//                .collect(Collectors.toList());
+
+        groupeDesDto.setListeDes(listeDesDto);
+        return groupeDesDto;
+    }
+
+
+
+    public GroupeDes convertToEntity(GroupeDesDto groupeDesDto){
+        GroupeDes groupeDes = new GroupeDes();
+        groupeDes.setId(groupeDesDto.getId());
+
+        List<Long> listeIdDes = groupeDesDto.getListeDes().stream().map(DeDto::getId).toList();
+        groupeDes.setListeDes(listeIdDes);
+        return groupeDes;
     }
 }
