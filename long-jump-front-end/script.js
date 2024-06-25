@@ -2,6 +2,8 @@ const bouton_lancer = document.getElementById("bouton_lancer");
 const bouton_saut = document.getElementById("bouton_saut");
 let dans_run_up = true
 let actu_frozen = [false, false, false, false, false];
+let conteneur_actif = document.getElementById("actif");
+let conteneur_gele = document.getElementById("gele");
 
 bouton_lancer.addEventListener("click", function fetch_lancer() {
         fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json')
@@ -21,15 +23,18 @@ function affiche_content(texte) {
 }
 
 bouton_saut.addEventListener("click", function() {
-    bouton_saut.classList.add('invisible');
-    dans_run_up = false
-    actu_frozen = [false, false, false, false, false];
+    if (document.getElementById('score_run_up').textContent > 8){
+        alert("Votre score de Run up est superieur à 8 !")
+        reset_game()
+    } else {
+        bouton_saut.classList.add('invisible');
+        dans_run_up = false
+        actu_frozen = [false, false, false, false, false]
+    }
 });
 
 document.querySelectorAll(".dice").forEach((dice, index) => {
     dice.addEventListener("click", function() {
-        const conteneur_actif = document.getElementById("actif");
-        const conteneur_gele = document.getElementById("gele");
         if (conteneur_actif.contains(dice)) {
             conteneur_actif.removeChild(dice);
             conteneur_gele.appendChild(dice);
@@ -53,3 +58,19 @@ document.querySelectorAll(".dice").forEach((dice, index) => {
         }
     });
 });
+
+
+function reset_game() {
+    dans_run_up = true;
+    document.getElementById('score_run_up').textContent = 0;
+    document.getElementById('score_jump').textContent = 0;
+    document.getElementById('score_total').textContent = 0;
+    document.querySelectorAll(".dice").forEach((dice, index) => {
+        if (conteneur_gele.contains(dice)) {
+            conteneur_gele.removeChild(dice);
+            conteneur_actif.appendChild(dice);
+        }
+        actu_frozen[index] = false;
+    });
+}
+
