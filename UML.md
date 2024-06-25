@@ -124,8 +124,8 @@
 |+ deService : DeService |
 |--------|
 | + CRUD |
-| + throwDe(Long) : GroupeDes |
-| + freezeDe(Long, Long) : GroupeDes |
+| + throwGroupe(Long) : GroupeDes |
+| + freezeGroupe(Long, Long) : GroupeDes |
 
 | Classe |
 |--------|
@@ -143,17 +143,20 @@
 |--------|
 | + CRUD |
 
-## Classes Controller 
+## Classes Controller : 
 
 | Classe |
 |--------|
-| GroupeDesController |
+| GroupeDesController : Mapping : /api/GroupeDes |
 |--------|
 |+ groupeDesService : GroupeDesService |
 |--------|
-| + CRUD |
-| + throwDe(Long) : GroupeDesDto |
-| + freezeDe(Long, Long) : GroupeDesDto |
+| + createGroupe(int nbDes) : ResponseEntity<GroupeDesDto>, Mapping : /create |
+| + getGroupe(Long id) : ResponseEntity<GroupeDesDto>, Mapping : /get |
+| + updateGroupe(Long id, GroupeDesDto newGroupeDto : ResponseEntity<GroupeDesDto>, Mapping : /update |
+| + deleteGroupe(Long id) : ResponseEntity<GroupeDesDto>, Mapping : /delete |
+| + throwGroupe(Long) : ResponseEntity<GroupeDesDto>, Mapping : /throw |
+| + freezeGroupe(Long, Long) : ResponseEntity<GroupeDesDto>, Mapping : /freeze |
 
 
 
