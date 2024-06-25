@@ -13,8 +13,9 @@ import java.util.Random;
 @Service
 public class DeService {
 
-    @Autowired
     private DeRepo deRepo;
+    @Autowired
+    public DeService(DeRepo deRepo) {this.deRepo = deRepo;}
 
     public De createDe(Long idGroupe){
         De de = new De();
@@ -100,11 +101,14 @@ public class DeService {
     }
 
     public De convertToEntity(DeDto deDto){
-        return De.builder()
-                .id(deDto.getId())
-                .idGroupe(deDto.getIdGroupe())
-                .position(deDto.getPosition())
-                .frozen(deDto.isFrozen()).build();
+
+        List<De> des = deRepo.findAll();
+        for (De de : des){
+            if (de.getId().equals(deDto.getId())) {
+                return de;
+            }
+        }
+        throw new IllegalArgumentException();
     }
 
 }

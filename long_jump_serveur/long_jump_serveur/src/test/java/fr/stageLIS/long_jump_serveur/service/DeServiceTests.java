@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.mockito.Mockito.doNothing;
@@ -195,10 +196,15 @@ public class DeServiceTests {
 
     @Test
     public void convertToEntity_Test(){
+        Long id1 = 1L;
         DeDto deDto = DeDto.builder()
-                .id(1L).idGroupe(3L)
+                .id(id1).idGroupe(3L)
                 .position(6)
                 .frozen(false).build();
+        De d1 = De.builder().id(id1).idGroupe(3L).position(6).frozen(false).build();
+        De d2 = De.builder().id(2L).idGroupe(3L).position(2).frozen(false).build();
+
+        when(deRepo.findAll()).thenReturn(Arrays.asList(d1,d2));
 
         De de = deService.convertToEntity(deDto);
 
