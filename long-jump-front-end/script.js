@@ -1,9 +1,8 @@
 const bouton_lancer = document.getElementById("bouton_lancer");
 const bouton_saut = document.getElementById("bouton_saut");
 let dans_run_up = true
+let de_elimine = true
 let actu_frozen = [false, false, false, false, false];
-let conteneur_actif = document.getElementById("actif");
-let conteneur_gele = document.getElementById("gele");
 
 bouton_lancer.addEventListener("click", function fetch_lancer() {
     document.querySelectorAll(".dice").forEach((dice, index) => {
@@ -30,10 +29,12 @@ bouton_saut.addEventListener("click", function() {
         alert("Votre score de Run up est superieur à 8 !")
         reset_game()
     } else {
-        round_jump()
+        prep_round_jump()
     }
 });
 
+const conteneur_actif = document.getElementById("actif");
+const conteneur_gele = document.getElementById("gele");
 document.querySelectorAll(".dice").forEach((dice, index) => {
     dice.addEventListener("click", function() {
         if (conteneur_actif.contains(dice)) {
@@ -68,12 +69,16 @@ document.querySelectorAll(".dice").forEach((dice, index) => {
     });
 });
 
-function round_jump() {
+function prep_round_jump() {
     bouton_saut.classList.add('invisible');
     dans_run_up = false
     actu_frozen = [false, false, false, false, false]
-    document.getElementById('score_run_up').textContent = 0;
+    const conteneur_actif = document.getElementById("actif");
+    const conteneur_gele = document.getElementById("gele");
     document.querySelectorAll(".dice").forEach((dice, index) => {
+        if (conteneur_actif.contains(dice)) {
+            conteneur_actif.removeChild(dice);
+        }
         if (conteneur_gele.contains(dice)) {
             conteneur_gele.removeChild(dice);
             conteneur_actif.appendChild(dice);
@@ -84,6 +89,8 @@ function round_jump() {
 
 function reset_game() {
     dans_run_up = true;
+    const conteneur_actif = document.getElementById("actif");
+    const conteneur_gele = document.getElementById("gele");
     document.getElementById('score_run_up').textContent = 0;
     document.getElementById('score_jump').textContent = 0;
     document.getElementById('score_total').textContent = 0;
