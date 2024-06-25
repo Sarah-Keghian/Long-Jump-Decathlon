@@ -57,10 +57,11 @@ public class GroupeDesServiceTests {
                 .id(id)
                 .listeDes(Arrays.asList(idD1, idD2)).build();
 
-        when(deService.getAllDe()).thenReturn(Arrays.asList(d1, d2, de));
-        when(groupeDesRepo.save(groupeDes)).thenReturn(groupeDes);
+//        when(deService.createDe(idD1)).thenReturn(d1);
+//        when(deService.createDe(idD2)).thenReturn(d2);
+        when(groupeDesRepo.save(any())).thenReturn(groupeDes);
 
-        GroupeDes groupeObtenu = groupeDesService.createGroupe(id);
+        GroupeDes groupeObtenu = groupeDesService.createGroupe(2);
 
         Assertions.assertNotNull(groupeObtenu);
         Assertions.assertEquals(listeAttendue, groupeObtenu.getListeDes());

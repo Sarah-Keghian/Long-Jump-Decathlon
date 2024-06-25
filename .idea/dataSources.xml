@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="long_jump_db" uuid="88dc8a40-f1b3-4aea-91cc-f2170866c8ee">
+    <data-source source="LOCAL" name="long_jump_db" uuid="9d5d1462-33ce-41df-8643-fddbddcd5239">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
