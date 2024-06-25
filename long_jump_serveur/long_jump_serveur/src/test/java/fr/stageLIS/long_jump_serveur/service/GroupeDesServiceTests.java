@@ -208,12 +208,22 @@ public class GroupeDesServiceTests {
     @Test
     public void convertToEntity_Test(){
 
-        DeDto d1Dto = DeDto.builder().id(1L).idGroupe(2L).position(5).frozen(false).build();
-        DeDto d2Dto = DeDto.builder().id(2L).idGroupe(2L).position(1).frozen(true).build();
+        Long id1 = 1L;
+        Long id2 = 2L;
+        Long id3 = 3L;
+        DeDto d1Dto = DeDto.builder().id(id1).idGroupe(2L).position(5).frozen(false).build();
+        DeDto d2Dto = DeDto.builder().id(id2).idGroupe(2L).position(1).frozen(true).build();
+        De d1 = De.builder().id(3L).idGroupe(2L).position(5).frozen(false).build();
+        De d2 = De.builder().id(1L).idGroupe(2L).position(1).frozen(true).build();
+        GroupeDes grp1 = GroupeDes.builder().id(id1).listeDes(Arrays.asList(id1, id2)).build();
+        GroupeDes grp2 = GroupeDes.builder().id(id2).listeDes(List.of(id3)).build();
+
         List<DeDto> listeDtos = Arrays.asList(d1Dto, d2Dto);
         GroupeDesDto groupeDto= GroupeDesDto.builder()
                 .id(1L)
                 .listeDes(listeDtos).build();
+        List<GroupeDes> listeGrpDes = Arrays.asList(grp1, grp2);
+        when(groupeDesRepo.findAll()).thenReturn(listeGrpDes);
 
         GroupeDes groupeDes = groupeDesService.convertToEntity(groupeDto);
         Assertions.assertNotNull(groupeDes);

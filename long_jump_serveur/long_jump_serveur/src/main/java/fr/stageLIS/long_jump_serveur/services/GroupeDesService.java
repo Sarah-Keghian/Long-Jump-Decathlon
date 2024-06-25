@@ -117,11 +117,21 @@ public class GroupeDesService {
 
 
     public GroupeDes convertToEntity(GroupeDesDto groupeDesDto){
-        GroupeDes groupeDes = new GroupeDes();
-        groupeDes.setId(groupeDesDto.getId());
+//        GroupeDes groupeDes = new GroupeDes();
+//        groupeDes.setId(groupeDesDto.getId());
+//
+//        List<Long> listeIdDes = groupeDesDto.getListeDes().stream().map(DeDto::getId).toList();
+//        groupeDes.setListeDes(listeIdDes);
+//        return groupeDes;
+//    }
 
-        List<Long> listeIdDes = groupeDesDto.getListeDes().stream().map(DeDto::getId).toList();
-        groupeDes.setListeDes(listeIdDes);
-        return groupeDes;
+        List<GroupeDes> listeGroupeDes = groupeDesRepo.findAll();
+
+        for (GroupeDes groupeDes : listeGroupeDes) {
+            if (groupeDes.getId().equals(groupeDesDto.getId())) {
+                return groupeDes;
+            }
+        }
+        throw new IllegalArgumentException();
     }
 }
