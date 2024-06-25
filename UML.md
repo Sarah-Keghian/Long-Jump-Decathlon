@@ -151,12 +151,12 @@
 |--------|
 |+ groupeDesService : GroupeDesService |
 |--------|
-| + createGroupe(int nbDes) : ResponseEntity<GroupeDesDto>, Mapping : /create |
-| + getGroupe(Long id) : ResponseEntity<GroupeDesDto>, Mapping : /get |
-| + updateGroupe(Long id, GroupeDesDto newGroupeDto : ResponseEntity<GroupeDesDto>, Mapping : /update |
-| + deleteGroupe(Long id) : ResponseEntity<GroupeDesDto>, Mapping : /delete |
-| + throwGroupe(Long) : ResponseEntity<GroupeDesDto>, Mapping : /throw |
-| + freezeGroupe(Long, Long) : ResponseEntity<GroupeDesDto>, Mapping : /freeze |
+| + createGroupe(int nbDes) : ResponseEntity<GroupeDesDto>  ;  Mapping : /create |
+| + getGroupe(Long id) : ResponseEntity<GroupeDesDto>  ;  Mapping : /get |
+| + updateGroupe(Long id, GroupeDesDto newGroupeDto : ResponseEntity<GroupeDesDto>  ;  Mapping : /update |
+| + deleteGroupe(Long id) : ResponseEntity<GroupeDesDto> ;  Mapping : /delete |
+| + throwGroupe(Long) : ResponseEntity<GroupeDesDto> ;  Mapping : /throw |
+| + freezeGroupe(Long, Long) : ResponseEntity<GroupeDesDto> ;  Mapping : /freeze |
 
 
 
