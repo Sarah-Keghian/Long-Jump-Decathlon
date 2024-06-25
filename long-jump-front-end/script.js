@@ -6,14 +6,17 @@ let conteneur_actif = document.getElementById("actif");
 let conteneur_gele = document.getElementById("gele");
 
 bouton_lancer.addEventListener("click", function fetch_lancer() {
-        fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json')
-            .then(response => response.json())
-            .then(response => {
-                affiche_content(response["members"][0]["age"])
-            })
-            .catch(error => {
-                console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
-            })
+    document.querySelectorAll(".dice").forEach((dice, index) => {
+        actu_frozen[index] = false;
+    });
+    fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json')
+        .then(response => response.json())
+        .then(response => {
+            affiche_content(response["members"][0]["age"])
+        })
+        .catch(error => {
+            console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+        })
 });
 
 
@@ -27,9 +30,7 @@ bouton_saut.addEventListener("click", function() {
         alert("Votre score de Run up est superieur à 8 !")
         reset_game()
     } else {
-        bouton_saut.classList.add('invisible');
-        dans_run_up = false
-        actu_frozen = [false, false, false, false, false]
+        round_jump()
     }
 });
 
@@ -45,7 +46,13 @@ document.querySelectorAll(".dice").forEach((dice, index) => {
                 } else {
                     document.getElementById('score_run_up').textContent = parseInt(document.getElementById('score_run_up').textContent) + parseInt(dice.textContent)
                 }
-            };
+            } else {
+                if (document.getElementById('score_jump').textContent == 0) {
+                    document.getElementById('score_jump').textContent = parseInt(dice.textContent)
+                } else {
+                    document.getElementById('score_jump').textContent = parseInt(document.getElementById('score_jump').textContent) + parseInt(dice.textContent)
+                }
+            }
         } else {
             if (actu_frozen[index]) {
                 conteneur_gele.removeChild(dice);
@@ -53,12 +60,27 @@ document.querySelectorAll(".dice").forEach((dice, index) => {
                 actu_frozen[index] = false
                 if (dans_run_up) {
                     document.getElementById('score_run_up').textContent = parseInt(document.getElementById('score_run_up').textContent) - parseInt(dice.textContent)
+                } else {
+                    document.getElementById('score_jump').textContent = parseInt(document.getElementById('score_jump').textContent) - parseInt(dice.textContent)
                 }
             }
         }
     });
 });
 
+function round_jump() {
+    bouton_saut.classList.add('invisible');
+    dans_run_up = false
+    actu_frozen = [false, false, false, false, false]
+    document.getElementById('score_run_up').textContent = 0;
+    document.querySelectorAll(".dice").forEach((dice, index) => {
+        if (conteneur_gele.contains(dice)) {
+            conteneur_gele.removeChild(dice);
+            conteneur_actif.appendChild(dice);
+        }
+        actu_frozen[index] = false;
+    });
+}
 
 function reset_game() {
     dans_run_up = true;
