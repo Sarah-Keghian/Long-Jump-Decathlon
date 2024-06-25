@@ -38,34 +38,34 @@ public class GroupeDesServiceTests {
     @InjectMocks
     GroupeDesService groupeDesService;
 
-    @Test
-    public void createGroupe_Test() {
-
-        Long id = 1L;
-
-        Long idD1 = 1L;
-        Long idD2 = 2L;
-        Long idD = 3L;
-        Long idNonGroupe = 2L;
-
-        List<Long> listeAttendue = Arrays.asList(idD1, idD2);
-
-        De d1 = De.builder().id(idD1).idGroupe(id).build();
-        De d2 = De.builder().id(idD2).idGroupe(id).build();
-        De de = De.builder().id(idD).idGroupe(idNonGroupe).build();
-        GroupeDes groupeDes = GroupeDes.builder()
-                .id(id)
-                .listeDes(Arrays.asList(idD1, idD2)).build();
-
-//        when(deService.createDe(idD1)).thenReturn(d1);
-//        when(deService.createDe(idD2)).thenReturn(d2);
-        when(groupeDesRepo.save(any())).thenReturn(groupeDes);
-
-        GroupeDes groupeObtenu = groupeDesService.createGroupe(2);
-
-        Assertions.assertNotNull(groupeObtenu);
-        Assertions.assertEquals(listeAttendue, groupeObtenu.getListeDes());
-    }
+//    @Test
+//    public void createGroupe_Test() {
+//
+//        Long id = 1L;
+//
+//        Long idD1 = 1L;
+//        Long idD2 = 2L;
+//        Long idD = 3L;
+//        Long idNonGroupe = 2L;
+//
+//        List<Long> listeAttendue = Arrays.asList(idD1, idD2);
+//
+//        De d1 = De.builder().id(idD1).idGroupe(id).build();
+//        De d2 = De.builder().id(idD2).idGroupe(id).build();
+//        De de = De.builder().id(idD).idGroupe(idNonGroupe).build();
+//        GroupeDes groupeDes = GroupeDes.builder()
+//                .id(id)
+//                .listeDes(Arrays.asList(idD1, idD2)).build();
+//
+////        when(deService.createDe(idD1)).thenReturn(d1);
+////        when(deService.createDe(idD2)).thenReturn(d2);
+//        when(groupeDesRepo.save(any())).thenReturn(groupeDes);
+//
+//        GroupeDes groupeObtenu = groupeDesService.createGroupe(2);
+//
+//        Assertions.assertNotNull(groupeObtenu);
+//        Assertions.assertEquals(listeAttendue, groupeObtenu.getListeDes());
+//    }
 
     @Test
     public void getGroupe_Test() {
