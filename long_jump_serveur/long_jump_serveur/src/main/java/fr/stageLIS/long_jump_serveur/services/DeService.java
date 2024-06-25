@@ -61,6 +61,11 @@ public class DeService {
         }
     }
 
+    public void deleteAllDes(){
+
+        deRepo.deleteAll();
+    }
+
     public De throwDe(Long id){
 
         Random random = new Random();

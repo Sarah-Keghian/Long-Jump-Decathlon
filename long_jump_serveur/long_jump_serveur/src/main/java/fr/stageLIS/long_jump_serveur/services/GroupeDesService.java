@@ -16,27 +16,26 @@ import java.util.stream.Collectors;
 @Service
 public class GroupeDesService {
 
-    @Autowired
-    private GroupeDesRepo groupeDesRepo;
+    private final GroupeDesRepo groupeDesRepo;
+    private final DeService deService;
 
     @Autowired
-    private DeService deService;
+    public GroupeDesService(DeService deService, GroupeDesRepo groupeDesRepo) {
+        this.deService = deService;
+        this.groupeDesRepo = groupeDesRepo;
+    }
 
-    public GroupeDes createGroupe(Long id){
 
-        List<De> listeDes = deService.getAllDe();
+    public GroupeDes createGroupe(int nbDes){
+
+        GroupeDes groupeDes = groupeDesRepo.save(new GroupeDes());
         List<Long> listeIds= new ArrayList<>();
 
-        for (De de : listeDes){
-            if (de.getIdGroupe().equals(id)) {
-                listeIds.add(de.getId());
-            }
+        for (int i = 0; i < nbDes; i++) {
+            De deTemp = deService.createDe(groupeDes.getId());
+            listeIds.add(deTemp.getId());
         }
-
-        GroupeDes groupeDes = new GroupeDes();
-        groupeDes.setId(id);
         groupeDes.setListeDes(listeIds);
-
         return groupeDesRepo.save(groupeDes);
     }
 
