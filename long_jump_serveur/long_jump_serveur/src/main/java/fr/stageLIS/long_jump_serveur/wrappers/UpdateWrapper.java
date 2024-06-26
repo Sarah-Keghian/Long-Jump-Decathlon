@@ -8,8 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class UpdateWrapper {
+public class UpdateWrapper<T> {
 
     private Long id;
-    private GroupeDesDto newGroupeDto;
+    private T objet;
 }
