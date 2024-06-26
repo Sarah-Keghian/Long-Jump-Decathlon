@@ -3,23 +3,51 @@ const bouton_saut = document.getElementById("bouton_saut");
 let dans_run_up = true
 let de_elimine = [true, 1]
 let actu_frozen = [false, false, false, false, false];
+let id_des = [0, 0, 0, 0, 0]
+let id_groupe = 0
+start()
+
+function start() {
+    const dataToSend = 5
+    fetch('/api/GroupeDes/create', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: dataToSend
+    })
+        .then(response => response.json())
+        .then(response => {
+            id_des[0] = response["listeDes"]["0"]["id"]
+            id_des[1] = response["listeDes"]["1"]["id"]
+            id_des[2] = response["listeDes"]["2"]["id"]
+            id_des[3] = response["listeDes"]["3"]["id"]
+            id_des[4] = response["listeDes"]["4"]["id"]
+            id_groupe = response["id"]
+            console.log(id_groupe, id_des)
+        })
+        .catch(error => {
+            console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+        })
+}
 
 bouton_lancer.addEventListener("click", function fetch_lancer() {
     if (de_elimine[0]) {
         de_elimine = [false, 0]
         document.querySelectorAll(".dice").forEach((dice, index) => {
             actu_frozen[index] = false;
+            unfreeze(id_des[index])
         });
-        const dataToSend = 5
-        fetch('/api/GroupeDes/create', {
-            method: 'PUT',
+        fetch('/api/GroupeDes/throw', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: dataToSend
+            body: id_groupe
         })
             .then(response => response.json())
             .then(response => {
+                console.log(response)
                 affiche_content(response)
             })
             .catch(error => {
@@ -33,8 +61,11 @@ bouton_lancer.addEventListener("click", function fetch_lancer() {
 
 // depend de l'info donnée : texte = [valeur_de_1, valeur_de_2, valeur_de_3, valeur_de_4, valeur_de_5]
 function affiche_content(texte) {
-    console.log("hello world")
-    document.getElementById('dice1').textContent = texte;
+    document.getElementById('dice1').textContent = texte["listeDes"]["0"]["position"];
+    document.getElementById('dice2').textContent = texte["listeDes"]["1"]["position"];
+    document.getElementById('dice3').textContent = texte["listeDes"]["2"]["position"];
+    document.getElementById('dice4').textContent = texte["listeDes"]["3"]["position"];
+    document.getElementById('dice5').textContent = texte["listeDes"]["4"]["position"];
 }
 
 bouton_saut.addEventListener("click", function() {
@@ -58,6 +89,7 @@ document.querySelectorAll(".dice").forEach((dice, index) => {
             conteneur_actif.removeChild(dice);
             conteneur_gele.appendChild(dice);
             actu_frozen[index] = true
+            freeze(id_des[index])
             de_elimine[0] = true
             de_elimine[1] = de_elimine[1] + 1
             if (dans_run_up) {
@@ -78,6 +110,7 @@ document.querySelectorAll(".dice").forEach((dice, index) => {
                 conteneur_gele.removeChild(dice);
                 conteneur_actif.appendChild(dice);
                 actu_frozen[index] = false
+                unfreeze(id_des[index])
                 if (de_elimine[0]) {
                     de_elimine[1] = de_elimine[1] - 1
                     if (de_elimine[1] <= 0) {
@@ -97,7 +130,6 @@ document.querySelectorAll(".dice").forEach((dice, index) => {
 function prep_round_jump() {
     bouton_saut.classList.add('invisible');
     dans_run_up = false
-    actu_frozen = [false, false, false, false, false]
     de_elimine = [true, 1]
     const conteneur_actif = document.getElementById("actif");
     const conteneur_gele = document.getElementById("gele");
@@ -110,6 +142,7 @@ function prep_round_jump() {
             conteneur_actif.appendChild(dice);
         }
         actu_frozen[index] = false;
+        unfreeze(id_des[index])
     });
 }
 
@@ -126,6 +159,40 @@ function reset_game() {
             conteneur_actif.appendChild(dice);
         }
         actu_frozen[index] = false;
+        unfreeze(id_des[index])
     });
 }
 
+function freeze(id_de) {
+    fetch('/api/GroupeDes/freeze', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: {"id": id_groupe, "id_de": id_de}
+    })
+        .then(response => response.json())
+        .then(response => {
+            console.log("response freeze :", response)
+        })
+        .catch(error => {
+            console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+        })
+}
+
+function unfreeze(id_de) {
+    fetch('/api/GroupeDes/unfreeze', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: {"id": id_groupe, "id_de": id_de}
+    })
+        .then(response => response.json())
+        .then(response => {
+            console.log("response unfreeze :", response)
+        })
+        .catch(error => {
+            console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+        })
+}
