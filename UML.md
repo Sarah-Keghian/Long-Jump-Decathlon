@@ -95,7 +95,7 @@
 | GroupeDesDto |
 |--------|
 | + id : Long |
-| + listeDes : List<Long> |
+| + listeDes : List<DeDto> |
 |--------|
 | + GroupeDesDto() : GroupeDesDto |
 | + GroupeDesDto(id, listeDes) : GroupeDesDto |
