@@ -27,15 +27,22 @@ public class GroupeDesService {
 
     public GroupeDes createGroupe(int nbDes){
 
+
         GroupeDes groupeDes = groupeDesRepo.save(new GroupeDes());
         List<Long> listeIds= new ArrayList<>();
 
-        for (int i = 0; i < nbDes; i++) {
-            De deTemp = deService.createDe(groupeDes.getId());
-            listeIds.add(deTemp.getId());
+        if (nbDes > 0) {
+            for (int i = 0; i < nbDes; i++) {
+                De deTemp = deService.createDe(groupeDes.getId());
+                listeIds.add(deTemp.getId());
+            }
+            groupeDes.setListeDes(listeIds);
+            return groupeDesRepo.save(groupeDes);
         }
-        groupeDes.setListeDes(listeIds);
-        return groupeDesRepo.save(groupeDes);
+        else {
+            throw new IllegalArgumentException("Le nombre de Dés doit être positif");
+        }
+
     }
 
     public GroupeDes getGroupe(Long id){
