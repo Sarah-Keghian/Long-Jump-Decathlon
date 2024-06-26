@@ -102,3 +102,4 @@ function reset_game() {
         actu_frozen[index] = false;
     });
 }
+

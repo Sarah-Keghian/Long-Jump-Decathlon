@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Long Jump</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="fer">Long Jump</h1>
+        <div class="plateau">
+            <div class="sub_container">
+                <h2>Lancé</h2>
+                <div class="dice_container" id="actif">
+                    <div class="dice" id="dice1">1</div>
+                    <div class="dice" id="dice2">2</div>
+                    <div class="dice" id="dice3">4</div>
+                    <div class="dice" id="dice4">5</div>
+                    <div class="dice" id="dice5">3</div>
+                </div>
+            </div>
+            <div class="sub_container">
+                <h2>Gelé</h2>
+                <div class="dice_container" id="gele"></div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button id="bouton_lancer">Lancer les dés</button>
+            <button id="bouton_saut">Sauter</button>
+        </div>
+        <div class="score_container">
+            <p>Score Run-up: <span id="score_run_up">0</span></p>
+            <p>Score Jump: <span id="score_jump">0</span></p>
+            <p>Score total: <span id="score_total">0</span></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
