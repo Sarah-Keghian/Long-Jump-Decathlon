@@ -155,7 +155,6 @@ public class GroupeDesServiceTests {
     @Test
     public void freezeDeGroupe_Test() {
 
-
         Long id = 1L;
         Long idD1 = 3L;
         Long idD2 = 4L;
@@ -176,6 +175,30 @@ public class GroupeDesServiceTests {
         Assertions.assertEquals(idFreeze, groupeObtenu.getListeDes().get(1));
     }
 
+    @Test
+    public void unFreezeDeGroupe_Test(){
+
+        Long id = 1L;
+        Long idD1 = 3L;
+        Long idD2 = 4L;
+        Long idFreeze = 5L;
+
+        List<Long> listeDes = Arrays.asList(idD1, idD2);
+        List<Long> listeDesFreeze = Arrays.asList(idD1, idFreeze);
+
+
+        GroupeDes groupeFreeze = GroupeDes.builder().id(id).listeDes(listeDesFreeze).build();
+        GroupeDes groupeUnFreeze = GroupeDes.builder().id(id).listeDes(listeDes).build();
+
+        when(groupeDesRepo.findById(id)).thenReturn(Optional.of(groupeUnFreeze));
+        when(groupeDesRepo.save(groupeUnFreeze)).thenReturn(groupeUnFreeze);
+
+        GroupeDes groupeDesUnFreeze = groupeDesService.unFreezeDeGroupe(id, idD2);
+        Assertions.assertNotNull(groupeDesUnFreeze);
+        Assertions.assertEquals(listeDes.size(), groupeDesUnFreeze.getListeDes().size());
+        Assertions.assertEquals(idD2, groupeDesUnFreeze.getListeDes().get(1));
+    }
+
 
     @Test
     public void convertToDto_Test(){
@@ -194,9 +217,6 @@ public class GroupeDesServiceTests {
         Assertions.assertNotNull(groupeDesDto);
         Assertions.assertEquals(GroupeDesDto.class, groupeDesDto.getClass());
         Assertions.assertEquals(groupeDes.getListeDes().size(), groupeDesDto.getListeDes().size());
-//        Assertions.assertNotNull(groupeDesDto.getListeDes().get(1));
-//        Assertions.assertNotNull(groupeDesDto.getListeDes().get(0));
-
     }
 
     @Test

@@ -3,6 +3,7 @@ package fr.stageLIS.long_jump_serveur.controller;
 import fr.stageLIS.long_jump_serveur.DTO.GroupeDesDto;
 import fr.stageLIS.long_jump_serveur.models.GroupeDes;
 import fr.stageLIS.long_jump_serveur.services.GroupeDesService;
+import fr.stageLIS.long_jump_serveur.wrapper.FreezeWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,6 +74,17 @@ public class GroupeDesController {
         return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
     } catch (IllegalArgumentException e) {
         return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/unFreeze")
+    public ResponseEntity<GroupeDesDto> unfreezeGroupe(@RequestBody FreezeWrapper freezeWrapper) {
+
+        try {
+            GroupeDes groupeDes = groupeDesService.unFreezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
+            return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

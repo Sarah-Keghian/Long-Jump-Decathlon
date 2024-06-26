@@ -93,6 +93,18 @@ public class DeService {
         }
     }
 
+    public De unFreezeDe(Long id){
+
+        De de = this.getDe(id);
+        if (de.isFrozen()){
+            de.setFrozen(false);
+            return deRepo.save(de);
+        }
+        else {
+            throw new IllegalStateException("Le Dé est déjà dégelé");
+        }
+    }
+
     public DeDto convertToDTO(De de){
 
         return DeDto.builder()

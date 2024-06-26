@@ -180,6 +180,33 @@ public class DeServiceTests {
     }
 
     @Test
+    public void unFreeze_Test(){
+
+        Long id1 = 1L;
+        Long id2 = 2L;
+
+        Long idFaux = 3L;
+        boolean frozen = true;
+        boolean notFrozen = false;
+
+        De d1 = De.builder().id(id1).frozen(frozen).build();
+        De d2 = De.builder().id(id2).frozen(notFrozen).build();
+
+        when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
+        when(deRepo.findById(id2)).thenReturn(Optional.of(d2));
+        when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
+        when(deRepo.save(d1)).thenReturn(d1);
+
+        De deUnFreeze1 = deService.unFreezeDe(id1);
+        Assertions.assertNotNull(deUnFreeze1);
+        Assertions.assertFalse(deUnFreeze1.isFrozen());
+
+        Assertions.assertThrows(IllegalStateException.class, () -> deService.unFreezeDe(id2));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.unFreezeDe(idFaux));
+
+    }
+
+    @Test
     public void convertToDTO_Test(){
         De de = De.builder().id(1L).idGroupe(2L).position(2).frozen(true).build();
 
