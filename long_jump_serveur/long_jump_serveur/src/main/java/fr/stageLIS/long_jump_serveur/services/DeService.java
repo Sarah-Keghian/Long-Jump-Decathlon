@@ -14,86 +14,108 @@ import java.util.Random;
 public class DeService {
 
     private final DeRepo deRepo;
-    @Autowired
-    public DeService(DeRepo deRepo) {this.deRepo = deRepo;}
 
-    public De createDe(Long idGroupe){
+    @Autowired
+    public DeService(DeRepo deRepo) {
+        this.deRepo = deRepo;
+    }
+
+    public De createDe(Long idGroupe) {
         De de = new De();
         de.setIdGroupe(idGroupe);
         de.setFrozen(false);
         return deRepo.save(de);
     }
 
-    public List<De> getAllDe(){
+    public List<De> getAllDe() {
 
         return deRepo.findAll();
     }
 
-    public De getDe(Long id){
+    public Optional<De> getDe(Long id) {
 
-        Optional<De> de = deRepo.findById(id);
-        if (de.isPresent()){
-            return de.get();
-        }
-        else {
-            throw new IllegalArgumentException("Aucun Dé n'a l'id : " +id);
-        }
+        return deRepo.findById(id);
     }
 
-    public De updateDe(Long id, De newDe) {
+    public Optional<De> updateDe(Long id, De newDe) {
 
         Optional<De> de = deRepo.findById(id);
         if (de.isPresent()) {
             De oldDe = de.get();
             oldDe.setPosition(newDe.getPosition());
-            return deRepo.save(oldDe);
+            return Optional.of(deRepo.save(oldDe));
         } else {
-            throw new IllegalArgumentException("Aucun Dé n'a l'id : " +id);
+            return Optional.empty();
         }
     }
 
-    public void deleteDe(Long id){
+    public Optional<De> deleteDe(Long id) {
 
-        if (deRepo.existsById(id)){
+        Optional<De> de = deRepo.findById(id);
+        if (de.isPresent()) {
             deRepo.deleteById(id);
-        }
-        else {
-            throw new IllegalArgumentException("Aucun Dé n'a l'id : " +id);
+            return de;
+        } else {
+            return Optional.empty();
         }
     }
 
-    public void deleteAllDes(){
+    public void deleteAllDes() {
 
         deRepo.deleteAll();
     }
 
-    public De throwDe(Long id){
+    public Optional<De> throwDe(Long id) {
 
         Random random = new Random();
-        De de = this.getDe(id);
-        if (!de.isFrozen()){
-            int nbAleatoire = random.nextInt(1,7);
-            de.setPosition(nbAleatoire);
-            return deRepo.save(de);
-        }
-        else {
-            return de;
+        Optional<De> deOptional = deRepo.findById(id);
+
+        if (deOptional.isPresent()) {
+            De de = deOptional.get();
+
+            if (!de.isFrozen()) {
+                int nbAleatoire = random.nextInt(1, 7);
+                de.setPosition(nbAleatoire);
+                return Optional.of(deRepo.save(de));
+            } else {
+                return Optional.of(de);
+            }
+        } else {
+            return Optional.empty();
         }
     }
 
-    public De freezeDe(Long id){
+    public Optional<De> freezeDe(Long id) {
 
-        De de = this.getDe(id);
-        de.setFrozen(true);
-        return deRepo.save(de);
+        Optional<De> deOptional1 = deRepo.findById(id);
+        if (deOptional1.isPresent()) {
+
+            De de = deOptional1.get();
+            if (!de.isFrozen()) {
+                de.setFrozen(true);
+                return Optional.of(deRepo.save(de));
+            } else {
+                return Optional.empty();
+            }
+        } else {
+            return Optional.empty();
+        }
     }
 
-    public De unFreezeDe(Long id){
+    public Optional<De> unFreezeDe(Long id){
 
-        De de = this.getDe(id);
-
-        de.setFrozen(false);
-        return deRepo.save(de);
+        Optional<De> deOptional = deRepo.findById(id);
+        if (deOptional.isPresent()) {
+            De de = deOptional.get();
+            if (de.isFrozen()){
+                de.setFrozen(false);
+                return Optional.of(deRepo.save(de));
+            }
+            else {
+                return Optional.empty();
+            }
+        }
+        return Optional.empty();
     }
 
     public DeDto convertToDTO(De de){
@@ -105,15 +127,14 @@ public class DeService {
                 .frozen(de.isFrozen()).build();
     }
 
-    public De convertToEntity(DeDto deDto){
+    public Optional<De> convertToEntity(DeDto deDto){
 
         List<De> des = deRepo.findAll();
         for (De de : des){
             if (de.getId().equals(deDto.getId())) {
-                return de;
+                return Optional.of(de);
             }
         }
-        throw new IllegalArgumentException();
+        return Optional.empty();
     }
-
 }
