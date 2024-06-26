@@ -18,13 +18,13 @@ public class GroupeDesController {
 
 
     @PutMapping("/create")
-    public ResponseEntity<GroupeDesDto> createGroupe(@RequestParam("nbDes") int nbDes) {
+    public ResponseEntity<GroupeDesDto> createGroupe(@RequestBody int nbDes) {
         GroupeDesDto groupeDesDto = groupeDesService.convertToDto(groupeDesService.createGroupe(nbDes));
         return ResponseEntity.ok(groupeDesDto);
     }
 
     @GetMapping("/get")
-    public ResponseEntity<GroupeDesDto> getGroupe(@RequestParam("id") Long id) {
+    public ResponseEntity<GroupeDesDto> getGroupe(@RequestBody Long id) {
     try {
         GroupeDes groupeDes = groupeDesService.getGroupe(id);
         GroupeDesDto grpDesDto = groupeDesService.convertToDto(groupeDes);
@@ -34,7 +34,7 @@ public class GroupeDesController {
         }
     }
     @PutMapping("/update")
-    public ResponseEntity<GroupeDesDto> updateGroupe(@RequestParam("id") Long id, @RequestBody GroupeDesDto newGroupeDto) {
+    public ResponseEntity<GroupeDesDto> updateGroupe(@RequestBody Long id, @RequestBody GroupeDesDto newGroupeDto) {
     try {
         GroupeDes groupeDes = groupeDesService.updateGroupe(id, groupeDesService.convertToEntity(newGroupeDto));
         return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
@@ -44,7 +44,7 @@ public class GroupeDesController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<GroupeDesDto> deleteGroupe(@RequestParam("id") Long id) {
+    public ResponseEntity<GroupeDesDto> deleteGroupe(@RequestBody Long id) {
     try {
         groupeDesService.deleteGroupe(id);
         return ResponseEntity.ok().build();
@@ -55,7 +55,7 @@ public class GroupeDesController {
     }
 
     @PostMapping("/throw")
-    public ResponseEntity<GroupeDesDto> throwGroupe(@RequestParam("id") Long id){
+    public ResponseEntity<GroupeDesDto> throwGroupe(@RequestBody Long id){
 
     try {
         GroupeDes groupeLance = groupeDesService.throwGroupe(id);
@@ -66,7 +66,7 @@ public class GroupeDesController {
     }
 
     @PostMapping("/freeze")
-    public ResponseEntity<GroupeDesDto> freezeGroupe(@RequestParam("id") Long id, @RequestParam("idDe") Long idDe) {
+    public ResponseEntity<GroupeDesDto> freezeGroupe(@RequestBody Long id, @RequestBody Long idDe) {
 
     try {
         GroupeDes groupeDes = groupeDesService.freezeDeGroupe(id, idDe);
