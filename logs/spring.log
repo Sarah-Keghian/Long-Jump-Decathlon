@@ -289,3 +289,81 @@
 2024-06-26T14:04:48.432+02:00  INFO 17192 --- [long_jump] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2024-06-26T14:04:48.432+02:00  INFO 17192 --- [long_jump] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2024-06-26T14:04:48.432+02:00  INFO 17192 --- [long_jump] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2024-06-26T14:37:35.289+02:00  INFO 15216 --- [long_jump] [main] f.s.l.LongJumpApplication                : Starting LongJumpApplication using Java 21.0.3 with PID 15216 (C:\Users\sarah\OneDrive\Bureau\Long-Jump-Decathlon1\long_jump_serveur\long_jump_serveur\build\classes\java\main started by skeghian in C:\Users\sarah\OneDrive\Bureau\Long-Jump-Decathlon1)
+2024-06-26T14:37:35.290+02:00  INFO 15216 --- [long_jump] [main] f.s.l.LongJumpApplication                : No active profile set, falling back to 1 default profile: "default"
+2024-06-26T14:37:36.054+02:00  INFO 15216 --- [long_jump] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-26T14:37:36.126+02:00  INFO 15216 --- [long_jump] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 65 ms. Found 5 JPA repository interfaces.
+2024-06-26T14:37:36.708+02:00  INFO 15216 --- [long_jump] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-06-26T14:37:36.742+02:00  INFO 15216 --- [long_jump] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-26T14:37:36.742+02:00  INFO 15216 --- [long_jump] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2024-06-26T14:37:36.803+02:00  INFO 15216 --- [long_jump] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-26T14:37:36.803+02:00  INFO 15216 --- [long_jump] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1464 ms
+2024-06-26T14:37:36.851+02:00  INFO 15216 --- [long_jump] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-06-26T14:37:37.153+02:00  INFO 15216 --- [long_jump] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./long_jump_db user=SA
+2024-06-26T14:37:37.154+02:00  INFO 15216 --- [long_jump] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-06-26T14:37:37.164+02:00  INFO 15216 --- [long_jump] [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2'. Database available at 'jdbc:h2:file:./long_jump_db'
+2024-06-26T14:37:37.287+02:00  INFO 15216 --- [long_jump] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-26T14:37:37.340+02:00  INFO 15216 --- [long_jump] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-06-26T14:37:37.386+02:00  INFO 15216 --- [long_jump] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-06-26T14:37:37.783+02:00  INFO 15216 --- [long_jump] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-26T14:37:39.099+02:00  INFO 15216 --- [long_jump] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-26T14:37:39.191+02:00  INFO 15216 --- [long_jump] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-26T14:37:39.494+02:00  WARN 15216 --- [long_jump] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-26T14:37:39.994+02:00  INFO 15216 --- [long_jump] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-06-26T14:37:40.005+02:00  INFO 15216 --- [long_jump] [main] f.s.l.LongJumpApplication                : Started LongJumpApplication in 5.194 seconds (process running for 5.912)
+2024-06-26T14:37:46.789+02:00  INFO 15216 --- [long_jump] [http-nio-8080-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-06-26T14:37:46.789+02:00  INFO 15216 --- [long_jump] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-06-26T14:37:46.789+02:00  INFO 15216 --- [long_jump] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2024-06-26T15:07:30.303+02:00  INFO 13216 --- [long_jump] [main] f.s.l.LongJumpApplication                : Starting LongJumpApplication using Java 21.0.3 with PID 13216 (C:\Users\sarah\OneDrive\Bureau\Long-Jump-Decathlon1\long_jump_serveur\long_jump_serveur\build\classes\java\main started by skeghian in C:\Users\sarah\OneDrive\Bureau\Long-Jump-Decathlon1)
+2024-06-26T15:07:30.308+02:00  INFO 13216 --- [long_jump] [main] f.s.l.LongJumpApplication                : No active profile set, falling back to 1 default profile: "default"
+2024-06-26T15:07:31.115+02:00  INFO 13216 --- [long_jump] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-26T15:07:31.303+02:00  INFO 13216 --- [long_jump] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 177 ms. Found 5 JPA repository interfaces.
+2024-06-26T15:07:32.374+02:00  INFO 13216 --- [long_jump] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-06-26T15:07:32.393+02:00  INFO 13216 --- [long_jump] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-26T15:07:32.394+02:00  INFO 13216 --- [long_jump] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2024-06-26T15:07:32.473+02:00  INFO 13216 --- [long_jump] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-26T15:07:32.474+02:00  INFO 13216 --- [long_jump] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2121 ms
+2024-06-26T15:07:32.504+02:00  INFO 13216 --- [long_jump] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-06-26T15:07:32.796+02:00  INFO 13216 --- [long_jump] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./long_jump_db user=SA
+2024-06-26T15:07:32.797+02:00  INFO 13216 --- [long_jump] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-06-26T15:07:32.812+02:00  INFO 13216 --- [long_jump] [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2'. Database available at 'jdbc:h2:file:./long_jump_db'
+2024-06-26T15:07:32.947+02:00  INFO 13216 --- [long_jump] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-26T15:07:33.017+02:00  INFO 13216 --- [long_jump] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-06-26T15:07:33.077+02:00  INFO 13216 --- [long_jump] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-06-26T15:07:33.520+02:00  INFO 13216 --- [long_jump] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-26T15:07:34.650+02:00  INFO 13216 --- [long_jump] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-26T15:07:34.702+02:00  INFO 13216 --- [long_jump] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-26T15:07:35.036+02:00  WARN 13216 --- [long_jump] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-26T15:07:35.444+02:00  INFO 13216 --- [long_jump] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-06-26T15:07:35.455+02:00  INFO 13216 --- [long_jump] [main] f.s.l.LongJumpApplication                : Started LongJumpApplication in 5.669 seconds (process running for 6.304)
+2024-06-26T15:07:48.781+02:00  INFO 13216 --- [long_jump] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-06-26T15:07:48.782+02:00  INFO 13216 --- [long_jump] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-06-26T15:07:48.785+02:00  INFO 13216 --- [long_jump] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2024-06-26T15:17:57.576+02:00  INFO 22848 --- [long_jump] [main] f.s.l.LongJumpApplication                : Starting LongJumpApplication using Java 21.0.3 with PID 22848 (C:\Users\sarah\OneDrive\Bureau\Long-Jump-Decathlon1\long_jump_serveur\long_jump_serveur\build\classes\java\main started by skeghian in C:\Users\sarah\OneDrive\Bureau\Long-Jump-Decathlon1)
+2024-06-26T15:17:57.578+02:00  INFO 22848 --- [long_jump] [main] f.s.l.LongJumpApplication                : No active profile set, falling back to 1 default profile: "default"
+2024-06-26T15:17:58.343+02:00  INFO 22848 --- [long_jump] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-26T15:17:58.425+02:00  INFO 22848 --- [long_jump] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 74 ms. Found 5 JPA repository interfaces.
+2024-06-26T15:17:58.906+02:00  INFO 22848 --- [long_jump] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-06-26T15:17:58.919+02:00  INFO 22848 --- [long_jump] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-26T15:17:58.919+02:00  INFO 22848 --- [long_jump] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2024-06-26T15:17:58.995+02:00  INFO 22848 --- [long_jump] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-26T15:17:58.996+02:00  INFO 22848 --- [long_jump] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1359 ms
+2024-06-26T15:17:59.026+02:00  INFO 22848 --- [long_jump] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-06-26T15:17:59.291+02:00  INFO 22848 --- [long_jump] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./long_jump_db user=SA
+2024-06-26T15:17:59.292+02:00  INFO 22848 --- [long_jump] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-06-26T15:17:59.304+02:00  INFO 22848 --- [long_jump] [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2'. Database available at 'jdbc:h2:file:./long_jump_db'
+2024-06-26T15:17:59.465+02:00  INFO 22848 --- [long_jump] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-26T15:17:59.524+02:00  INFO 22848 --- [long_jump] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-06-26T15:17:59.568+02:00  INFO 22848 --- [long_jump] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-06-26T15:17:59.980+02:00  INFO 22848 --- [long_jump] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-26T15:18:01.054+02:00  INFO 22848 --- [long_jump] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-26T15:18:01.110+02:00  INFO 22848 --- [long_jump] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-26T15:18:01.390+02:00  WARN 22848 --- [long_jump] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-26T15:18:01.764+02:00  INFO 22848 --- [long_jump] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-06-26T15:18:01.773+02:00  INFO 22848 --- [long_jump] [main] f.s.l.LongJumpApplication                : Started LongJumpApplication in 4.642 seconds (process running for 5.274)
+2024-06-26T15:18:23.456+02:00  INFO 22848 --- [long_jump] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-06-26T15:18:23.456+02:00  INFO 22848 --- [long_jump] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-06-26T15:18:23.465+02:00  INFO 22848 --- [long_jump] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-06-26T15:18:23.505+02:00  WARN 22848 --- [long_jump] [http-nio-8080-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'PUT' is not supported]
+2024-06-26T15:19:32.906+02:00  WARN 22848 --- [long_jump] [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.lang.Long` from Object value (token `JsonToken.START_OBJECT`)]
+2024-06-26T15:19:37.795+02:00  WARN 22848 --- [long_jump] [http-nio-8080-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.lang.Long` from Object value (token `JsonToken.START_OBJECT`)]

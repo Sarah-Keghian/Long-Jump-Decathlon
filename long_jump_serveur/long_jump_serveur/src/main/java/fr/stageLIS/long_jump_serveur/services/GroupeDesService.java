@@ -99,6 +99,23 @@ public class GroupeDesService {
         return groupeDesRepo.save(groupeDes);
     }
 
+
+    public GroupeDes unFreezeDeGroupe(Long id, Long idDeChoisi) {
+
+        GroupeDes groupeDes = this.getGroupe(id);
+
+        for (Long idDe : groupeDes.getListeDes()) {
+            if (idDe.equals(idDeChoisi)) {
+                try {
+                    deService.unFreezeDe(idDe);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException(e.getMessage());
+                }
+            }
+        }
+        return groupeDesRepo.save(groupeDes);
+    }
+
     public GroupeDesDto convertToDto(GroupeDes groupeDes){
         GroupeDesDto groupeDesDto = new GroupeDesDto();
         groupeDesDto.setId(groupeDes.getId());
@@ -111,24 +128,13 @@ public class GroupeDesService {
         for (De de : listeDes) {
             listeDesDto.add(deService.convertToDTO(de));
         }
-//        List<DeDto> listeDesDto = groupeDes.getListeDes().stream()
-//                .map(idDe -> deService.convertToDTO(deService.getDe(idDe)))
-//                .collect(Collectors.toList());
 
         groupeDesDto.setListeDes(listeDesDto);
         return groupeDesDto;
     }
 
 
-
     public GroupeDes convertToEntity(GroupeDesDto groupeDesDto){
-//        GroupeDes groupeDes = new GroupeDes();
-//        groupeDes.setId(groupeDesDto.getId());
-//
-//        List<Long> listeIdDes = groupeDesDto.getListeDes().stream().map(DeDto::getId).toList();
-//        groupeDes.setListeDes(listeIdDes);
-//        return groupeDes;
-//    }
 
         List<GroupeDes> listeGroupeDes = groupeDesRepo.findAll();
 

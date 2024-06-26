@@ -66,10 +66,10 @@ public class GroupeDesController {
     }
 
     @PostMapping("/freeze")
-    public ResponseEntity<GroupeDesDto> freezeGroupe(@RequestBody Long id, @RequestBody Long idDe) {
+    public ResponseEntity<GroupeDesDto> freezeGroupe(@RequestBody FreezeWrapper freezeWrapper) {
 
     try {
-        GroupeDes groupeDes = groupeDesService.freezeDeGroupe(id, idDe);
+        GroupeDes groupeDes = groupeDesService.freezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
         return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
     } catch (IllegalArgumentException e) {
         return ResponseEntity.notFound().build();
