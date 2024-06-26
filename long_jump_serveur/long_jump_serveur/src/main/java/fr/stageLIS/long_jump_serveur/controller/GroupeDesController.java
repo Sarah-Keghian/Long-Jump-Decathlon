@@ -21,12 +21,14 @@ public class GroupeDesController {
 
     @PutMapping("/create")
     public ResponseEntity<GroupeDesDto> createGroupe(@RequestBody int nbDes) {
+
         GroupeDesDto groupeDesDto = groupeDesService.convertToDto(groupeDesService.createGroupe(nbDes));
         return ResponseEntity.ok(groupeDesDto);
     }
 
     @GetMapping("/get")
     public ResponseEntity<GroupeDesDto> getGroupe(@RequestBody Long id) {
+
     try {
         GroupeDes groupeDes = groupeDesService.getGroupe(id);
         GroupeDesDto grpDesDto = groupeDesService.convertToDto(groupeDes);
@@ -36,9 +38,10 @@ public class GroupeDesController {
         }
     }
     @PutMapping("/update")
-    public ResponseEntity<GroupeDesDto> updateGroupe(@RequestBody UpdateWrapper updateWrapper) {
+    public ResponseEntity<GroupeDesDto> updateGroupe(@RequestBody UpdateWrapper<GroupeDesDto> updateWrapper) {
+
     try {
-        GroupeDes groupeDes = groupeDesService.updateGroupe(updateWrapper.getId(), groupeDesService.convertToEntity(updateWrapper.getNewGroupeDto()));
+        GroupeDes groupeDes = groupeDesService.updateGroupe(updateWrapper.getId(), groupeDesService.convertToEntity(updateWrapper.getObjet()));
         return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
     } catch (IllegalArgumentException e) {
         return ResponseEntity.notFound().build();
@@ -47,6 +50,7 @@ public class GroupeDesController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<GroupeDesDto> deleteGroupe(@RequestBody Long id) {
+
     try {
         groupeDesService.deleteGroupe(id);
         return ResponseEntity.ok().build();
