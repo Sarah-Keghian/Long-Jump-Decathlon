@@ -18,10 +18,9 @@ public class Partie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private int id;
+    private Long id;
 
-    private int etape;
-    private int score;
-    private String nomJoueur;
+    private Long idJoueur;
+    private int scoreFinal;
 }
 
