@@ -8,10 +8,17 @@ bouton_lancer.addEventListener("click", function fetch_lancer() {
     document.querySelectorAll(".dice").forEach((dice, index) => {
         actu_frozen[index] = false;
     });
-    fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json')
+    const dataToSend = 5
+    fetch('/api/GroupeDes/create', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: dataToSend.json()
+    })
         .then(response => response.json())
         .then(response => {
-            affiche_content(response["members"][0]["age"])
+            affiche_content(response)
         })
         .catch(error => {
             console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
