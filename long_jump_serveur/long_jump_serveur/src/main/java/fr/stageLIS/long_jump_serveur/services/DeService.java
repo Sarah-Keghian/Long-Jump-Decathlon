@@ -13,7 +13,7 @@ import java.util.Random;
 @Service
 public class DeService {
 
-    private DeRepo deRepo;
+    private final DeRepo deRepo;
     @Autowired
     public DeService(DeRepo deRepo) {this.deRepo = deRepo;}
 
@@ -41,6 +41,7 @@ public class DeService {
     }
 
     public De updateDe(Long id, De newDe) {
+
         Optional<De> de = deRepo.findById(id);
         if (de.isPresent()) {
             De oldDe = de.get();
@@ -81,6 +82,7 @@ public class DeService {
     }
 
     public De freezeDe(Long id){
+
         De de = this.getDe(id);
         if (!de.isFrozen()){
             de.setFrozen(true);
@@ -92,12 +94,7 @@ public class DeService {
     }
 
     public DeDto convertToDTO(De de){
-//        DeDto deDto = new DeDto();
-//        deDto.setFrozen(de.isFrozen());
-//        deDto.setIdGroupe(de.getIdGroupe());
-//        deDto.setPosition(de.getPosition());
-//        deDto.setId(de.getId());
-//        return deDto;
+
         return DeDto.builder()
                 .id(de.getId())
                 .idGroupe(de.getIdGroupe())
