@@ -25,7 +25,7 @@ public class GroupeDesService {
     }
 
 
-    public GroupeDes createGroupe(int nbDes){
+    public Optional<GroupeDes> createGroupe(int nbDes){
 
 
         GroupeDes groupeDes = groupeDesRepo.save(new GroupeDes());
@@ -37,75 +37,101 @@ public class GroupeDesService {
                 listeIds.add(deTemp.getId());
             }
             groupeDes.setListeDes(listeIds);
-            return groupeDesRepo.save(groupeDes);
+            return Optional.of(groupeDesRepo.save(groupeDes));
         }
         else {
-            throw new IllegalArgumentException("Le nombre de Dés doit être positif");
+            return Optional.empty();
         }
 
     }
 
-    public GroupeDes getGroupe(Long id){
+    public Optional<GroupeDes> getGroupe(Long id){
 
-        Optional<GroupeDes> groupeDes = groupeDesRepo.findById(id);
-        if (groupeDes.isPresent()){
-            return groupeDes.get();
+        return groupeDesRepo.findById(id);
+    }
+
+    public Optional<GroupeDes> updateGroupe(Long id, GroupeDes newGroupe){
+
+        Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
+        if (groupeDesOptional.isPresent()) {
+            GroupeDes groupeDes = groupeDesOptional.get();
+            groupeDes.setListeDes(newGroupe.getListeDes());
+            return Optional.of(groupeDesRepo.save(groupeDes));
         }
         else {
-            throw new IllegalArgumentException("Aucun Groupe de Dés n'a l'id : " + id);
+            return Optional.empty();
         }
     }
 
-    public GroupeDes updateGroupe(Long id, GroupeDes newGroupe){
+    public Optional<GroupeDes> deleteGroupe(Long id){
 
-        GroupeDes groupeDes = getGroupe(id);
-        groupeDes.setListeDes(newGroupe.getListeDes());
-        return groupeDesRepo.save(groupeDes);
-    }
-
-    public void deleteGroupe(Long id){
-
-        if (groupeDesRepo.existsById(id)){
-            groupeDesRepo.deleteById(id);
+        Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
+        if (groupeDesOptional.isPresent()) {
+            GroupeDes groupeDes = groupeDesOptional.get();
+            groupeDesRepo.delete(groupeDes);
+            return Optional.of(groupeDes);
         }
         else {
-            throw new IllegalArgumentException("Aucun Groupe de Dés n'a l'id : " + id);
+            return Optional.empty();
         }
     }
 
-    public GroupeDes throwGroupe(Long id){
+    public Optional<GroupeDes> throwGroupe(Long id){
 
-        GroupeDes groupeDes = this.getGroupe(id);
-        for (Long idDe : groupeDes.getListeDes()){
-            deService.throwDe(idDe);
+        Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
+        if (groupeDesOptional.isPresent()) {
+            GroupeDes groupeDes = groupeDesOptional.get();
+            for (Long idDe : groupeDes.getListeDes()){
+                deService.throwDe(idDe);
+            }
+            return Optional.of(groupeDesRepo.save(groupeDes));
         }
-        return groupeDesRepo.save(groupeDes);
+        else {
+            return Optional.empty();
+        }
+
     }
 
 
-    public GroupeDes freezeDeGroupe(Long id, Long idDeChoisi) {
+    public Optional<GroupeDes> freezeDeGroupe(Long id, Long idDeChoisi) {
 
-        GroupeDes groupeDes = this.getGroupe(id);
+        Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
 
-        for (Long idDe : groupeDes.getListeDes()) {
-            if (idDe.equals(idDeChoisi)) {
+        if (groupeDesOptional.isPresent()) {
+            GroupeDes groupeDes = groupeDesOptional.get();
+
+            for (Long idDe : groupeDes.getListeDes()) {
+                if (idDe.equals(idDeChoisi)) {
                     deService.freezeDe(idDe);
+                    return Optional.of(groupeDesRepo.save(groupeDes));
+                }
             }
+            return Optional.empty();
         }
-        return groupeDesRepo.save(groupeDes);
+        else {
+            return Optional.empty();
+        }
     }
 
 
-    public GroupeDes unFreezeDeGroupe(Long id, Long idDeChoisi) {
+    public Optional<GroupeDes> unFreezeDeGroupe(Long id, Long idDeChoisi) {
 
-        GroupeDes groupeDes = this.getGroupe(id);
+        Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
 
-        for (Long idDe : groupeDes.getListeDes()) {
-            if (idDe.equals(idDeChoisi)) {
-                deService.unFreezeDe(idDe);
+        if (groupeDesOptional.isPresent()) {
+
+            GroupeDes groupeDes = groupeDesOptional.get();
+            for (Long idDe : groupeDes.getListeDes()) {
+                if (idDe.equals(idDeChoisi)) {
+                    deService.unFreezeDe(idDe);
+                    return Optional.of(groupeDesRepo.save(groupeDes));
+                }
             }
+            return Optional.empty();
         }
-        return groupeDesRepo.save(groupeDes);
+        else {
+            return Optional.empty();
+        }
     }
 
     public GroupeDesDto convertToDto(GroupeDes groupeDes){
@@ -115,7 +141,7 @@ public class GroupeDesService {
         List<DeDto> listeDesDto = new ArrayList<>();
 
         for (Long id : groupeDes.getListeDes()){
-            listeDes.add(deService.getDe(id));
+            listeDes.add(deService.getDe(id).get());
         }
         for (De de : listeDes) {
             listeDesDto.add(deService.convertToDTO(de));
