@@ -4,7 +4,6 @@ import fr.stageLIS.long_jump_serveur.DTO.DeDto;
 import fr.stageLIS.long_jump_serveur.DTO.GroupeDesDto;
 import fr.stageLIS.long_jump_serveur.models.De;
 import fr.stageLIS.long_jump_serveur.models.GroupeDes;
-import fr.stageLIS.long_jump_serveur.repositories.DeRepo;
 import fr.stageLIS.long_jump_serveur.repositories.GroupeDesRepo;
 import fr.stageLIS.long_jump_serveur.services.DeService;
 import fr.stageLIS.long_jump_serveur.services.GroupeDesService;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,11 +23,9 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 public class GroupeDesServiceTests {
 
-//    @Mock
-//    DeRepo deRepo;
+
     @Mock
     GroupeDesRepo groupeDesRepo;
     @Mock
@@ -38,34 +34,30 @@ public class GroupeDesServiceTests {
     @InjectMocks
     GroupeDesService groupeDesService;
 
-//    @Test
-//    public void createGroupe_Test() {
-//
-//        Long id = 1L;
-//
-//        Long idD1 = 1L;
-//        Long idD2 = 2L;
-//        Long idD = 3L;
-//        Long idNonGroupe = 2L;
-//
-//        List<Long> listeAttendue = Arrays.asList(idD1, idD2);
-//
-//        De d1 = De.builder().id(idD1).idGroupe(id).build();
-//        De d2 = De.builder().id(idD2).idGroupe(id).build();
-//        De de = De.builder().id(idD).idGroupe(idNonGroupe).build();
-//        GroupeDes groupeDes = GroupeDes.builder()
-//                .id(id)
-//                .listeDes(Arrays.asList(idD1, idD2)).build();
-//
-////        when(deService.createDe(idD1)).thenReturn(d1);
-////        when(deService.createDe(idD2)).thenReturn(d2);
-//        when(groupeDesRepo.save(any())).thenReturn(groupeDes);
-//
-//        GroupeDes groupeObtenu = groupeDesService.createGroupe(2);
-//
-//        Assertions.assertNotNull(groupeObtenu);
-//        Assertions.assertEquals(listeAttendue, groupeObtenu.getListeDes());
-//    }
+    @Test
+    public void createGroupe_Test() {
+
+        int nbDes = 3;
+        Long idGroupe = 1L;
+        Long idD1 = 1L;
+        Long idD2 = 2L;
+        List<Long> listeIds = Arrays.asList(idD1, idD2);
+        GroupeDes groupeDesAvantSauve = GroupeDes.builder().id(idGroupe).build();
+        De d1 = De.builder().id(idD1).frozen(false).idGroupe(idGroupe).build();
+        De d2 = De.builder().id(idD2).frozen(false).idGroupe(idGroupe).build();
+        GroupeDes groupeDesApres = GroupeDes.builder().id(idGroupe).listeDes(listeIds).build();
+
+        when(groupeDesRepo.save(any())).thenReturn(groupeDesAvantSauve).thenReturn(groupeDesApres);
+        when(deService.createDe(idGroupe)).thenReturn(d1, d2);
+
+        GroupeDes groupeDesObtenu = groupeDesService.createGroupe(nbDes);
+
+        Assertions.assertNotNull(groupeDesObtenu);
+        Assertions.assertEquals(idGroupe, groupeDesObtenu.getId());
+        Assertions.assertEquals(listeIds, groupeDesObtenu.getListeDes());
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> groupeDesService.createGroupe(-2));
+    }
 
     @Test
     public void getGroupe_Test() {
