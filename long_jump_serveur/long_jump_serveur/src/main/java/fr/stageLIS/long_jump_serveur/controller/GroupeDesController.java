@@ -72,8 +72,10 @@ public class GroupeDesController {
 
     try {
         GroupeDes groupeDes = groupeDesService.freezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
+        System.out.println("Ca a marché");
         return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
     } catch (IllegalArgumentException e) {
+        System.out.println("Groupe non trouvé");
         return ResponseEntity.notFound().build();
         }
     }
@@ -83,8 +85,10 @@ public class GroupeDesController {
 
         try {
             GroupeDes groupeDes = groupeDesService.unFreezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
+            System.out.println("Ca a marché");
             return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
         } catch (IllegalArgumentException e) {
+            System.out.println("Groupe non trouvé");
             return ResponseEntity.notFound().build();
         }
     }

@@ -5,6 +5,7 @@ let de_elimine = [true, 1]
 let actu_frozen = [false, false, false, false, false];
 let id_des = [0, 0, 0, 0, 0]
 let id_groupe = 0
+let des_jetables = false
 start()
 
 function start() {
@@ -24,7 +25,7 @@ function start() {
             id_des[3] = response["listeDes"]["3"]["id"]
             id_des[4] = response["listeDes"]["4"]["id"]
             id_groupe = response["id"]
-            console.log(id_groupe, id_des)
+            console.log(id_groupe, id_des, response)
         })
         .catch(error => {
             console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
@@ -34,9 +35,9 @@ function start() {
 bouton_lancer.addEventListener("click", function fetch_lancer() {
     if (de_elimine[0]) {
         de_elimine = [false, 0]
+        des_jetables = true
         document.querySelectorAll(".dice").forEach((dice, index) => {
             actu_frozen[index] = false;
-            unfreeze(id_des[index])
         });
         fetch('/api/GroupeDes/throw', {
             method: 'POST',
@@ -66,6 +67,7 @@ function affiche_content(texte) {
     document.getElementById('dice3').textContent = texte["listeDes"]["2"]["position"];
     document.getElementById('dice4').textContent = texte["listeDes"]["3"]["position"];
     document.getElementById('dice5').textContent = texte["listeDes"]["4"]["position"];
+    console.log(texte)
 }
 
 bouton_saut.addEventListener("click", function() {
@@ -85,7 +87,7 @@ const conteneur_actif = document.getElementById("actif");
 const conteneur_gele = document.getElementById("gele");
 document.querySelectorAll(".dice").forEach((dice, index) => {
     dice.addEventListener("click", function() {
-        if (conteneur_actif.contains(dice)) {
+        if (conteneur_actif.contains(dice) && des_jetables) {
             conteneur_actif.removeChild(dice);
             conteneur_gele.appendChild(dice);
             actu_frozen[index] = true
@@ -106,7 +108,7 @@ document.querySelectorAll(".dice").forEach((dice, index) => {
                 }
             }
         } else {
-            if (actu_frozen[index]) {
+            if (actu_frozen[index] && des_jetables) {
                 conteneur_gele.removeChild(dice);
                 conteneur_actif.appendChild(dice);
                 actu_frozen[index] = false
@@ -133,6 +135,7 @@ function prep_round_jump() {
     de_elimine = [true, 1]
     const conteneur_actif = document.getElementById("actif");
     const conteneur_gele = document.getElementById("gele");
+    des_jetables = false
     document.querySelectorAll(".dice").forEach((dice, index) => {
         if (conteneur_actif.contains(dice)) {
             conteneur_actif.removeChild(dice);
@@ -169,7 +172,7 @@ function freeze(id_de) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: {"id": id_groupe, "id_de": id_de}
+        body: JSON.stringify({"id": id_groupe, "idDe": id_de})
     })
         .then(response => response.json())
         .then(response => {
@@ -181,12 +184,12 @@ function freeze(id_de) {
 }
 
 function unfreeze(id_de) {
-    fetch('/api/GroupeDes/unfreeze', {
+    fetch('/api/GroupeDes/unFreeze', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: {"id": id_groupe, "id_de": id_de}
+        body: JSON.stringify({"id": id_groupe, "idDe": id_de})
     })
         .then(response => response.json())
         .then(response => {
