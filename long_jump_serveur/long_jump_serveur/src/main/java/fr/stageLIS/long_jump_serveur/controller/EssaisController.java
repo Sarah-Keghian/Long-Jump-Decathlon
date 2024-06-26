@@ -60,7 +60,7 @@ public class EssaisController {
 
         Optional<Essais> essaisOptional = essaisService.getEssais(id);
         if (essaisOptional.isPresent()) {
-            Essais essais = essaisOptional.get();
+            Essais essais = essaisService.deleteEssais(id).get();
             return ResponseEntity.ok(essaisService.convertEssaisToDto(essais));
         }
         else {

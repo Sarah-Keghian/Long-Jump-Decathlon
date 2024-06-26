@@ -33,6 +33,11 @@ public class EssaisService {
 
     }
 
+    public List<Essais> getAllEssais(){
+
+        return essaisRepo.findAll();
+    }
+
     public Optional<Essais> addEssai(Long id, Integer score){
 
         Optional<Essais> essaisOptional = this.getEssais(id);
