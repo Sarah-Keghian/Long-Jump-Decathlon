@@ -20,8 +20,8 @@ public class Essais {
     private Long id;
 
     private Long idPartie;
-    private int score1;
-    private int score2;
-    private int score3;
+    private Integer score1;
+    private Integer score2;
+    private Integer score3;
 }
 
