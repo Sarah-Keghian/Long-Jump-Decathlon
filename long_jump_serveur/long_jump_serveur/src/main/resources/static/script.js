@@ -60,7 +60,6 @@ bouton_lancer.addEventListener("click", function fetch_lancer() {
 });
 
 
-// depend de l'info donnée : texte = [valeur_de_1, valeur_de_2, valeur_de_3, valeur_de_4, valeur_de_5]
 function affiche_content(texte) {
     document.getElementById('dice1').textContent = texte["listeDes"]["0"]["position"];
     document.getElementById('dice2').textContent = texte["listeDes"]["1"]["position"];
@@ -139,13 +138,15 @@ function prep_round_jump() {
     document.querySelectorAll(".dice").forEach((dice, index) => {
         if (conteneur_actif.contains(dice)) {
             conteneur_actif.removeChild(dice);
+            freeze(id_des[index])
         }
         if (conteneur_gele.contains(dice)) {
             conteneur_gele.removeChild(dice);
             conteneur_actif.appendChild(dice);
+            unfreeze(id_des[index])
         }
         actu_frozen[index] = false;
-        unfreeze(id_des[index])
+        dice.textContent = "?";
     });
 }
 
