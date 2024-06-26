@@ -28,8 +28,8 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class GroupeDesServiceTests {
 
-    @Mock
-    DeRepo deRepo;
+//    @Mock
+//    DeRepo deRepo;
     @Mock
     GroupeDesRepo groupeDesRepo;
     @Mock
@@ -81,6 +81,7 @@ public class GroupeDesServiceTests {
                 .listeDes(listeAttendue).build();
 
         when(groupeDesRepo.findById(id)).thenReturn(Optional.of(groupeD1));
+        when(groupeDesRepo.findById(idFaux)).thenReturn(Optional.empty());
 
 
         GroupeDes groupeObtenu = groupeDesService.getGroupe(id);
