@@ -33,6 +33,7 @@ bouton_lancer.addEventListener("click", function fetch_lancer() {
 
 // depend de l'info donnée : texte = [valeur_de_1, valeur_de_2, valeur_de_3, valeur_de_4, valeur_de_5]
 function affiche_content(texte) {
+    console.log(texte)
     document.getElementById('dice1').textContent = texte;
 }
 
