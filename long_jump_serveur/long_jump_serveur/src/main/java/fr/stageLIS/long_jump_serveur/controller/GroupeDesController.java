@@ -3,7 +3,8 @@ package fr.stageLIS.long_jump_serveur.controller;
 import fr.stageLIS.long_jump_serveur.DTO.GroupeDesDto;
 import fr.stageLIS.long_jump_serveur.models.GroupeDes;
 import fr.stageLIS.long_jump_serveur.services.GroupeDesService;
-import fr.stageLIS.long_jump_serveur.wrapper.FreezeWrapper;
+import fr.stageLIS.long_jump_serveur.wrappers.FreezeWrapper;
+import fr.stageLIS.long_jump_serveur.wrappers.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +36,9 @@ public class GroupeDesController {
         }
     }
     @PutMapping("/update")
-    public ResponseEntity<GroupeDesDto> updateGroupe(@RequestBody Long id, @RequestBody GroupeDesDto newGroupeDto) {
+    public ResponseEntity<GroupeDesDto> updateGroupe(@RequestBody UpdateWrapper updateWrapper) {
     try {
-        GroupeDes groupeDes = groupeDesService.updateGroupe(id, groupeDesService.convertToEntity(newGroupeDto));
+        GroupeDes groupeDes = groupeDesService.updateGroupe(updateWrapper.getId(), groupeDesService.convertToEntity(updateWrapper.getNewGroupeDto()));
         return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
     } catch (IllegalArgumentException e) {
         return ResponseEntity.notFound().build();

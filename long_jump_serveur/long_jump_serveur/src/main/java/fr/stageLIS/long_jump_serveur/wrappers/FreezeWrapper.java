@@ -1,7 +1,6 @@
-package fr.stageLIS.long_jump_serveur.wrapper;
+package fr.stageLIS.long_jump_serveur.wrappers;
 
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 @Getter
 @Setter
