@@ -21,5 +21,7 @@ public class Partie {
     private int id;
 
     private int etape;
+    private int score;
+    private String nomJoueur;
 }
 
