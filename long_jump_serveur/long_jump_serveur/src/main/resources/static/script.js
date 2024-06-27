@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const bouton_lancer = document.getElementById("bouton_lancer");
     const bouton_saut = document.getElementById("bouton_saut");
+    const bouton_suivant = document.getElementById("bouton_suivant");
     const diceIds = ["dice1", "dice2", "dice3", "dice4", "dice5"];
     const diceElements = diceIds.map(id => document.getElementById(id));
 
@@ -11,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!playerName) {
         playerName = "Joueur";
     }
+    let round = 0
 
     fetch('/api/Joueur/create', {
         method: 'PUT',
@@ -136,6 +138,22 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    bouton_suivant.addEventListener("click", function () {
+        let possible = false
+        document.querySelectorAll(".dice").forEach((dice, index) => {
+            if (conteneur_gele.contains(dice)) {
+                possible = true
+            }
+        })
+        if (possible) {
+            reset_game()
+            round = round + 1
+            if (document.getElementById('score_total').textContent < document.getElementById('score_jump').textContent) {
+                document.getElementById('score_total').textContent = document.getElementById('score_jump').textContent
+            }
+        }
+    })
+
     document.querySelectorAll(".dice").forEach((dice, index) => {
         dice.addEventListener("click", function () {
             if (conteneur_actif.contains(dice) && des_jetables) {
@@ -182,6 +200,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function prep_round_jump() {
         bouton_saut.classList.add('invisible');
+        bouton_suivant.classList.remove('invisible');
         dans_run_up = false
         de_elimine = [true, 1]
         const conteneur_actif = document.getElementById("actif");
@@ -231,7 +250,6 @@ document.addEventListener("DOMContentLoaded", function() {
     dans_run_up = true;
     document.getElementById('score_run_up').textContent = 0;
     document.getElementById('score_jump').textContent = 0;
-    document.getElementById('score_total').textContent = 0;
     // document.querySelectorAll(".dice").forEach((dice, index) => {
     //     if (conteneur_gele.contains(dice)) {
     //         conteneur_gele.removeChild(dice);
