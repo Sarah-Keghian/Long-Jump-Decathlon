@@ -20,4 +20,5 @@ public class Joueur {
     private Long id;
 
     private String nom;
+
 }
