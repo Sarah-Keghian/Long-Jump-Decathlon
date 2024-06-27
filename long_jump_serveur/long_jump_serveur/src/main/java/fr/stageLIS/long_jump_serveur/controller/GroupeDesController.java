@@ -74,22 +74,14 @@ public class GroupeDesController {
     @PostMapping("/freeze")
     public ResponseEntity<GroupeDesDto> freezeGroupe(@RequestBody FreezeWrapper freezeWrapper) {
 
-    try {
         GroupeDes groupeDes = groupeDesService.freezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
         return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
-        }
     }
 
     @PostMapping("/unFreeze")
     public ResponseEntity<GroupeDesDto> unfreezeGroupe(@RequestBody FreezeWrapper freezeWrapper) {
 
-        try {
-            GroupeDes groupeDes = groupeDesService.unFreezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
-            return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+        GroupeDes groupeDes = groupeDesService.unFreezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
+        return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
     }
 }

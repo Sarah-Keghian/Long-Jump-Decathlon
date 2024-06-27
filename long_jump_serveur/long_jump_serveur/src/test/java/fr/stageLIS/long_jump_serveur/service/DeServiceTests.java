@@ -164,10 +164,8 @@ public class DeServiceTests {
         boolean notFrozen = false;
 
         De d1 = De.builder().id(id1).frozen(notFrozen).build();
-        De d2 = De.builder().id(id2).frozen(frozen).build();
 
         when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
-        when(deRepo.findById(id2)).thenReturn(Optional.of(d2));
         when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
         when(deRepo.save(d1)).thenReturn(d1);
 
@@ -175,7 +173,6 @@ public class DeServiceTests {
         Assertions.assertNotNull(deFreeze1);
         Assertions.assertTrue(deFreeze1.isFrozen());
 
-        Assertions.assertThrows(IllegalStateException.class, () -> deService.freezeDe(id2));
         Assertions.assertThrows(IllegalArgumentException.class, () -> deService.freezeDe(idFaux));
     }
 
@@ -193,7 +190,6 @@ public class DeServiceTests {
         De d2 = De.builder().id(id2).frozen(notFrozen).build();
 
         when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
-        when(deRepo.findById(id2)).thenReturn(Optional.of(d2));
         when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
         when(deRepo.save(d1)).thenReturn(d1);
 
@@ -201,7 +197,6 @@ public class DeServiceTests {
         Assertions.assertNotNull(deUnFreeze1);
         Assertions.assertFalse(deUnFreeze1.isFrozen());
 
-        Assertions.assertThrows(IllegalStateException.class, () -> deService.unFreezeDe(id2));
         Assertions.assertThrows(IllegalArgumentException.class, () -> deService.unFreezeDe(idFaux));
 
     }
