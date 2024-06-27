@@ -6,8 +6,11 @@ import fr.stageLIS.long_jump_serveur.services.GroupeDesService;
 import fr.stageLIS.long_jump_serveur.wrappers.FreezeWrapper;
 import fr.stageLIS.long_jump_serveur.wrappers.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/GroupeDes")
@@ -20,21 +23,19 @@ public class GroupeDesController {
 
 
     @PutMapping("/create")
-    public ResponseEntity<GroupeDesDto> createGroupe(@RequestBody int nbDes) {
+    public ResponseEntity<GroupeDesDto> createGroupe() {
 
-        GroupeDesDto groupeDesDto = groupeDesService.convertToDto(groupeDesService.createGroupe(nbDes));
+        GroupeDesDto groupeDesDto = groupeDesService.convertToDto(groupeDesService.createGroupe());
         return ResponseEntity.ok(groupeDesDto);
     }
 
     @GetMapping("/get")
-    public ResponseEntity<GroupeDesDto> getGroupe(@RequestBody Long id) {
+    public ResponseEntity<?> getGroupe(@RequestBody Long id) {
 
-    try {
-        GroupeDes groupeDes = groupeDesService.getGroupe(id);
-        GroupeDesDto grpDesDto = groupeDesService.convertToDto(groupeDes);
-        return ResponseEntity.ok(grpDesDto);
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
+        Optional<GroupeDes> groupeDesOptional = groupeDesService.getGroupe(id);
+        if (groupeDesOptional.isPresent()) {
+            GroupeDesDto grpDesDto = groupeDesService.convertToDto(groupeDesOptional.get());
+            return ResponseEntity.ok(grpDesDto);
         }
     }
     @PutMapping("/update")
@@ -49,47 +50,54 @@ public class GroupeDesController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<GroupeDesDto> deleteGroupe(@RequestBody Long id) {
+    public ResponseEntity<?> deleteGroupe(@RequestBody Long id) {
 
-    try {
-        groupeDesService.deleteGroupe(id);
-        return ResponseEntity.ok().build();
-    }
-    catch (IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
+        Optional<GroupeDes> groupedDeletedOptional = groupeDesService.deleteGroupe(id);
+
+        if (groupedDeletedOptional.isPresent()) {
+            GroupeDes groupeDeleted = groupedDeletedOptional.get();
+            return ResponseEntity.ok(groupeDesService.convertToDto(groupeDeleted));
         }
+        else {
+            return new ResponseEntity<String>("Auncun groupe n'a l'id " + id, HttpStatus.NOT_FOUND);        }
     }
 
     @PostMapping("/throw")
-    public ResponseEntity<GroupeDesDto> throwGroupe(@RequestBody Long id){
+    public ResponseEntity<?> throwGroupe(@RequestBody Long id) {
 
-    try {
-        GroupeDes groupeLance = groupeDesService.throwGroupe(id);
-        return ResponseEntity.ok(groupeDesService.convertToDto(groupeLance));
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
+        Optional<GroupeDes> groupeLanceOptional = groupeDesService.throwGroupe(id);
+
+        if (groupeLanceOptional.isPresent()) {
+            GroupeDes groupeLance = groupeLanceOptional.get();
+            return ResponseEntity.ok(groupeDesService.convertToDto(groupeLance));
+        }
+        else {
+            return new ResponseEntity<String>("Auncun groupe n'a l'id " + id, HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("/freeze")
-    public ResponseEntity<GroupeDesDto> freezeGroupe(@RequestBody FreezeWrapper freezeWrapper) {
 
-    try {
-        GroupeDes groupeDes = groupeDesService.freezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
-        return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
+    @PostMapping("/freeze")
+    public ResponseEntity<?> freezeGroupe(@RequestBody FreezeWrapper freezeWrapper) {
+
+        Optional<GroupeDes> groupeDesOptional = groupeDesService.freezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
+        if (groupeDesOptional.isPresent()) {
+            GroupeDes groupeDes = groupeDesOptional.get();
+            return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
         }
+        return new ResponseEntity<String>("L'id du groupe ou l'id du dé n'existe pas" , HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/unFreeze")
-    public ResponseEntity<GroupeDesDto> unfreezeGroupe(@RequestBody FreezeWrapper freezeWrapper) {
+    public ResponseEntity<?> unfreezeGroupe(@RequestBody FreezeWrapper freezeWrapper) {
 
-        try {
-            GroupeDes groupeDes = groupeDesService.unFreezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
-            return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+            Optional<GroupeDes> groupeDesOptional = groupeDesService.unFreezeDeGroupe(freezeWrapper.getId(), freezeWrapper.getIdDe());
+            if (groupeDesOptional.isPresent()) {
+                GroupeDes groupeDes = groupeDesOptional.get();
+                return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
+            }
+            else {
+                return new ResponseEntity<String>("L'id du groupe ou l'id du dé n'existe pas" , HttpStatus.NOT_FOUND);
+            }
     }
 }
