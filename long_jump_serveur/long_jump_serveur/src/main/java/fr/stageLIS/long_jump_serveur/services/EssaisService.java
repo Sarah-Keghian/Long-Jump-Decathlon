@@ -23,6 +23,9 @@ public class EssaisService {
 
         Essais essais = new Essais();
         essais.setIdPartie(idPartie);
+        essais.setScore1(-1);
+        essais.setScore2(-1);
+        essais.setScore3(-1);
         return essaisRepo.save(essais);
     }
 
@@ -45,17 +48,17 @@ public class EssaisService {
         if (essaisOptional.isPresent()) {
             Essais essais = essaisOptional.get();
 
-            if (essais.getScore1() == null) {
+            if (essais.getScore1() == -1) {
                 essais.setScore1(score);
                 essaisRepo.save(essais);
                 return Optional.of(essais);
             }
-            else if (essais.getScore2() == null) {
+            else if (essais.getScore2() == -1) {
                 essais.setScore2(score);
                 essaisRepo.save(essais);
                 return Optional.of(essais);
             }
-            else if (essais.getScore3() == null) {
+            else if (essais.getScore3() == -1) {
                 essais.setScore3(score);
                 essaisRepo.save(essais);
                 return Optional.of(essais);
