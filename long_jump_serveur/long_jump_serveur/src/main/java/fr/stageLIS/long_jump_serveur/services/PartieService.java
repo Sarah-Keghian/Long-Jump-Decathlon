@@ -37,6 +37,10 @@ public class PartieService {
         return partieRepo.findById(id);
     }
 
+    public List<Partie> getAllParties(){
+        return partieRepo.findAll();
+    }
+
     public Optional<Partie> addScoreFinalPartie(Long id) {
 
         Optional<Partie> partieOptional = getPartie(id);
