@@ -58,17 +58,16 @@ public class DeServiceTests {
         when(deRepo.findById(id)).thenReturn(Optional.of(d1));
         when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
 
-        try {
-            De deObtenu = deService.getDe(id);
-            Assertions.assertNotNull(deObtenu);
-            Assertions.assertEquals(d1, deObtenu);
-            Assertions.assertNotNull(deObtenu.getId());
+        Optional<De> deObtenu = deService.getDe(id);
+        Optional<De> deOptional = deService.getDe(idFaux);
 
-        } catch(IllegalArgumentException e) {
-            Assertions.fail(e.getMessage());
-        }
+        Assertions.assertNotNull(deObtenu);
+        Assertions.assertTrue(deObtenu.isPresent());
+        Assertions.assertEquals(d1, deObtenu.get());
+        Assertions.assertNotNull(deObtenu.get().getId());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.getDe(idFaux));
+
+        Assertions.assertEquals(Optional.empty(), deOptional);
     }
 
 
@@ -97,31 +96,30 @@ public class DeServiceTests {
         when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
         when(deRepo.save(d3)).thenReturn(d3);
 
+        Optional<De> deObtenu = deService.updateDe(id1, d2);
+        Optional<De> deOptional = deService.updateDe(idFaux, d2);
 
+        Assertions.assertTrue(deObtenu.isPresent());
+        Assertions.assertEquals(d3, deObtenu.get());
 
-        try {
-            De deObtenu = deService.updateDe(id1, d2);
-            Assertions.assertNotNull(deObtenu);
-            Assertions.assertEquals(deObtenu, d3);
-        } catch(IllegalArgumentException e) {
-            Assertions.fail(e.getMessage());
-        }
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.updateDe(idFaux, d2));
+        Assertions.assertEquals(Optional.empty(), deOptional);
     }
 
     @Test
     public void deleteDe_Test(){
+
         Long id1 = 1L;
         Long idFaux = 2L;
+        De d1 = De.builder().id(id1).build();
 
-
-        when(deRepo.existsById(id1)).thenReturn(true);
-        when(deRepo.existsById(idFaux)).thenReturn(false);
+        when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
+        when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
         doNothing().when(deRepo).deleteById(id1);
 
-        Assertions.assertDoesNotThrow(() -> deService.deleteDe(id1));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.deleteDe(idFaux));
+        Optional<De> deObtenu = deService.deleteDe(id1);
+        Optional<De> deOptional = deService.deleteDe(idFaux);
+        Assertions.assertTrue(deObtenu.isPresent());
+        Assertions.assertEquals(Optional.empty(), deOptional);
     }
 
     @Test
@@ -141,16 +139,20 @@ public class DeServiceTests {
         when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
         when(deRepo.save(d1)).thenReturn(d1);
 
-        De deLance1 = deService.throwDe(id1);
-        Assertions.assertNotNull(deLance1);
-        Assertions.assertNotNull(deLance1.getPosition());
-        Assertions.assertFalse(deLance1.isFrozen());
-        Assertions.assertEquals(id1, deLance1.getId());
-        Assertions.assertTrue(1 <= deLance1.getPosition());
-        Assertions.assertTrue(deLance1.getPosition() <= 6);
+        Optional<De> deLance1 = deService.throwDe(id1);
+        Assertions.assertTrue(deLance1.isPresent());
+        Assertions.assertNotNull(deLance1.get().getPosition());
+        Assertions.assertFalse(deLance1.get().isFrozen());
+        Assertions.assertEquals(id1, deLance1.get().getId());
+        Assertions.assertTrue(1 <= deLance1.get().getPosition());
+        Assertions.assertTrue(deLance1.get().getPosition() <= 6);
 
-        Assertions.assertEquals(d2, deService.throwDe(id2));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.throwDe(idFaux));
+        Optional<De> deLance2 = deService.throwDe(id2);
+        Assertions.assertTrue(deLance2.isPresent());
+        Assertions.assertEquals(d2, deLance2.get());
+
+        Optional<De> deOptional = deService.throwDe(idFaux);
+        Assertions.assertEquals(Optional.empty(), deOptional);
     }
 
     @Test
@@ -164,16 +166,24 @@ public class DeServiceTests {
         boolean notFrozen = false;
 
         De d1 = De.builder().id(id1).frozen(notFrozen).build();
+        De d2 = De.builder().id(id2).frozen(frozen).build();
 
         when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
+        when(deRepo.findById(id2)).thenReturn(Optional.of(d2));
         when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
+        when(deRepo.save(d2)).thenReturn(d2);
         when(deRepo.save(d1)).thenReturn(d1);
 
-        De deFreeze1 = deService.freezeDe(id1);
-        Assertions.assertNotNull(deFreeze1);
-        Assertions.assertTrue(deFreeze1.isFrozen());
+        Optional<De> deFreeze1 = deService.freezeDe(id1);
+        Assertions.assertTrue(deFreeze1.isPresent());
+        Assertions.assertTrue(deFreeze1.get().isFrozen());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.freezeDe(idFaux));
+        Optional<De> deFreeze2 = deService.freezeDe(id2);
+        Assertions.assertTrue(deFreeze2.isPresent());
+        Assertions.assertTrue(deFreeze2.get().isFrozen());
+
+        Optional<De> deFaux = deService.freezeDe(idFaux);
+        Assertions.assertEquals(Optional.empty(), deFaux);
     }
 
     @Test
@@ -190,15 +200,21 @@ public class DeServiceTests {
         De d2 = De.builder().id(id2).frozen(notFrozen).build();
 
         when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
+        when(deRepo.findById(id2)).thenReturn(Optional.of(d2));
         when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
         when(deRepo.save(d1)).thenReturn(d1);
+        when(deRepo.save(d2)).thenReturn(d2);
 
-        De deUnFreeze1 = deService.unFreezeDe(id1);
-        Assertions.assertNotNull(deUnFreeze1);
-        Assertions.assertFalse(deUnFreeze1.isFrozen());
+        Optional<De> deUnFreeze1 = deService.unFreezeDe(id1);
+        Assertions.assertTrue(deUnFreeze1.isPresent());
+        Assertions.assertFalse(deUnFreeze1.get().isFrozen());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deService.unFreezeDe(idFaux));
+        Optional<De> deUnFreeze2 = deService.unFreezeDe(id2);
+        Assertions.assertTrue(deUnFreeze2.isPresent());
+        Assertions.assertFalse(deUnFreeze2.get().isFrozen());
 
+        Optional<De> deFaux = deService.unFreezeDe(idFaux);
+        Assertions.assertEquals(Optional.empty(), deFaux);
     }
 
     @Test
@@ -217,25 +233,33 @@ public class DeServiceTests {
 
     @Test
     public void convertToEntity_Test(){
+
         Long id1 = 1L;
+        Long idFaux = 3L;
         DeDto deDto = DeDto.builder()
                 .id(id1).idGroupe(3L)
                 .position(6)
                 .frozen(false).build();
+        DeDto deDtoFaux = DeDto.builder()
+                .id(idFaux).idGroupe(3L)
+                .position(6)
+                .frozen(false).build();
+
         De d1 = De.builder().id(id1).idGroupe(3L).position(6).frozen(false).build();
         De d2 = De.builder().id(2L).idGroupe(3L).position(2).frozen(false).build();
 
         when(deRepo.findAll()).thenReturn(Arrays.asList(d1,d2));
 
-        De de = deService.convertToEntity(deDto);
+        Optional<De> de = deService.convertToEntity(deDto);
+        Assertions.assertTrue(de.isPresent());
+        Assertions.assertEquals(De.class, de.get().getClass());
+        Assertions.assertEquals(deDto.getId(), de.get().getId());
+        Assertions.assertEquals(deDto.getIdGroupe(), de.get().getIdGroupe());
+        Assertions.assertEquals(deDto.getPosition(), de.get().getPosition());
+        Assertions.assertEquals(deDto.isFrozen(), de.get().isFrozen());
 
-        Assertions.assertNotNull(de);
-        Assertions.assertEquals(De.class, de.getClass());
-        Assertions.assertEquals(deDto.getId(), de.getId());
-        Assertions.assertEquals(deDto.getIdGroupe(), de.getIdGroupe());
-        Assertions.assertEquals(deDto.getPosition(), de.getPosition());
-        Assertions.assertEquals(deDto.isFrozen(), de.isFrozen());
-
+        Optional<De> deFaux = deService.convertToEntity(deDtoFaux);
+        Assertions.assertEquals(Optional.empty(), deFaux);
     }
 
 }
