@@ -22,8 +22,8 @@ public class GroupeDesController {
     public GroupeDesController(GroupeDesService groupeDesService) {this.groupeDesService = groupeDesService;}
 
 
-    @PutMapping("/create")
-    public ResponseEntity<GroupeDesDto> createGroupe(@RequestBody int pif) {
+    @GetMapping("/create")
+    public ResponseEntity<GroupeDesDto> createGroupe() {
 
         GroupeDesDto groupeDesDto = groupeDesService.convertToDto(groupeDesService.createGroupe());
         return ResponseEntity.ok(groupeDesDto);
