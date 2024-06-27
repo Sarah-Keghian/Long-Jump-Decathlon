@@ -4,8 +4,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let playerName = prompt("Entrez votre nom :");
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     let id_joueur = 0
 =======
+=======
+>>>>>>> Stashed changes
     console.log(playerName)
     let id_player = 0
 >>>>>>> Stashed changes
@@ -39,7 +42,11 @@ document.addEventListener("DOMContentLoaded", function() {
     function start() {
         fetch('/api/GroupeDes/create', {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             method: 'GET'
+=======
+            method: 'PUT'
+>>>>>>> Stashed changes
 =======
             method: 'PUT'
 >>>>>>> Stashed changes
