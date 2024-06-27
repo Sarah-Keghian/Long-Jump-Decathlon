@@ -16,4 +16,6 @@ public class JoueurController {
     public ResponseEntity<Joueur> createJoueur(@RequestParam("nom") String nom) {
         return ResponseEntity.ok(joueurService.createJoueur(nom));
     }
+
+
 }

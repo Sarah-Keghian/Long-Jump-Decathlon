@@ -6,6 +6,7 @@ import fr.stageLIS.long_jump_serveur.services.EssaisService;
 import fr.stageLIS.long_jump_serveur.services.PartieService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class PartieController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<PartieDto> getPartie(@RequestParam Long id) {
+    public ResponseEntity<?> getPartie(@RequestParam Long id) {
 
         Optional<Partie> partieOptional = partieService.getPartie(id);
 
@@ -38,12 +39,13 @@ public class PartieController {
             return ResponseEntity.ok(partieService.convertPartieToDto(partie));
         }
         else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<String>("Aucune Partie n'a l'id" + id, HttpStatus.NOT_FOUND);
+
         }
     }
 
     @PostMapping("/addScoreFinal")
-    public ResponseEntity<PartieDto> addScoreFinal(@RequestBody Long id) {
+    public ResponseEntity<?> addScoreFinal(@RequestBody Long id) {
 
         Optional<Partie> partieOptional = partieService.getPartie(id);
         if (partieOptional.isPresent()) {
@@ -51,12 +53,12 @@ public class PartieController {
             return ResponseEntity.ok(partieService.convertPartieToDto(partie));
         }
         else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<String>("Aucune Partie n'a l'id" + id, HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<PartieDto> deletePartie(@RequestParam Long id) {
+    public ResponseEntity<?> deletePartie(@RequestParam Long id) {
 
         Optional<Partie> partieOptional = partieService.getPartie(id);
 
@@ -65,7 +67,7 @@ public class PartieController {
             return ResponseEntity.ok(partieService.convertPartieToDto(partie));
         }
         else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<String>("Aucune Partie n'a l'id" + id, HttpStatus.NOT_FOUND);
         }
     }
 }

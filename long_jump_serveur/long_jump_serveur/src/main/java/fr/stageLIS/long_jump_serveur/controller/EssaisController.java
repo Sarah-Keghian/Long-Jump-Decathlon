@@ -6,6 +6,7 @@ import fr.stageLIS.long_jump_serveur.services.EssaisService;
 import fr.stageLIS.long_jump_serveur.wrappers.UpdateWrapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class EssaisController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<EssaisDto> getEssais(@RequestBody Long id) {
+    public ResponseEntity<?> getEssais(@RequestBody Long id) {
 
         Optional<Essais> essaisOptional = essaisService.getEssais(id);
         if (essaisOptional.isPresent()) {
@@ -35,13 +36,12 @@ public class EssaisController {
             return ResponseEntity.ok(essaisService.convertEssaisToDto(essais));
         }
         else {
-            String message = "Aucune partie n'a l'id" + id;
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<String>("Aucun Essais n'a l'id" + id, HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/addEssai")
-    public ResponseEntity<EssaisDto> addEssai(@RequestBody UpdateWrapper<Integer> updateWrapper) {
+    public ResponseEntity<?> addEssai(@RequestBody UpdateWrapper<Integer> updateWrapper) {
 
         Optional<Essais> essaisOptional = essaisService.addEssai(updateWrapper.getId(), updateWrapper.getObjet());
 
@@ -50,13 +50,12 @@ public class EssaisController {
             return ResponseEntity.ok(essaisService.convertEssaisToDto(essais));
         }
         else {
-            String message = "Aucun Essais n'a l'id" + updateWrapper.getId();
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<String>("Aucune Essais n'a l'id" + updateWrapper.getId(), HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<EssaisDto> deleteEssais(@RequestBody Long id) {
+    public ResponseEntity<?> deleteEssais(@RequestBody Long id) {
 
         Optional<Essais> essaisOptional = essaisService.getEssais(id);
         if (essaisOptional.isPresent()) {
@@ -64,8 +63,7 @@ public class EssaisController {
             return ResponseEntity.ok(essaisService.convertEssaisToDto(essais));
         }
         else {
-            String message = "Aucun Essai n'a l'id" + id;
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<String>("Aucun Essais n'a l'id" + id, HttpStatus.NOT_FOUND);
         }
     }
 }
