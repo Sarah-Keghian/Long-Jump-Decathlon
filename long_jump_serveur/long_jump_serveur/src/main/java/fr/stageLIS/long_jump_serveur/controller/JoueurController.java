@@ -13,11 +13,8 @@ import java.util.Optional;
 public class JoueurController {
 
     private final JoueurService joueurService;
-    private final EssaisService essaisService;
 
-    public JoueurController(JoueurService joueurService, EssaisService essaisService) {this.joueurService = joueurService;
-        this.essaisService = essaisService;
-    }
+    public JoueurController(JoueurService joueurService, EssaisService essaisService) {this.joueurService = joueurService;}
 
     @PutMapping("/create")
     public ResponseEntity<Long> createJoueur(@RequestBody String nom) {
