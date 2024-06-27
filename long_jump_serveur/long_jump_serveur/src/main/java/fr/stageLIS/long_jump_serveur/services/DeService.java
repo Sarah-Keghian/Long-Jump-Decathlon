@@ -91,12 +91,9 @@ public class DeService {
         if (deOptional1.isPresent()) {
 
             De de = deOptional1.get();
-            if (!de.isFrozen()) {
-                de.setFrozen(true);
-                return Optional.of(deRepo.save(de));
-            } else {
-                return Optional.empty();
-            }
+            de.setFrozen(true);
+            return Optional.of(deRepo.save(de));
+
         } else {
             return Optional.empty();
         }
@@ -107,13 +104,8 @@ public class DeService {
         Optional<De> deOptional = deRepo.findById(id);
         if (deOptional.isPresent()) {
             De de = deOptional.get();
-            if (de.isFrozen()){
-                de.setFrozen(false);
-                return Optional.of(deRepo.save(de));
-            }
-            else {
-                return Optional.empty();
-            }
+            de.setFrozen(false);
+            return Optional.of(deRepo.save(de));
         }
         return Optional.empty();
     }

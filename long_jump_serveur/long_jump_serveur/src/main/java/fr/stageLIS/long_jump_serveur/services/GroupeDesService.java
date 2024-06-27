@@ -25,24 +25,18 @@ public class GroupeDesService {
     }
 
 
-    public Optional<GroupeDes> createGroupe(int nbDes){
+    public GroupeDes createGroupe(){
 
 
         GroupeDes groupeDes = groupeDesRepo.save(new GroupeDes());
         List<Long> listeIds= new ArrayList<>();
 
-        if (nbDes > 0) {
-            for (int i = 0; i < nbDes; i++) {
-                De deTemp = deService.createDe(groupeDes.getId());
-                listeIds.add(deTemp.getId());
-            }
+        for (int i = 0; i < 5; i++) {
+            De deTemp = deService.createDe(groupeDes.getId());
+            listeIds.add(deTemp.getId());
+        }
             groupeDes.setListeDes(listeIds);
-            return Optional.of(groupeDesRepo.save(groupeDes));
-        }
-        else {
-            return Optional.empty();
-        }
-
+            return groupeDesRepo.save(groupeDes);
     }
 
     public Optional<GroupeDes> getGroupe(Long id){
@@ -68,7 +62,7 @@ public class GroupeDesService {
         Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
         if (groupeDesOptional.isPresent()) {
             GroupeDes groupeDes = groupeDesOptional.get();
-            groupeDesRepo.delete(groupeDes);
+            groupeDesRepo.deleteById(id);
             return Optional.of(groupeDes);
         }
         else {
@@ -106,11 +100,8 @@ public class GroupeDesService {
                     return Optional.of(groupeDesRepo.save(groupeDes));
                 }
             }
-            return Optional.empty();
         }
-        else {
-            return Optional.empty();
-        }
+        return Optional.empty();
     }
 
 
@@ -127,24 +118,19 @@ public class GroupeDesService {
                     return Optional.of(groupeDesRepo.save(groupeDes));
                 }
             }
-            return Optional.empty();
         }
-        else {
-            return Optional.empty();
-        }
+        return Optional.empty();
     }
 
     public GroupeDesDto convertToDto(GroupeDes groupeDes){
+
         GroupeDesDto groupeDesDto = new GroupeDesDto();
         groupeDesDto.setId(groupeDes.getId());
         List<De> listeDes = new ArrayList<>();
         List<DeDto> listeDesDto = new ArrayList<>();
 
         for (Long id : groupeDes.getListeDes()){
-            listeDes.add(deService.getDe(id).get());
-        }
-        for (De de : listeDes) {
-            listeDesDto.add(deService.convertToDTO(de));
+            listeDesDto.add(deService.convertToDTO(deService.getDe(id).get()));
         }
 
         groupeDesDto.setListeDes(listeDesDto);
@@ -152,15 +138,15 @@ public class GroupeDesService {
     }
 
 
-    public GroupeDes convertToEntity(GroupeDesDto groupeDesDto){
+    public Optional<GroupeDes> convertToEntity(GroupeDesDto groupeDesDto){
 
         List<GroupeDes> listeGroupeDes = groupeDesRepo.findAll();
 
         for (GroupeDes groupeDes : listeGroupeDes) {
             if (groupeDes.getId().equals(groupeDesDto.getId())) {
-                return groupeDes;
+                return Optional.of(groupeDes);
             }
         }
-        throw new IllegalArgumentException();
+        return Optional.empty();
     }
 }
