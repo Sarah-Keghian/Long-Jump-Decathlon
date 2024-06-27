@@ -1,5 +1,6 @@
 package fr.stageLIS.long_jump_serveur.controller;
 
+import fr.stageLIS.long_jump_serveur.DTO.LeaderDto;
 import fr.stageLIS.long_jump_serveur.DTO.PartieDto;
 import fr.stageLIS.long_jump_serveur.models.Partie;
 import fr.stageLIS.long_jump_serveur.services.PartieService;

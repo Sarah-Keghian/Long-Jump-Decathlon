@@ -8,10 +8,8 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-public class LeaderBoardDto {
-    private Long id;
+public class LeaderDto {
 
-    private Long idJoueur;
-    private Integer bestScore;
+    private String nomJoueur;
     private Integer place;
 }
