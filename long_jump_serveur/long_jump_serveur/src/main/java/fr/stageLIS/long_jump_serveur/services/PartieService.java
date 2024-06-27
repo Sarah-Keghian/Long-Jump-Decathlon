@@ -79,13 +79,13 @@ public class PartieService {
         return partieDto;
     }
 
-    public Optional<Partie> convertDtoToPartie (Partie partie){
+    public Optional<Partie> convertDtoToPartie (PartieDto partieDto){
 
         List<Partie> partieListe = partieRepo.findAll();
 
-        for (Partie partieIter : partieListe) {
-            if (partieIter.getId().equals(partie.getId())) {
-                return Optional.of(partieIter);
+        for (Partie partie : partieListe) {
+            if (partie.getId().equals(partieDto.getId())) {
+                return Optional.of(partie);
             }
         }
         return Optional.empty();
