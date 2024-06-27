@@ -119,14 +119,11 @@ public class DeService {
                 .frozen(de.isFrozen()).build();
     }
 
-    public Optional<De> convertToEntity(DeDto deDto){
-
-        List<De> des = deRepo.findAll();
-        for (De de : des){
-            if (de.getId().equals(deDto.getId())) {
-                return Optional.of(de);
-            }
-        }
-        return Optional.empty();
-    }
+//    public De convertToEntity(DeDto deDto){
+//
+//        De de = createDe(deDto.getIdGroupe());
+//        de.setFrozen(deDto.isFrozen());
+//        de.setPosition(deDto.getPosition());
+//        return deRepo.save(de);
+//    }
 }

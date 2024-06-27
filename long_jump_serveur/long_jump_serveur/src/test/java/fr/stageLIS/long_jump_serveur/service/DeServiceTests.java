@@ -231,35 +231,35 @@ public class DeServiceTests {
         Assertions.assertEquals(de.isFrozen(), deDto.isFrozen());
     }
 
-    @Test
-    public void convertToEntity_Test(){
-
-        Long id1 = 1L;
-        Long idFaux = 3L;
-        DeDto deDto = DeDto.builder()
-                .id(id1).idGroupe(3L)
-                .position(6)
-                .frozen(false).build();
-        DeDto deDtoFaux = DeDto.builder()
-                .id(idFaux).idGroupe(3L)
-                .position(6)
-                .frozen(false).build();
-
-        De d1 = De.builder().id(id1).idGroupe(3L).position(6).frozen(false).build();
-        De d2 = De.builder().id(2L).idGroupe(3L).position(2).frozen(false).build();
-
-        when(deRepo.findAll()).thenReturn(Arrays.asList(d1,d2));
-
-        Optional<De> de = deService.convertToEntity(deDto);
-        Assertions.assertTrue(de.isPresent());
-        Assertions.assertEquals(De.class, de.get().getClass());
-        Assertions.assertEquals(deDto.getId(), de.get().getId());
-        Assertions.assertEquals(deDto.getIdGroupe(), de.get().getIdGroupe());
-        Assertions.assertEquals(deDto.getPosition(), de.get().getPosition());
-        Assertions.assertEquals(deDto.isFrozen(), de.get().isFrozen());
-
-        Optional<De> deFaux = deService.convertToEntity(deDtoFaux);
-        Assertions.assertEquals(Optional.empty(), deFaux);
-    }
+//    @Test
+//    public void convertDeToEntity_Test(){
+//
+//        Long id1 = 1L;
+//        Long idFaux = 3L;
+//        DeDto deDto = DeDto.builder()
+//                .id(id1).idGroupe(3L)
+//                .position(6)
+//                .frozen(false).build();
+//        DeDto deDtoFaux = DeDto.builder()
+//                .id(idFaux).idGroupe(3L)
+//                .position(6)
+//                .frozen(false).build();
+//
+//        De d1 = De.builder().id(id1).idGroupe(3L).position(6).frozen(false).build();
+//        De d2 = De.builder().id(2L).idGroupe(3L).position(2).frozen(false).build();
+//
+//        when(deRepo.findAll()).thenReturn(Arrays.asList(d1,d2));
+//
+//        Optional<De> de = deService.convertToEntity(deDto);
+//        Assertions.assertTrue(de.isPresent());
+//        Assertions.assertEquals(De.class, de.get().getClass());
+//        Assertions.assertEquals(deDto.getId(), de.get().getId());
+//        Assertions.assertEquals(deDto.getIdGroupe(), de.get().getIdGroupe());
+//        Assertions.assertEquals(deDto.getPosition(), de.get().getPosition());
+//        Assertions.assertEquals(deDto.isFrozen(), de.get().isFrozen());
+//
+//        Optional<De> deFaux = deService.convertToEntity(deDtoFaux);
+//        Assertions.assertEquals(Optional.empty(), deFaux);
+//    }
 
 }

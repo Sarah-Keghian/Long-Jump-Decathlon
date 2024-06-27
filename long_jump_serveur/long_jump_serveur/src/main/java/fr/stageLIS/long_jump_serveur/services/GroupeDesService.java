@@ -138,15 +138,27 @@ public class GroupeDesService {
     }
 
 
-    public Optional<GroupeDes> convertToEntity(GroupeDesDto groupeDesDto){
+//    public Optional<GroupeDes> convertToEntity(GroupeDesDto groupeDesDto){
+//
+//        GroupeDes groupeDes = new GroupeDes();
+//        groupeDes.setId(groupeDesDto.getId());
+//
+//        List<Long> listeIds = new ArrayList<>();
+//        List<DeDto> listeDesDto = groupeDesDto.getListeDes();
+//
+//        for (DeDto deDto : listeDesDto) {
+//            De de = deService.convertToEntity(deDto);
+//            listeIds.add(de.getId());
+//        }
 
-        List<GroupeDes> listeGroupeDes = groupeDesRepo.findAll();
 
-        for (GroupeDes groupeDes : listeGroupeDes) {
-            if (groupeDes.getId().equals(groupeDesDto.getId())) {
-                return Optional.of(groupeDes);
-            }
-        }
-        return Optional.empty();
-    }
+//        List<GroupeDes> listeGroupeDes = groupeDesRepo.findAll();
+//
+//        for (GroupeDes groupeDes : listeGroupeDes) {
+//            if (groupeDes.getId().equals(groupeDesDto.getId())) {
+//                return Optional.of(groupeDes);
+//            }
+//        }
+//        return Optional.empty();
+//    }
 }
