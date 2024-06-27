@@ -21,6 +21,6 @@ public class Partie {
     private Long id;
 
     private Long idJoueur;
-    private int scoreFinal;
+    private Integer scoreFinal;
 }
 

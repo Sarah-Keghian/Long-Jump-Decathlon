@@ -15,6 +15,7 @@ public class PartieService {
 
     private final PartieRepo partieRepo;
     private final EssaisService essaisService;
+
     @Autowired
     public PartieService(PartieRepo partieRepo, EssaisService essaisService) {
         this.partieRepo = partieRepo;
