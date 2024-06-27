@@ -35,17 +35,17 @@ public class EssaisServiceTests {
         Long idPartie1 = 1L;
         Long id1 = 2L;
         Essais essais1 = Essais.builder()
-                .id(id1).idPartie(idPartie1).build();
-        Essais essais0 = Essais.builder().idPartie(idPartie1).build();
+                .id(id1).score1(-1).score2(-1).score3(-1).idPartie(idPartie1).build();
+        Essais essais0 = Essais.builder().score1(-1).score2(-1).score3(-1).idPartie(idPartie1).build();
 
         when(essaisRepo.save(essais0)).thenReturn(essais1);
 
         Essais essaisObtenu = essaisService.createEssais(idPartie1);
         Assertions.assertNotNull(essaisObtenu);
         Assertions.assertEquals(idPartie1, essaisObtenu.getIdPartie());
-        Assertions.assertNull(essaisObtenu.getScore1());
-        Assertions.assertNull(essaisObtenu.getScore2());
-        Assertions.assertNull(essaisObtenu.getScore3());
+        Assertions.assertEquals(-1, essaisObtenu.getScore1());
+        Assertions.assertEquals(-1, essaisObtenu.getScore2());
+        Assertions.assertEquals(-1, essaisObtenu.getScore3());
     }
 
     @Test
@@ -79,10 +79,10 @@ public class EssaisServiceTests {
         int score1 = 3;
         int score2 = 4;
         int score3 = 5;
-        Essais essais1 = Essais.builder().idPartie(idPartie1).id(id1).build();
-        Essais essais2 = Essais.builder().idPartie(idPartie1).id(id2).score1(score1).build();
+        Essais essais1 = Essais.builder().score1(-1).score2(-1).score3(-1).idPartie(idPartie1).id(id1).build();
+        Essais essais2 = Essais.builder().idPartie(idPartie1).id(id2).score1(score1).score2(-1).score3(-1).build();
         Essais essais3 = Essais.builder().idPartie(idPartie1).id(id3)
-                .score1(score1).score2(score2).build();
+                .score1(score1).score2(score2).score3(-1).build();
         Essais essais4 = Essais.builder().idPartie(idPartie1).id(id3)
                 .score1(score1).score2(score2).score3(score3).build();
 
@@ -101,8 +101,8 @@ public class EssaisServiceTests {
         Assertions.assertNotNull(essaisObtenu1);
         Assertions.assertEquals(Optional.class, essaisObtenu1.getClass());
         Assertions.assertEquals(score1, essaisObtenu1.get().getScore1());
-        Assertions.assertNull(essaisObtenu1.get().getScore2());
-        Assertions.assertNull(essaisObtenu1.get().getScore3());
+        Assertions.assertEquals(-1, essaisObtenu1.get().getScore2());
+        Assertions.assertEquals(-1, essaisObtenu1.get().getScore3());
 
         // 1 score remplis :
 
@@ -112,7 +112,7 @@ public class EssaisServiceTests {
         Assertions.assertEquals(Optional.class, essaisObtenu2.getClass());
         Assertions.assertEquals(score1, essaisObtenu2.get().getScore1());
         Assertions.assertEquals(score2, essaisObtenu2.get().getScore2());
-        Assertions.assertNull(essais1.getScore3());
+        Assertions.assertEquals(-1, essaisObtenu1.get().getScore3());
 
         // 2 scores remplis :
 
@@ -182,42 +182,42 @@ public class EssaisServiceTests {
         Assertions.assertEquals(essais1.getScore3(), essaisDtoObtenu.getScore3());
     }
 
-    @Test
-    public void convertDtoToEssais_Test(){
-        Long idPartie1 = 1L;
-        Long idPartie2 = 2L;
-        Long id1 = 1L;
-        Long id2 = 2L;
-        Long idFaux = 3L;
-        int score1 = 1;
-        int score2 = 2;
-        int score3 = 3;
-        Essais essais1 = Essais.builder()
-                .idPartie(idPartie1)
-                .id(id1)
-                .score1(score1).score2(score2).score3(score3).build();
-        Essais essais2 = Essais.builder().idPartie(idPartie2).id(id2).build();
-        List<Essais> listeEssais = Arrays.asList(essais1, essais2);
-        EssaisDto essaisDto = EssaisDto.builder().idPartie(idPartie1).id(id1).build();
-        EssaisDto essaisDtoFaux = EssaisDto.builder().idPartie(idPartie2).id(idFaux).build();
-
-
-        when(essaisRepo.findAll()).thenReturn(listeEssais);
-
-        Optional<Essais> essaisObtenu = essaisService.convertDtoToEssais(essaisDto);
-
-        Assertions.assertNotNull(essaisObtenu);
-        Assertions.assertEquals(Essais.class, essaisObtenu.get().getClass());
-        Assertions.assertEquals(id1, essaisObtenu.get().getId());
-        Assertions.assertEquals(idPartie1, essaisObtenu.get().getIdPartie());
-        Assertions.assertEquals(score1, essaisObtenu.get().getScore1());
-        Assertions.assertEquals(score2, essaisObtenu.get().getScore2());
-        Assertions.assertEquals(score3, essaisObtenu.get().getScore3());
-
-        Optional<Essais> essaisObtenuFaux = essaisService.convertDtoToEssais(essaisDtoFaux);
-
-        Assertions.assertNotNull(essaisObtenuFaux);
-        Assertions.assertEquals(Optional.empty(), essaisObtenuFaux);
-
-    }
+//    @Test
+//    public void convertDtoToEssais_Test(){
+//        Long idPartie1 = 1L;
+//        Long idPartie2 = 2L;
+//        Long id1 = 1L;
+//        Long id2 = 2L;
+//        Long idFaux = 3L;
+//        int score1 = 1;
+//        int score2 = 2;
+//        int score3 = 3;
+//        Essais essais1 = Essais.builder()
+//                .idPartie(idPartie1)
+//                .id(id1)
+//                .score1(score1).score2(score2).score3(score3).build();
+//        Essais essais2 = Essais.builder().idPartie(idPartie2).id(id2).build();
+//        List<Essais> listeEssais = Arrays.asList(essais1, essais2);
+//        EssaisDto essaisDto = EssaisDto.builder().idPartie(idPartie1).id(id1).build();
+//        EssaisDto essaisDtoFaux = EssaisDto.builder().idPartie(idPartie2).id(idFaux).build();
+//
+//
+//        when(essaisRepo.findAll()).thenReturn(listeEssais);
+//
+//        Optional<Essais> essaisObtenu = essaisService.convertDtoToEssais(essaisDto);
+//
+//        Assertions.assertNotNull(essaisObtenu);
+//        Assertions.assertEquals(Essais.class, essaisObtenu.get().getClass());
+//        Assertions.assertEquals(id1, essaisObtenu.get().getId());
+//        Assertions.assertEquals(idPartie1, essaisObtenu.get().getIdPartie());
+//        Assertions.assertEquals(score1, essaisObtenu.get().getScore1());
+//        Assertions.assertEquals(score2, essaisObtenu.get().getScore2());
+//        Assertions.assertEquals(score3, essaisObtenu.get().getScore3());
+//
+//        Optional<Essais> essaisObtenuFaux = essaisService.convertDtoToEssais(essaisDtoFaux);
+//
+//        Assertions.assertNotNull(essaisObtenuFaux);
+//        Assertions.assertEquals(Optional.empty(), essaisObtenuFaux);
+//
+//    }
 }

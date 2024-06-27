@@ -69,22 +69,11 @@ public class JoueurService {
         }
     }
 
-//    public void deleteJoueurByNom(String nom){
-//
-//
-//        Optional<Joueur> joueur = getJoueurByNom(nom);
-//            deleteJoueurById(joueur.getId());
-//        }
-//        catch (IllegalArgumentException e){
-//            throw new IllegalArgumentException("Ce joueur n'existe pas");
-//        }
-//    }
-
     public JoueurDto convertJoueurToDto(Joueur joueur){
 
         JoueurDto joueurDto = new JoueurDto();
         joueurDto.setId(joueur.getId());
-        joueur.setNom(joueur.getNom());
+        joueurDto.setNom(joueur.getNom());
         return joueurDto;
     }
 }

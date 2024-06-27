@@ -96,16 +96,4 @@ public class EssaisService {
         essaisDto.setScore3(essais.getScore3());
         return essaisDto;
     }
-
-    public Optional<Essais> convertDtoToEssais(EssaisDto essaisDto){
-
-        List<Essais> listeEssais = essaisRepo.findAll();
-
-        for (Essais essais : listeEssais) {
-            if (essais.getId().equals(essaisDto.getId())) {
-                return Optional.of(essais);
-            }
-        }
-        return Optional.empty();
-    }
 }

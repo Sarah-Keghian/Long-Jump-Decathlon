@@ -119,11 +119,4 @@ public class DeService {
                 .frozen(de.isFrozen()).build();
     }
 
-//    public De convertToEntity(DeDto deDto){
-//
-//        De de = createDe(deDto.getIdGroupe());
-//        de.setFrozen(deDto.isFrozen());
-//        de.setPosition(deDto.getPosition());
-//        return deRepo.save(de);
-//    }
 }

@@ -13,7 +13,7 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-public class Partie {
+public class Partie implements Comparable<Partie>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +22,19 @@ public class Partie {
 
     private Long idJoueur;
     private Integer scoreFinal;
+
+
+    public int compareTo(Partie other) {
+
+        if (this.scoreFinal < other.scoreFinal){
+            return -1;
+        }
+        else if (this.scoreFinal > other.scoreFinal){
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
 }
 

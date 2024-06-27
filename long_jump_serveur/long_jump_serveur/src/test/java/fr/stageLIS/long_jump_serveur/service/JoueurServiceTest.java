@@ -1,5 +1,6 @@
 package fr.stageLIS.long_jump_serveur.service;
 
+import fr.stageLIS.long_jump_serveur.DTO.JoueurDto;
 import fr.stageLIS.long_jump_serveur.models.Joueur;
 import fr.stageLIS.long_jump_serveur.repositories.JoueurRepo;
 import fr.stageLIS.long_jump_serveur.services.JoueurService;
@@ -105,24 +106,18 @@ public class JoueurServiceTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> joueurService.deleteJoueurById(idFaux));
     }
 
-//    @Test
-//    public void deleteJoueurByNom_Test(){
-//
-//        String nom1 = "A";
-//        String nom2 = "B";
-//        Long id1 = 1L;
-//        Long idFaux = 2L;
-//        Joueur j1 = Joueur.builder().id(id1).nom(nom1).build();
-//        List<Joueur> listeJoueurs = Arrays.asList(j1);
-//
-//        when(joueurRepo.findAll()).thenReturn(listeJoueurs);
-//
-//
-//        when(joueurRepo.existsById(id1)).thenReturn(true);
-//        doNothing().when(joueurRepo).deleteById(id1);
-//        when(joueurRepo.findAll()).thenReturn(listeJoueurs);
-//
-//        Assertions.assertDoesNotThrow(()->joueurService.deleteJoueurByNom(nom1));
-//        Assertions.assertThrows(IllegalArgumentException.class, () -> joueurService.deleteJoueurByNom(nom2));
-//    }
+    @Test
+    public void convertJoueurToDto_Test(){
+
+        Long id = 1L;
+        String nom1 = "A";
+        Joueur joueur = Joueur.builder().id(id).nom(nom1).build();
+
+        JoueurDto joueurDto = joueurService.convertJoueurToDto(joueur);
+        Assertions.assertNotNull(joueurDto);
+        Assertions.assertEquals(JoueurDto.class, joueurDto.getClass());
+        Assertions.assertEquals(joueur.getNom(), joueurDto.getNom());
+        Assertions.assertEquals(joueur.getId(), joueurDto.getId());
+    }
+
 }

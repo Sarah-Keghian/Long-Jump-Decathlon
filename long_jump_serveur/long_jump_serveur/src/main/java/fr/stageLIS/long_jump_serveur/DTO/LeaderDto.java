@@ -8,11 +8,8 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-public class PartieDto {
+public class LeaderDto {
 
-    private Long id;
-
-    private Long idJoueur;
-    private int scoreFinal;
-    private int place;
+    private String nomJoueur;
+    private Integer place;
 }

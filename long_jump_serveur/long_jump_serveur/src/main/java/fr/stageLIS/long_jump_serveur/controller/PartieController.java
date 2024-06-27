@@ -1,5 +1,6 @@
 package fr.stageLIS.long_jump_serveur.controller;
 
+import fr.stageLIS.long_jump_serveur.DTO.LeaderDto;
 import fr.stageLIS.long_jump_serveur.DTO.PartieDto;
 import fr.stageLIS.long_jump_serveur.models.Partie;
 import fr.stageLIS.long_jump_serveur.services.EssaisService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +31,7 @@ public class PartieController {
         return ResponseEntity.ok(partieService.convertPartieToDto(partie));
     }
 
+    // A PRESENT IL A UN ATTRIBUT "place" QUI T'INDIQUE à QUELLE PLACE TU TE SITUES PAR RAPPORT A TOUTES LES AUTRES PARTIES
     @GetMapping("/get")
     public ResponseEntity<?> getPartie(@RequestParam Long id) {
 
@@ -39,7 +42,7 @@ public class PartieController {
             return ResponseEntity.ok(partieService.convertPartieToDto(partie));
         }
         else {
-            return new ResponseEntity<String>("Aucune Partie n'a l'id" + id, HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
 
         }
     }
@@ -53,7 +56,7 @@ public class PartieController {
             return ResponseEntity.ok(partieService.convertPartieToDto(partie));
         }
         else {
-            return new ResponseEntity<String>("Aucune Partie n'a l'id" + id, HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -67,7 +70,14 @@ public class PartieController {
             return ResponseEntity.ok(partieService.convertPartieToDto(partie));
         }
         else {
-            return new ResponseEntity<String>("Aucune Partie n'a l'id" + id, HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
+    }
+
+    // RENVOIE UNE LISTE DES 15 MEILLEURS JOUEURS AVEC LE SCORE ASSOCIE
+    @GetMapping("/getLeaders")
+    public ResponseEntity<List<LeaderDto>> getLeadersParties() {
+
+        return ResponseEntity.ok(partieService.getLeadersParties());
     }
 }

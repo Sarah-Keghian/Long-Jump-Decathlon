@@ -143,30 +143,4 @@ public class PartieServiceTests {
         Assertions.assertEquals(partie.getScoreFinal(), partieDtoObtenue.getScoreFinal());
     }
 
-    @Test
-    public void convertDtoToPartie_Test(){
-
-        Long id1 = 1L;
-        Long id2 = 2L;
-        Long idFaux = 3L;
-        PartieDto partieDto1 = PartieDto.builder().id(id1).idJoueur(2L).scoreFinal(3).build();
-        PartieDto partieDtoFaux = PartieDto.builder().id(idFaux).idJoueur(2L).scoreFinal(3).build();
-        Partie partie1 = Partie.builder().id(id1).idJoueur(2L).scoreFinal(3).build();
-        Partie partie2 = Partie.builder().id(id2).scoreFinal(3).build();
-        List<Partie> listeParties = Arrays.asList(partie1, partie2);
-
-
-        when(partieRepo.findAll()).thenReturn(listeParties);
-
-        Optional<Partie> partieObtenue1 = partieService.convertDtoToPartie(partieDto1);
-        Optional<Partie> partieObtenueFaux = partieService.convertDtoToPartie(partieDtoFaux);
-
-        Assertions.assertNotNull(partieObtenue1);
-        Assertions.assertTrue(partieObtenue1.isPresent());
-        Assertions.assertEquals(partie1, partieObtenue1.get());
-
-        Assertions.assertNotNull(partieObtenueFaux);
-        Assertions.assertEquals(Optional.empty(), partieObtenueFaux);
-    }
-
 }

@@ -18,6 +18,7 @@ public class GroupeDesService {
 
     private final GroupeDesRepo groupeDesRepo;
     private final DeService deService;
+
     @Autowired
     public GroupeDesService(GroupeDesRepo groupeDesRepo, DeService deService) {
         this.groupeDesRepo = groupeDesRepo;
@@ -25,62 +26,59 @@ public class GroupeDesService {
     }
 
 
-    public GroupeDes createGroupe(){
+    public GroupeDes createGroupe() {
 
 
         GroupeDes groupeDes = groupeDesRepo.save(new GroupeDes());
-        List<Long> listeIds= new ArrayList<>();
+        List<Long> listeIds = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
             De deTemp = deService.createDe(groupeDes.getId());
             listeIds.add(deTemp.getId());
         }
-            groupeDes.setListeDes(listeIds);
-            return groupeDesRepo.save(groupeDes);
+        groupeDes.setListeDes(listeIds);
+        return groupeDesRepo.save(groupeDes);
     }
 
-    public Optional<GroupeDes> getGroupe(Long id){
+    public Optional<GroupeDes> getGroupe(Long id) {
 
         return groupeDesRepo.findById(id);
     }
 
-    public Optional<GroupeDes> updateGroupe(Long id, GroupeDes newGroupe){
+    public Optional<GroupeDes> updateGroupe(Long id, GroupeDes newGroupe) {
 
         Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
         if (groupeDesOptional.isPresent()) {
             GroupeDes groupeDes = groupeDesOptional.get();
             groupeDes.setListeDes(newGroupe.getListeDes());
             return Optional.of(groupeDesRepo.save(groupeDes));
-        }
-        else {
+        } else {
             return Optional.empty();
         }
     }
 
-    public Optional<GroupeDes> deleteGroupe(Long id){
+    public Optional<GroupeDes> deleteGroupe(Long id) {
 
         Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
         if (groupeDesOptional.isPresent()) {
             GroupeDes groupeDes = groupeDesOptional.get();
             groupeDesRepo.deleteById(id);
             return Optional.of(groupeDes);
-        }
-        else {
+        } else {
             return Optional.empty();
         }
     }
 
-    public Optional<GroupeDes> throwGroupe(Long id){
+    public Optional<GroupeDes> throwGroupe(Long id) {
 
         Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
         if (groupeDesOptional.isPresent()) {
             GroupeDes groupeDes = groupeDesOptional.get();
-            for (Long idDe : groupeDes.getListeDes()){
+            for (Long idDe : groupeDes.getListeDes()) {
                 deService.throwDe(idDe);
             }
             return Optional.of(groupeDesRepo.save(groupeDes));
-        }
-        else {
+        } else {
             return Optional.empty();
         }
 
@@ -122,43 +120,18 @@ public class GroupeDesService {
         return Optional.empty();
     }
 
-    public GroupeDesDto convertToDto(GroupeDes groupeDes){
+    public GroupeDesDto convertToDto(GroupeDes groupeDes) {
 
         GroupeDesDto groupeDesDto = new GroupeDesDto();
         groupeDesDto.setId(groupeDes.getId());
         List<De> listeDes = new ArrayList<>();
         List<DeDto> listeDesDto = new ArrayList<>();
 
-        for (Long id : groupeDes.getListeDes()){
+        for (Long id : groupeDes.getListeDes()) {
             listeDesDto.add(deService.convertToDTO(deService.getDe(id).get()));
         }
 
         groupeDesDto.setListeDes(listeDesDto);
         return groupeDesDto;
     }
-
-
-//    public Optional<GroupeDes> convertToEntity(GroupeDesDto groupeDesDto){
-//
-//        GroupeDes groupeDes = new GroupeDes();
-//        groupeDes.setId(groupeDesDto.getId());
-//
-//        List<Long> listeIds = new ArrayList<>();
-//        List<DeDto> listeDesDto = groupeDesDto.getListeDes();
-//
-//        for (DeDto deDto : listeDesDto) {
-//            De de = deService.convertToEntity(deDto);
-//            listeIds.add(de.getId());
-//        }
-
-
-//        List<GroupeDes> listeGroupeDes = groupeDesRepo.findAll();
-//
-//        for (GroupeDes groupeDes : listeGroupeDes) {
-//            if (groupeDes.getId().equals(groupeDesDto.getId())) {
-//                return Optional.of(groupeDes);
-//            }
-//        }
-//        return Optional.empty();
-//    }
 }
