@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     const bouton_lancer = document.getElementById("bouton_lancer");
     const bouton_saut = document.getElementById("bouton_saut");
+    const diceIds = ["dice1", "dice2", "dice3", "dice4", "dice5"];
+    const diceElements = diceIds.map(id => document.getElementById(id));
 
     let playerName = prompt("Entrez votre nom :");
     let id_joueur = 0
@@ -185,31 +187,32 @@ document.addEventListener("DOMContentLoaded", function() {
         const conteneur_actif = document.getElementById("actif");
         const conteneur_gele = document.getElementById("gele");
         des_jetables = false
-        document.querySelectorAll(".dice, .dice-frozen").forEach((dice, index) => {
+        diceElements.forEach((dice, index) => {
+            console.log("dé dans prep", id_des[index], dice);
             if (conteneur_actif.contains(dice)) {
                 dice.style.display = 'none';
-                freeze(id_des[index])
+                freeze(id_des[index]);
             }
             if (conteneur_gele.contains(dice)) {
                 conteneur_gele.removeChild(dice);
                 conteneur_actif.appendChild(dice);
                 dice.classList.remove("dice-frozen");
-                dice.classList.add("dice")
+                dice.classList.add("dice");
                 actu_frozen[index] = false;
                 dice.textContent = "?";
-                unfreeze(id_des[index])
+                unfreeze(id_des[index]);
             }
         });
     }
 
     function reset_game() {
-        const score_jump = document.getElementById('score_jump').textContent
+        const score_jump = parseInt(document.getElementById('score_jump').textContent)
         fetch('/api/Essais/addEssai', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({"id": id_essai, "objet": score_jump})
+            body: JSON.stringify({"id": id_essai, "score": score_jump})
         })
             .then(response => {
                 if (!response.ok) {
