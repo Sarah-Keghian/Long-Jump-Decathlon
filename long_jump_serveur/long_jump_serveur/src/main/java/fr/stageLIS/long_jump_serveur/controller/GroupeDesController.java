@@ -37,17 +37,21 @@ public class GroupeDesController {
             GroupeDesDto grpDesDto = groupeDesService.convertToDto(groupeDesOptional.get());
             return ResponseEntity.ok(grpDesDto);
         }
-    }
-    @PutMapping("/update")
-    public ResponseEntity<GroupeDesDto> updateGroupe(@RequestBody UpdateWrapper<GroupeDesDto> updateWrapper) {
-
-    try {
-        GroupeDes groupeDes = groupeDesService.updateGroupe(updateWrapper.getId(), groupeDesService.convertToEntity(updateWrapper.getObjet()));
-        return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
+        else {
+            return new ResponseEntity<String>("Auncun groupe n'a l'id " + id, HttpStatus.NOT_FOUND);
         }
     }
+
+//    @PutMapping("/update")
+//    public ResponseEntity<GroupeDesDto> updateGroupe(@RequestBody UpdateWrapper<GroupeDesDto> updateWrapper) {
+//
+//        Optional<GroupeDes> newGroupe = groupeDesService.convertToEntity(updateWrapper.getObjet());
+//        if (newGroupe.isPresent()) {
+//
+//        }
+//        Optional<GroupeDes> groupeDes = groupeDesService.updateGroupe(updateWrapper.getId(), groupeDesService.convertToEntity(updateWrapper.getObjet()));
+//        return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
+//    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteGroupe(@RequestBody Long id) {
