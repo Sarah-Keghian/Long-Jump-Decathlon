@@ -1,5 +1,6 @@
 package fr.stageLIS.long_jump_serveur.services;
 
+import fr.stageLIS.long_jump_serveur.DTO.JoueurDto;
 import fr.stageLIS.long_jump_serveur.models.Joueur;
 import fr.stageLIS.long_jump_serveur.repositories.JoueurRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,20 @@ public class JoueurService {
         return joueurRepo.save(joueur);
     }
 
-    public Joueur getJoueurById(Long id){
 
-        Optional<Joueur> joueur = joueurRepo.findById(id);
-        if (joueur.isPresent()){
-            return joueur.get();
+    public Optional<Joueur> getJoueurById(Long id){
+
+        return joueurRepo.findById(id);
+    }
+
+    public Optional<Joueur> existsByNom(String nom){
+
+        for (Joueur joueur : joueurRepo.findAll()){
+            if (joueur.getNom().equals(nom)){
+                return Optional.of(joueur);
+            }
         }
-        else {
-            throw new IllegalArgumentException("Aucun Joueur n'a l'id : " + id);
-        }
+        return Optional.empty();
     }
 
     public List<Joueur> getAllJoueurs(){
@@ -39,16 +45,16 @@ public class JoueurService {
         return joueurRepo.findAll();
     }
 
-    public Joueur getJoueurByNom(String nom){
+    public Optional<Joueur> getJoueurByNom(String nom){
 
         List<Joueur> listeJoueurs = getAllJoueurs();
 
         for (Joueur joueur : listeJoueurs){
             if (joueur.getNom().equals(nom)){
-                return joueur;
+                return Optional.of(joueur);
             }
         }
-        throw new IllegalArgumentException("Le joueur " + nom + " n'existe pas");
+        return Optional.empty();
     }
 
 //    public void updateJoueur(){}
@@ -63,14 +69,22 @@ public class JoueurService {
         }
     }
 
-    public void deleteJoueurByNom(String nom){
+//    public void deleteJoueurByNom(String nom){
+//
+//
+//        Optional<Joueur> joueur = getJoueurByNom(nom);
+//            deleteJoueurById(joueur.getId());
+//        }
+//        catch (IllegalArgumentException e){
+//            throw new IllegalArgumentException("Ce joueur n'existe pas");
+//        }
+//    }
 
-        try {
-            Joueur joueur = getJoueurByNom(nom);
-            deleteJoueurById(joueur.getId());
-        }
-        catch (IllegalArgumentException e){
-            throw new IllegalArgumentException("Ce joueur n'existe pas");
-        }
+    public JoueurDto convertJoueurToDto(Joueur joueur){
+
+        JoueurDto joueurDto = new JoueurDto();
+        joueurDto.setId(joueur.getId());
+        joueur.setNom(joueur.getNom());
+        return joueurDto;
     }
 }

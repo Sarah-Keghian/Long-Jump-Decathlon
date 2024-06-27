@@ -9,7 +9,7 @@ import lombok.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode
 @Setter
 @Getter
 @Builder
@@ -19,6 +19,5 @@ public class Joueur {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @EqualsAndHashCode.Include
     private String nom;
 }
