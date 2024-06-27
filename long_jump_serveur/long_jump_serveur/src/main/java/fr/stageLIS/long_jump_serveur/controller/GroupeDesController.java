@@ -38,7 +38,7 @@ public class GroupeDesController {
             return ResponseEntity.ok(grpDesDto);
         }
         else {
-            return new ResponseEntity<String>("Aucun groupe n'a l'id " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>("Aucun groupe n'a l id " + id, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -63,7 +63,7 @@ public class GroupeDesController {
             return ResponseEntity.ok(groupeDesService.convertToDto(groupeDeleted));
         }
         else {
-            return new ResponseEntity<String>("Aucun groupe n'a l'id " + id, HttpStatus.NOT_FOUND);        }
+            return new ResponseEntity<String>("Aucun groupe n'a l id " + id, HttpStatus.NOT_FOUND);        }
     }
 
     @PostMapping("/throw")
@@ -76,7 +76,7 @@ public class GroupeDesController {
             return ResponseEntity.ok(groupeDesService.convertToDto(groupeLance));
         }
         else {
-            return new ResponseEntity<String>("Aucun groupe n'a l'id " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>("Aucun groupe n'a l id " + id, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -89,7 +89,7 @@ public class GroupeDesController {
             GroupeDes groupeDes = groupeDesOptional.get();
             return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
         }
-        return new ResponseEntity<String>("L'id du groupe ou l'id du dé n'existe pas" , HttpStatus.NOT_FOUND);
+        return new ResponseEntity<String>("L id du groupe ou l id du dé n'existe pas" , HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/unFreeze")
@@ -101,7 +101,7 @@ public class GroupeDesController {
                 return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
             }
             else {
-                return new ResponseEntity<String>("L'id du groupe ou l'id du dé n'existe pas" , HttpStatus.NOT_FOUND);
+                return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
             }
     }
 }
