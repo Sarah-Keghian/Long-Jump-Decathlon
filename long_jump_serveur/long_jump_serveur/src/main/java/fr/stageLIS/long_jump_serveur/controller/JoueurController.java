@@ -31,7 +31,4 @@ public class JoueurController {
             return ResponseEntity.ok(joueurService.createJoueur(nom).getId());
         }
     }
-
-
-
 }

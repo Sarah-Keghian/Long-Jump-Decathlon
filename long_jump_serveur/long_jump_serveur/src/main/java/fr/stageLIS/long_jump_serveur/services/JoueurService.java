@@ -13,7 +13,7 @@ import java.util.Optional;
 public class JoueurService {
 
 
-    private JoueurRepo joueurRepo;
+    private final JoueurRepo joueurRepo;
     @Autowired
     public JoueurService(JoueurRepo joueurRepo) {this.joueurRepo = joueurRepo;}
 
