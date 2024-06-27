@@ -89,11 +89,7 @@ public class GroupeDesService {
 
         for (Long idDe : groupeDes.getListeDes()) {
             if (idDe.equals(idDeChoisi)) {
-                try {
                     deService.freezeDe(idDe);
-                } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException(e.getMessage());
-                }
             }
         }
         return groupeDesRepo.save(groupeDes);
@@ -106,11 +102,7 @@ public class GroupeDesService {
 
         for (Long idDe : groupeDes.getListeDes()) {
             if (idDe.equals(idDeChoisi)) {
-                try {
-                    deService.unFreezeDe(idDe);
-                } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException(e.getMessage());
-                }
+                deService.unFreezeDe(idDe);
             }
         }
         return groupeDesRepo.save(groupeDes);
