@@ -36,7 +36,7 @@ public class EssaisController {
             return ResponseEntity.ok(essaisService.convertEssaisToDto(essais));
         }
         else {
-            return new ResponseEntity<String>("Aucun Essais n'a l id" + id, HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -50,7 +50,7 @@ public class EssaisController {
             return ResponseEntity.ok(essaisService.convertEssaisToDto(essais));
         }
         else {
-            return new ResponseEntity<String>("Aucune Essais n'a l id" + updateWrapper.getId(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -63,7 +63,7 @@ public class EssaisController {
             return ResponseEntity.ok(essaisService.convertEssaisToDto(essais));
         }
         else {
-            return new ResponseEntity<String>("Aucun Essais n'a l id" + id, HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 }
