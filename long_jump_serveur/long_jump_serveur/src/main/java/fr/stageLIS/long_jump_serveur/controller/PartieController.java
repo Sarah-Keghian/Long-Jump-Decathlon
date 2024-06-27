@@ -5,6 +5,7 @@ import fr.stageLIS.long_jump_serveur.models.Partie;
 import fr.stageLIS.long_jump_serveur.services.EssaisService;
 import fr.stageLIS.long_jump_serveur.services.PartieService;
 import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,8 @@ import java.util.Optional;
 public class PartieController {
 
     private final PartieService partieService;
-    private final EssaisService essaisService;
-
-    public PartieController(PartieService partieService, EssaisService essaisService) {this.partieService = partieService;
-        this.essaisService = essaisService;
-    }
+    @Autowired
+    public PartieController(PartieService partieService) {this.partieService = partieService;}
 
 
     @PutMapping("/create")
