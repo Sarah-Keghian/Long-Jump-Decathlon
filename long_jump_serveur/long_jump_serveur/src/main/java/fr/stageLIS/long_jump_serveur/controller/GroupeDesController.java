@@ -23,7 +23,7 @@ public class GroupeDesController {
 
 
     @PutMapping("/create")
-    public ResponseEntity<GroupeDesDto> createGroupe() {
+    public ResponseEntity<GroupeDesDto> createGroupe(@RequestBody int pif) {
 
         GroupeDesDto groupeDesDto = groupeDesService.convertToDto(groupeDesService.createGroupe());
         return ResponseEntity.ok(groupeDesDto);
