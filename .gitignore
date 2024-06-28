@@ -3,4 +3,3 @@ logs/
 *.log
 *.db
 logs/spring.log
-logs/spring.log
