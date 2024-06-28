@@ -186,7 +186,7 @@ public class PartieServiceTests {
         Assertions.assertEquals(partie.getScoreFinal(), leaderDtoObtenu.getScore());
     }
 
-    
+
     @Test
     public void convertToLeaderDtoList_Test(){}
 
