@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 affiche_content(response)
             })
             .catch(error => {
-                console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+                console.log("Il y a eu un problème avec l'opération fetch: " + error);
             })
     }
     dans_run_up = true;
