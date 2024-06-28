@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let playerName = prompt("Entrez votre nom :");
     let id_joueur = 0
     let id_partie = 0
+    let place = 0
     if (!playerName) {
         playerName = "Joueur";
     }
@@ -32,8 +33,27 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 body: id_joueur
             })
+                .then(response => response.json())
                 .then(response => {
-                    id_partie = response.json()
+                    id_partie = response["id"]
+                    console.log(id_partie, "id_ partie off")
+
+                    fetch('/api/Essais/create', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: id_partie
+                    })
+                        .then(response => response.json())
+                        .then(response => {
+                            console.log(response, "essaisssss")
+                            id_essai = response["id"]
+                            console.log("id_essai", id_essai)
+                        })
+                        .catch(error => {
+                            console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+                        })
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
@@ -63,21 +83,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 id_des[3] = response["listeDes"]["3"]["id"]
                 id_des[4] = response["listeDes"]["4"]["id"]
                 id_groupe = response["id"]
-                fetch('/api/Essais/create', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: id_partie
-                })
-                    .then(response => response.json())
-                    .then(response => {
-                        id_essai = response["id"]
-                        console.log("id_essai", id_essai)
-                    })
-                    .catch(error => {
-                        console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
-                    })
             })
             .catch(error => {
                 console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
@@ -288,17 +293,19 @@ document.addEventListener("DOMContentLoaded", function() {
             bouton_saut.classList.add('invisible');
             bouton_lancer.classList.add('invisible');
             bouton_leaderboard.classList.remove('invisible')
-            console.log(id_partie, "id partie")
+            let score = parseInt(document.getElementById('score_total').textContent)
+            console.log(id_partie, "id partieeeeee")
             fetch('/api/Partie/addScoreFinal', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: id_partie
+                body: JSON.stringify({"id": id_partie, "score": score})
             })
                 .then(response => response.json())
                 .then(response => {
-                    console.log("response add_score :", response)
+                    place = response["place"]
+                    localStorage.setItem('place', place);
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch: " + error.message);

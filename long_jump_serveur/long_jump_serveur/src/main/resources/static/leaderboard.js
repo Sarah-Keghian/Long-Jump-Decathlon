@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const playerName = localStorage.getItem('playerName');
-    console.log("Player Name:", playerName);
+    const place = localStorage.getItem('place');
+    console.log("Player Name:", playerName, place);
     fetch('/api/Partie/getLeaders', {
         method: 'GET',
         headers: {
@@ -9,11 +10,13 @@ document.addEventListener("DOMContentLoaded", function() {
     })
         .then(response => response.json())
         .then(data => {
+            console.log("data", data)
             const leaderboardDiv = document.getElementById('leaderboard');
             data.forEach((player, index) => {
+                console.log(player, index)
                 const playerDiv = document.createElement('div');
                 playerDiv.classList.add('player');
-                playerDiv.textContent = `${index + 1}. ${player.name} - ${player.score} points`;
+                playerDiv.textContent = player.place + ". " + player.nomJoueur + " - " + player.score + " points";
                 leaderboardDiv.appendChild(playerDiv);
             });
         })
