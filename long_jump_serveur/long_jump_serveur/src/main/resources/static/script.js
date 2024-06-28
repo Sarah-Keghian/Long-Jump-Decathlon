@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 })
                     .then(response => response.json())
                     .then(response => {
-                        id_essai = response
+                        id_essai = response["id"]
                         console.log("id_essai", id_essai)
                     })
                     .catch(error => {
@@ -226,12 +226,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function reset_game() {
         const score_jump = parseInt(document.getElementById('score_jump').textContent)
+        console.log(id_essai, score_jump)
         fetch('/api/Essais/addEssai', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({"id": id_essai, "objet": score_jump})
+            body: JSON.stringify({"id": id_essai, "score": score_jump})
         })
             .then(response => {
                 if (!response.ok) {
