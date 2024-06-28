@@ -45,17 +45,6 @@ public class GroupeDesService {
         return groupeDesRepo.findById(id);
     }
 
-    public Optional<GroupeDes> updateGroupe(Long id, GroupeDes newGroupe) {
-
-        Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
-        if (groupeDesOptional.isPresent()) {
-            GroupeDes groupeDes = groupeDesOptional.get();
-            groupeDes.setListeDes(newGroupe.getListeDes());
-            return Optional.of(groupeDesRepo.save(groupeDes));
-        } else {
-            return Optional.empty();
-        }
-    }
 
     public Optional<GroupeDes> deleteGroupe(Long id) {
 
@@ -71,6 +60,7 @@ public class GroupeDesService {
             return Optional.empty();
         }
     }
+
 
     public Optional<GroupeDes> throwGroupe(Long id) {
 

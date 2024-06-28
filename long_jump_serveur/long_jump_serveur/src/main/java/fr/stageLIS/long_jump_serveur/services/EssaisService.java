@@ -19,6 +19,7 @@ public class EssaisService {
         this.essaisRepo = essaisRepo;
     }
 
+
     public Essais createEssais(Long idPartie) {
 
         Essais essais = new Essais();
@@ -33,13 +34,14 @@ public class EssaisService {
     public Optional<Essais> getEssais(Long id){
 
         return essaisRepo.findById(id);
-
     }
+
 
     public List<Essais> getAllEssais(){
 
         return essaisRepo.findAll();
     }
+
 
     public Optional<Essais> addEssai(Long id, Integer score){
 
@@ -72,6 +74,7 @@ public class EssaisService {
         }
     }
 
+
     public Optional<Essais> deleteEssais(Long id){
 
         Optional<Essais> essaisOptional = this.getEssais(id);
@@ -85,6 +88,7 @@ public class EssaisService {
             return Optional.empty();
         }
     }
+
 
     public EssaisDto convertEssaisToDto(Essais essais){
 

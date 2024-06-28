@@ -12,10 +12,10 @@ import java.util.Optional;
 @Service
 public class JoueurService {
 
-
     private final JoueurRepo joueurRepo;
     @Autowired
     public JoueurService(JoueurRepo joueurRepo) {this.joueurRepo = joueurRepo;}
+
 
     public Joueur createJoueur(String nom){
 
@@ -24,11 +24,6 @@ public class JoueurService {
         return joueurRepo.save(joueur);
     }
 
-
-    public Optional<Joueur> getJoueurById(Long id){
-
-        return joueurRepo.findById(id);
-    }
 
     public Optional<Joueur> existsByNom(String nom){
 
@@ -57,17 +52,6 @@ public class JoueurService {
         return Optional.empty();
     }
 
-//    public void updateJoueur(){}
-
-    public void deleteJoueurById(Long id){
-
-        if (joueurRepo.existsById(id)){
-            joueurRepo.deleteById(id);
-        }
-        else {
-            throw new IllegalArgumentException("Aucun Joueur n'a l'id : " + id);
-        }
-    }
 
     public JoueurDto convertJoueurToDto(Joueur joueur){
 

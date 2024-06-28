@@ -25,6 +25,7 @@ public class PartieService {
         this.joueurService = joueurService;
     }
 
+
     public Partie createPartie(Long idJoueur) {
 
         Partie partie = new Partie();
@@ -39,9 +40,6 @@ public class PartieService {
         return partieRepo.findById(id);
     }
 
-    public List<Partie> getAllParties(){
-        return partieRepo.findAll();
-    }
 
     public Optional<Partie> addScoreFinalPartie(Long id) {
 
@@ -80,6 +78,7 @@ public class PartieService {
         }
     }
 
+
     public Optional<Partie> deletePartie(Long id) {
 
         Optional<Partie> partieOptional = getPartie(id);
@@ -91,20 +90,23 @@ public class PartieService {
         }
     }
 
-    public List<Partie> classerParties() {
 
-        List<Partie> partiesListe = partieRepo.findAll();
-        Collections.sort(partiesListe);
-        return partiesListe;
+    public PartieDto convertPartieToDto (Partie partie){
+
+        PartieDto partieDto = new PartieDto();
+        partieDto.setId(partie.getId());
+        partieDto.setIdJoueur(partie.getIdJoueur());
+        partieDto.setScoreFinal(partie.getScoreFinal());
+
+        List<Partie> listePartieTrie = this.classerParties();
+        for (int i=0 ; i<listePartieTrie.size() ; i++) {
+            if (listePartieTrie.get(i).getId().equals(partie.getId())) {
+                partieDto.setPlace(i+1);
+            }
+        }
+        return partieDto;
     }
 
-    // RENVOIE LA LISTE DES 15 MEILLEURS JOUEURS + SCORE
-    public List<LeaderDto> getLeadersParties() {
-
-        List<Partie> partiesLeadersList = this.classerParties()
-                .subList(0, Math.min(this.classerParties().size(), 15));
-        return this.convertToLeaderDtoList(partiesLeadersList);
-    }
 
     public LeaderDto convertToLeaderDto(Partie partie) {
 
@@ -121,6 +123,7 @@ public class PartieService {
         return leaderDto;
     }
 
+
     public List<LeaderDto> convertToLeaderDtoList(List<Partie> parties) {
         List<LeaderDto> leaderDtoList = new ArrayList<>();
         for (Partie partie : parties) {
@@ -129,19 +132,20 @@ public class PartieService {
         return leaderDtoList;
     }
 
-    public PartieDto convertPartieToDto (Partie partie){
 
-        PartieDto partieDto = new PartieDto();
-        partieDto.setId(partie.getId());
-        partieDto.setIdJoueur(partie.getIdJoueur());
-        partieDto.setScoreFinal(partie.getScoreFinal());
+    public List<Partie> classerParties() {
 
-        List<Partie> listePartieTrie = this.classerParties();
-        for (int i=0 ; i<listePartieTrie.size() ; i++) {
-            if (listePartieTrie.get(i).getId().equals(partie.getId())) {
-                partieDto.setPlace(i+1);
-            }
-        }
-        return partieDto;
+        List<Partie> partiesListe = partieRepo.findAll();
+        Collections.sort(partiesListe);
+        return partiesListe;
+    }
+
+
+    // RENVOIE LA LISTE DES 15 MEILLEURS JOUEURS + SCORE
+    public List<LeaderDto> getLeadersParties() {
+
+        List<Partie> partiesLeadersList = this.classerParties()
+                .subList(0, Math.min(this.classerParties().size(), 15));
+        return this.convertToLeaderDtoList(partiesLeadersList);
     }
 }

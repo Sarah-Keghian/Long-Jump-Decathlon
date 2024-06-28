@@ -20,6 +20,7 @@ public class DeService {
         this.deRepo = deRepo;
     }
 
+
     public De createDe(Long idGroupe) {
         De de = new De();
         de.setIdGroupe(idGroupe);
@@ -27,27 +28,12 @@ public class DeService {
         return deRepo.save(de);
     }
 
-    public List<De> getAllDe() {
-
-        return deRepo.findAll();
-    }
 
     public Optional<De> getDe(Long id) {
 
         return deRepo.findById(id);
     }
 
-    public Optional<De> updateDe(Long id, De newDe) {
-
-        Optional<De> de = deRepo.findById(id);
-        if (de.isPresent()) {
-            De oldDe = de.get();
-            oldDe.setPosition(newDe.getPosition());
-            return Optional.of(deRepo.save(oldDe));
-        } else {
-            return Optional.empty();
-        }
-    }
 
     public Optional<De> deleteDe(Long id) {
 
@@ -60,10 +46,6 @@ public class DeService {
         }
     }
 
-    public void deleteAllDes() {
-
-        deRepo.deleteAll();
-    }
 
     public Optional<De> throwDe(Long id) {
 
@@ -85,6 +67,7 @@ public class DeService {
         }
     }
 
+
     public Optional<De> freezeDe(Long id) {
 
         Optional<De> deOptional1 = deRepo.findById(id);
@@ -99,6 +82,7 @@ public class DeService {
         }
     }
 
+
     public Optional<De> unFreezeDe(Long id){
 
         Optional<De> deOptional = deRepo.findById(id);
@@ -109,6 +93,7 @@ public class DeService {
         }
         return Optional.empty();
     }
+
 
     public DeDto convertToDTO(De de){
 
