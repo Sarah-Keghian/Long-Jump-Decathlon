@@ -16,7 +16,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log(player, index)
                 const playerDiv = document.createElement('div');
                 playerDiv.classList.add('player');
-                playerDiv.id = "player-${player.place}";
+                console.log("id homme", "player-" + player.place)
+                playerDiv.id = "player-" + player.place;
                 playerDiv.textContent = player.place + ". " + player.nomJoueur + "  -  " + player.score + " points";
                 leaderboardDiv.appendChild(playerDiv);
             });
