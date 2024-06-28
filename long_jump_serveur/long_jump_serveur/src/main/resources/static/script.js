@@ -245,9 +245,9 @@ document.addEventListener("DOMContentLoaded", function() {
         if (parseInt(document.getElementById('score_total').textContent) < parseInt(document.getElementById('score_jump').textContent)) {
             document.getElementById('score_total').textContent = parseInt(document.getElementById('score_jump').textContent)
         }
-        document.getElementById('essai').textContent = parseInt(document.getElementById('essai').textContent) + 1
+        document.getElementById('essai').textContent = parseInt(document.getElementById('essai').textContent) - 1
         const score_jump = parseInt(document.getElementById('score_jump').textContent)
-        if (document.getElementById('essai').textContent <= 3) {
+        if (document.getElementById('essai').textContent >= 1) {
             bouton_saut.classList.remove('invisible');
             bouton_suivant.classList.add('invisible');
             dans_run_up = true
