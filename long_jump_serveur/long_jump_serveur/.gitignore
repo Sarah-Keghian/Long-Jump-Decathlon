@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Données ###
+/logs
+*.log
+*.db
