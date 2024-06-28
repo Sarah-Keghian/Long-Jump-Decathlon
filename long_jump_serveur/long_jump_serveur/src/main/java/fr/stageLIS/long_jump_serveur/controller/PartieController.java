@@ -29,7 +29,7 @@ public class PartieController {
 
     // A PRESENT IL A UN ATTRIBUT "place" QUI T'INDIQUE à QUELLE PLACE TU TE SITUES PAR RAPPORT A TOUTES LES AUTRES PARTIES
     @GetMapping("/get")
-    public ResponseEntity<?> getPartie(@RequestParam Long id) {
+    public ResponseEntity<?> getPartie(@RequestBody Long id) {
 
         Optional<Partie> partieOptional = partieService.getPartie(id);
 
@@ -57,7 +57,7 @@ public class PartieController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deletePartie(@RequestParam Long id) {
+    public ResponseEntity<?> deletePartie(@RequestBody Long id) {
 
         Optional<Partie> partieOptional = partieService.getPartie(id);
 
