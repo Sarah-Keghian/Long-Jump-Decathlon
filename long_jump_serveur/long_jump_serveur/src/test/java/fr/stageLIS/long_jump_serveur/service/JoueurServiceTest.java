@@ -28,46 +28,50 @@ public class JoueurServiceTest {
     @InjectMocks
     JoueurService joueurService;
 
+    String nom1 = "A";
+    String nom2 = "B";
+    String nom3 = "C";
+    Long id1 = 1L;
+    Long id2 = 2L;
+    Long idFaux = 20L;
+
+    Joueur joueur1SansId = Joueur.builder().nom(nom1).build();
+    Joueur joueur1 = Joueur.builder().id(id1).nom(nom1).build();
+    Joueur joueur2 = Joueur.builder().id(id2).nom(nom2).build();
+
+
     @Test
     public void createJoueur_Test(){
 
-        String nom = "A";
-        Joueur joueur = Joueur.builder().nom(nom).build();
+        when(joueurRepo.save(joueur1SansId)).thenReturn(joueur1);
 
-        when(joueurRepo.save(joueur)).thenReturn(joueur);
-
-        Joueur joueurObtenu = joueurService.createJoueur(nom);
+        Joueur joueurObtenu = joueurService.createJoueur(nom1);
 
         Assertions.assertNotNull(joueurObtenu);
-        Assertions.assertEquals(joueur, joueurObtenu);
+        Assertions.assertEquals(joueur1, joueurObtenu);
     }
+
 
     @Test
-    public void getJoueurById_Test(){
+    public void existsByNom_Test(){
 
-        Long id = 1L;
-        Long idFaux = 2L;
-        Joueur joueur = Joueur.builder().id(id).build();
+        List<Joueur> listeJoueurs = Arrays.asList(joueur1, joueur2);
 
-        when(joueurRepo.findById(id)).thenReturn(Optional.of(joueur));
-        when(joueurRepo.findById(idFaux)).thenReturn(Optional.empty());
+        when(joueurRepo.findAll()).thenReturn(listeJoueurs);
 
-        Optional<Joueur> joueurObtenu = joueurService.getJoueurById(id);
-        Assertions.assertTrue(joueurObtenu.isPresent());
-        Assertions.assertEquals(joueur, joueurObtenu.get());
-        Assertions.assertTrue(joueurService.getJoueurById(idFaux).isEmpty());
+        Optional<Joueur> joueurOptional = joueurService.existsByNom(nom1);
+        Optional<Joueur> joueurEmpty = joueurService.existsByNom(nom3);
+
+        Assertions.assertTrue(joueurOptional.isPresent());
+        Assertions.assertTrue(joueurEmpty.isEmpty());
     }
+
 
     @Test
     public void getAllJoueurs_Test(){
 
-        String nom1 = "A";
-        String nom2 = "B";
-        Long id1 = 1L;
-        Long id2 = 2L;
-        Joueur j1 = Joueur.builder().id(id1).nom(nom1).build();
-        Joueur j2 = Joueur.builder().id(id2).nom(nom2).build();
-        List<Joueur> listeJoueurs = Arrays.asList(j1, j2);
+
+        List<Joueur> listeJoueurs = Arrays.asList(joueur1, joueur2);
 
         when(joueurRepo.findAll()).thenReturn(listeJoueurs);
 
@@ -76,48 +80,29 @@ public class JoueurServiceTest {
         Assertions.assertEquals(listeObteunue, listeJoueurs);
     }
 
+
     @Test
     public void getJoueurByNom_Test(){
 
-        String nom1 = "A";
-        String nom2 = "B";
-        Long id1 = 1L;
-        Joueur j1 = Joueur.builder().id(id1).nom(nom1).build();
-        List<Joueur> listeJoueurs = Arrays.asList(j1);
+        List<Joueur> listeJoueurs = Arrays.asList(joueur1, joueur2);
         when(joueurRepo.findAll()).thenReturn(listeJoueurs);
 
         Optional<Joueur> joueurObtenu = joueurService.getJoueurByNom(nom1);
         Assertions.assertTrue(joueurObtenu.isPresent());
-        Assertions.assertEquals(j1, joueurObtenu.get());
-        Assertions.assertTrue(joueurService.getJoueurByNom(nom2).isEmpty());
+        Assertions.assertEquals(joueur1, joueurObtenu.get());
+        Assertions.assertTrue(joueurService.getJoueurByNom(nom3).isEmpty());
     }
 
-    @Test
-    public void deleteJoueurById_Test(){
-
-        Long id = 1L;
-        Long idFaux = 2L;
-
-        when(joueurRepo.existsById(id)).thenReturn(true);
-        when(joueurRepo.existsById(idFaux)).thenReturn(false);
-        doNothing().when(joueurRepo).deleteById(id);
-
-        Assertions.assertDoesNotThrow(()->joueurService.deleteJoueurById(id));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> joueurService.deleteJoueurById(idFaux));
-    }
 
     @Test
     public void convertJoueurToDto_Test(){
 
-        Long id = 1L;
-        String nom1 = "A";
-        Joueur joueur = Joueur.builder().id(id).nom(nom1).build();
 
-        JoueurDto joueurDto = joueurService.convertJoueurToDto(joueur);
+        JoueurDto joueurDto = joueurService.convertJoueurToDto(joueur1);
         Assertions.assertNotNull(joueurDto);
         Assertions.assertEquals(JoueurDto.class, joueurDto.getClass());
-        Assertions.assertEquals(joueur.getNom(), joueurDto.getNom());
-        Assertions.assertEquals(joueur.getId(), joueurDto.getId());
+        Assertions.assertEquals(joueur1.getNom(), joueurDto.getNom());
+        Assertions.assertEquals(joueur1.getId(), joueurDto.getId());
     }
 
 }

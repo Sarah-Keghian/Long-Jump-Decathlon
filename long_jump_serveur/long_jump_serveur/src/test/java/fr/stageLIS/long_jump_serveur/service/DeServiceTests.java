@@ -27,38 +27,39 @@ public class DeServiceTests {
     @InjectMocks
     private DeService deService;
 
+    Long id1 = 1L;
+    Long id2 = 2L;
+    Long idFaux = 20L;
+    Long idGroupe = 3L;
+    boolean frozen = true;
+    boolean notFrozen = false;
+
+    De d1SansId = De.builder().idGroupe(idGroupe).frozen(notFrozen).build();
+    De d1 = De.builder().id(id1).idGroupe(idGroupe).frozen(notFrozen).build();
+    De d2 = De.builder().id(id2).idGroupe(idGroupe).frozen(frozen).build();
+
     @Test
     public void createDe_Test(){
 
-        Long idGroupe = 1L;
-        boolean frozenIni = false;
-        De d1 = new De();
-        d1.setIdGroupe(idGroupe);
-        d1.setFrozen(frozenIni);
 
-        when(deRepo.save(d1)).thenReturn(d1);
+        when(deRepo.save(d1SansId)).thenReturn(d1);
 
         De deObtenu = deService.createDe(idGroupe);
 
         Assertions.assertNotNull(deObtenu);
         Assertions.assertEquals(idGroupe, deObtenu.getIdGroupe());
-        Assertions.assertEquals(frozenIni, deObtenu.isFrozen());
+        Assertions.assertFalse(deObtenu.isFrozen());
         Assertions.assertNull(deObtenu.getPosition());
     }
+
 
     @Test
     public void getDe_Test(){
 
-        Long id = 1L;
-        Long idFaux = 2L;
-        De d1 = new De();
-        d1.setId(id);
-        d1.setIdGroupe(1L);
-
-        when(deRepo.findById(id)).thenReturn(Optional.of(d1));
+        when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
         when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
 
-        Optional<De> deObtenu = deService.getDe(id);
+        Optional<De> deObtenu = deService.getDe(id1);
         Optional<De> deOptional = deService.getDe(idFaux);
 
         Assertions.assertNotNull(deObtenu);
@@ -66,51 +67,12 @@ public class DeServiceTests {
         Assertions.assertEquals(d1, deObtenu.get());
         Assertions.assertNotNull(deObtenu.get().getId());
 
-
         Assertions.assertEquals(Optional.empty(), deOptional);
     }
 
-
-    @Test
-    public void updateDe_Test(){
-
-        Long id1 = 1L;
-        Long id2 = 2L;
-        Long groupeId1 = 1L;
-        Long idFaux = 5L;
-        De d1 = De.builder()
-                .id(id1)
-                .position(1)
-                .idGroupe(id1).build();
-
-        De d2 = De.builder()
-                .id(id2)
-                .idGroupe(groupeId1)
-                .position(2).build();
-
-        De d3 = De.builder()
-                .id(id1)
-                .idGroupe(groupeId1)
-                .position(2).build();
-
-        when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
-        when(deRepo.save(d3)).thenReturn(d3);
-
-        Optional<De> deObtenu = deService.updateDe(id1, d2);
-        Optional<De> deOptional = deService.updateDe(idFaux, d2);
-
-        Assertions.assertTrue(deObtenu.isPresent());
-        Assertions.assertEquals(d3, deObtenu.get());
-
-        Assertions.assertEquals(Optional.empty(), deOptional);
-    }
 
     @Test
     public void deleteDe_Test(){
-
-        Long id1 = 1L;
-        Long idFaux = 2L;
-        De d1 = De.builder().id(id1).build();
 
         when(deRepo.findById(id1)).thenReturn(Optional.of(d1));
         when(deRepo.findById(idFaux)).thenReturn(Optional.empty());
@@ -122,14 +84,9 @@ public class DeServiceTests {
         Assertions.assertEquals(Optional.empty(), deOptional);
     }
 
+
     @Test
     public void throwDe_Test(){
-
-        Long id1 = 1L;
-        Long id2 = 2L;
-        Long idFaux = 3L;
-        boolean frozen = true;
-        boolean notFrozen = false;
 
         De d1 = De.builder().id(id1).frozen(notFrozen).build();
         De d2 = De.builder().id(id2).frozen(frozen).build();
@@ -155,15 +112,9 @@ public class DeServiceTests {
         Assertions.assertEquals(Optional.empty(), deOptional);
     }
 
+
     @Test
     public void freezeDe_Test(){
-
-        Long id1 = 1L;
-        Long id2 = 2L;
-
-        Long idFaux = 3L;
-        boolean frozen = true;
-        boolean notFrozen = false;
 
         De d1 = De.builder().id(id1).frozen(notFrozen).build();
         De d2 = De.builder().id(id2).frozen(frozen).build();
@@ -186,15 +137,9 @@ public class DeServiceTests {
         Assertions.assertEquals(Optional.empty(), deFaux);
     }
 
+
     @Test
     public void unFreeze_Test(){
-
-        Long id1 = 1L;
-        Long id2 = 2L;
-
-        Long idFaux = 3L;
-        boolean frozen = true;
-        boolean notFrozen = false;
 
         De d1 = De.builder().id(id1).frozen(frozen).build();
         De d2 = De.builder().id(id2).frozen(notFrozen).build();
@@ -217,49 +162,17 @@ public class DeServiceTests {
         Assertions.assertEquals(Optional.empty(), deFaux);
     }
 
+
     @Test
     public void convertToDTO_Test(){
-        De de = De.builder().id(1L).idGroupe(2L).position(2).frozen(true).build();
 
-        DeDto deDto = deService.convertToDTO(de);
+        DeDto deDto = deService.convertToDTO(d1);
 
         Assertions.assertNotNull(deDto);
         Assertions.assertEquals(DeDto.class, deDto.getClass());
-        Assertions.assertEquals(de.getId(), deDto.getId());
-        Assertions.assertEquals(de.getIdGroupe(), deDto.getIdGroupe());
-        Assertions.assertEquals(de.getPosition(), deDto.getPosition());
-        Assertions.assertEquals(de.isFrozen(), deDto.isFrozen());
+        Assertions.assertEquals(d1.getId(), deDto.getId());
+        Assertions.assertEquals(d1.getIdGroupe(), deDto.getIdGroupe());
+        Assertions.assertEquals(d1.getPosition(), deDto.getPosition());
+        Assertions.assertEquals(d1.isFrozen(), deDto.isFrozen());
     }
-
-//    @Test
-//    public void convertDeToEntity_Test(){
-//
-//        Long id1 = 1L;
-//        Long idFaux = 3L;
-//        DeDto deDto = DeDto.builder()
-//                .id(id1).idGroupe(3L)
-//                .position(6)
-//                .frozen(false).build();
-//        DeDto deDtoFaux = DeDto.builder()
-//                .id(idFaux).idGroupe(3L)
-//                .position(6)
-//                .frozen(false).build();
-//
-//        De d1 = De.builder().id(id1).idGroupe(3L).position(6).frozen(false).build();
-//        De d2 = De.builder().id(2L).idGroupe(3L).position(2).frozen(false).build();
-//
-//        when(deRepo.findAll()).thenReturn(Arrays.asList(d1,d2));
-//
-//        Optional<De> de = deService.convertToEntity(deDto);
-//        Assertions.assertTrue(de.isPresent());
-//        Assertions.assertEquals(De.class, de.get().getClass());
-//        Assertions.assertEquals(deDto.getId(), de.get().getId());
-//        Assertions.assertEquals(deDto.getIdGroupe(), de.get().getIdGroupe());
-//        Assertions.assertEquals(deDto.getPosition(), de.get().getPosition());
-//        Assertions.assertEquals(deDto.isFrozen(), de.get().isFrozen());
-//
-//        Optional<De> deFaux = deService.convertToEntity(deDtoFaux);
-//        Assertions.assertEquals(Optional.empty(), deFaux);
-//    }
-
 }

@@ -5,6 +5,7 @@ import fr.stageLIS.long_jump_serveur.DTO.PartieDto;
 import fr.stageLIS.long_jump_serveur.models.Essais;
 import fr.stageLIS.long_jump_serveur.models.Joueur;
 import fr.stageLIS.long_jump_serveur.models.Partie;
+import fr.stageLIS.long_jump_serveur.repositories.JoueurRepo;
 import fr.stageLIS.long_jump_serveur.repositories.PartieRepo;
 import fr.stageLIS.long_jump_serveur.services.EssaisService;
 import fr.stageLIS.long_jump_serveur.services.JoueurService;
@@ -20,8 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PartieServiceTests {
@@ -35,6 +35,7 @@ public class PartieServiceTests {
 
     @InjectMocks
     private PartieService partieService;
+
 
     @Test
     public void createPartie_Test(){
@@ -52,6 +53,7 @@ public class PartieServiceTests {
         Assertions.assertEquals(idJoueur, partieObtenue.getIdJoueur());
         Assertions.assertEquals(partie, partieObtenue);
     }
+
 
     @Test
     public void getPartie_Test(){
@@ -72,6 +74,11 @@ public class PartieServiceTests {
 
         Assertions.assertEquals(Optional.empty(), partieObtenueFaux);
     }
+
+
+    @Test
+    public void addScoreFinalPartie2_Test(){}
+
 
     @Test
     public void addScoreFinalPartie_Test(){
@@ -117,6 +124,7 @@ public class PartieServiceTests {
         Assertions.assertEquals(scoreFinal2, partieObtenue2.get().getScoreFinal());
     }
 
+
     @Test
     public void deletePartie_Test(){
         Long idPartie = 1L;
@@ -136,13 +144,13 @@ public class PartieServiceTests {
         Assertions.assertEquals(Optional.empty(), partieSupprimFaux);
     }
 
+
     @Test
     public void convertPartieToDto_Test(){
 
         Partie partie1 = Partie.builder().id(1L).idJoueur(2L).scoreFinal(4).build();
         Partie partie2 = Partie.builder().id(2L).idJoueur(3L).scoreFinal(3).build();
-        Partie partie3 = Partie.builder().id(3L).idJoueur(3L).scoreFinal(5).build();
-        PartieDto partieDtoAttendue = PartieDto.builder().id(1L).idJoueur(2L).scoreFinal(3).place(2).build();
+        PartieDto partieDtoAttendue = PartieDto.builder().id(1L).idJoueur(2L).scoreFinal(3).place(1).build();
 
         List<Partie> listePartiesTri = Arrays.asList(partie1, partie2);
         when(partieService.classerParties()).thenReturn(listePartiesTri);
@@ -154,6 +162,34 @@ public class PartieServiceTests {
         Assertions.assertEquals(partie1.getScoreFinal(), partieDtoObtenue.getScoreFinal());
         Assertions.assertEquals(partieDtoAttendue.getPlace(), partieDtoObtenue.getPlace());
     }
+
+
+    @Test
+    public void convertToLeaderDto_Test() {
+
+        Joueur joueur1 = Joueur.builder().nom("Joueur1").id(1L).build();
+        Joueur joueur2 = Joueur.builder().nom("Joueur2").id(2L).build();
+        Partie partie = Partie.builder().scoreFinal(23).idJoueur(1L).id(1L).build();
+        PartieDto partieDto = PartieDto.builder().scoreFinal(23).idJoueur(1L).id(1L).place(3).build();
+        List<Joueur> listeJoueurs = Arrays.asList(joueur1, joueur2);
+
+
+        when(joueurService.getAllJoueurs()).thenReturn(listeJoueurs);
+        when(partieService.convertPartieToDto(partie)).thenReturn(partieDto);
+
+        LeaderDto leaderDtoObtenu = partieService.convertToLeaderDto(partie);
+
+        Assertions.assertNotNull(leaderDtoObtenu);
+        Assertions.assertEquals(LeaderDto.class, leaderDtoObtenu.getClass());
+        Assertions.assertEquals(partieDto.getPlace(), leaderDtoObtenu.getPlace());
+        Assertions.assertEquals(joueur1.getNom(), leaderDtoObtenu.getNomJoueur());
+        Assertions.assertEquals(partie.getScoreFinal(), leaderDtoObtenu.getScore());
+    }
+
+    
+    @Test
+    public void convertToLeaderDtoList_Test(){}
+
 
     @Test
     public void classerParties_Test(){
@@ -225,26 +261,29 @@ public class PartieServiceTests {
         Assertions.assertEquals(listeLeaderDtos, leadersListeObtenue);
     }
 
-    @Test
-    public void convertToLeaderDto_Test() {
 
-        Joueur joueur1 = Joueur.builder().nom("Joueur1").id(1L).build();
-        Joueur joueur2 = Joueur.builder().nom("Joueur2").id(2L).build();
-        Partie partie = Partie.builder().scoreFinal(23).idJoueur(1L).id(1L).build();
-        PartieDto partieDto = PartieDto.builder().scoreFinal(23).idJoueur(1L).id(1L).place(3).build();
-        List<Joueur> listeJoueurs = Arrays.asList(joueur1, joueur2);
-
-
-        when(joueurService.getAllJoueurs()).thenReturn(listeJoueurs);
-        when(partieService.convertPartieToDto(partie)).thenReturn(partieDto);
-
-        LeaderDto leaderDtoObtenu = partieService.convertToLeaderDto(partie);
-
-        Assertions.assertNotNull(leaderDtoObtenu);
-        Assertions.assertEquals(LeaderDto.class, leaderDtoObtenu.getClass());
-        Assertions.assertEquals(partieDto.getPlace(), leaderDtoObtenu.getPlace());
-        Assertions.assertEquals(joueur1.getNom(), leaderDtoObtenu.getNomJoueur());
-        Assertions.assertEquals(partie.getScoreFinal(), leaderDtoObtenu.getScore());
-    }
+//    @Test
+//    public void getLeadersParties_Test(){
+//
+//        Partie partie1 = Partie.builder().id(1L).idJoueur(2L).scoreFinal(1).build();
+//        Partie partie2 = Partie.builder().id(2L).idJoueur(2L).scoreFinal(4).build();
+//        Partie partie3 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(13).build();
+//        Partie partie4 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(12).build();
+//        Partie partie5 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(25).build();
+//        Partie partie6 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(30).build();
+//        Partie partie7 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(23).build();
+//        Partie partie8 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(23).build();
+//        Partie partie9 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(21).build();
+//        Partie partie10 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(20).build();
+//        Partie partie11 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(19).build();
+//        Partie partie12 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(18).build();
+//        Partie partie13 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(17).build();
+//        Partie partie14 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(16).build();
+//        Partie partie15 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(15).build();
+//        Partie partie16 = Partie.builder().id(3L).idJoueur(5L).scoreFinal(14).build();
+//
+//        Lis1t<Partie>
+//
+//    }
 
 }

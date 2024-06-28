@@ -11,10 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.doNothing;
@@ -34,11 +30,11 @@ public class EssaisServiceTests {
 
         Long idPartie1 = 1L;
         Long id1 = 2L;
-        Essais essais1 = Essais.builder()
+        Essais essais2 = Essais.builder()
                 .id(id1).score1(-1).score2(-1).score3(-1).idPartie(idPartie1).build();
-        Essais essais0 = Essais.builder().score1(-1).score2(-1).score3(-1).idPartie(idPartie1).build();
+        Essais essais1 = Essais.builder().score1(-1).score2(-1).score3(-1).idPartie(idPartie1).build();
 
-        when(essaisRepo.save(essais0)).thenReturn(essais1);
+        when(essaisRepo.save(essais1)).thenReturn(essais2);
 
         Essais essaisObtenu = essaisService.createEssais(idPartie1);
         Assertions.assertNotNull(essaisObtenu);
@@ -75,7 +71,6 @@ public class EssaisServiceTests {
         Long id2 = 2L;
         Long id3 = 3L;
         Long id4 = 4L;
-        Long idFaux = 5L;
         int score1 = 3;
         int score2 = 4;
         int score3 = 5;
@@ -137,7 +132,7 @@ public class EssaisServiceTests {
     }
 
     @Test
-    public void deleteEssai_Test(){
+    public void deleteEssais_Test(){
 
         Long idPartie1 = 1L;
         Long id1 = 1L;
@@ -181,43 +176,4 @@ public class EssaisServiceTests {
         Assertions.assertEquals(essais1.getScore2(), essaisDtoObtenu.getScore2());
         Assertions.assertEquals(essais1.getScore3(), essaisDtoObtenu.getScore3());
     }
-
-//    @Test
-//    public void convertDtoToEssais_Test(){
-//        Long idPartie1 = 1L;
-//        Long idPartie2 = 2L;
-//        Long id1 = 1L;
-//        Long id2 = 2L;
-//        Long idFaux = 3L;
-//        int score1 = 1;
-//        int score2 = 2;
-//        int score3 = 3;
-//        Essais essais1 = Essais.builder()
-//                .idPartie(idPartie1)
-//                .id(id1)
-//                .score1(score1).score2(score2).score3(score3).build();
-//        Essais essais2 = Essais.builder().idPartie(idPartie2).id(id2).build();
-//        List<Essais> listeEssais = Arrays.asList(essais1, essais2);
-//        EssaisDto essaisDto = EssaisDto.builder().idPartie(idPartie1).id(id1).build();
-//        EssaisDto essaisDtoFaux = EssaisDto.builder().idPartie(idPartie2).id(idFaux).build();
-//
-//
-//        when(essaisRepo.findAll()).thenReturn(listeEssais);
-//
-//        Optional<Essais> essaisObtenu = essaisService.convertDtoToEssais(essaisDto);
-//
-//        Assertions.assertNotNull(essaisObtenu);
-//        Assertions.assertEquals(Essais.class, essaisObtenu.get().getClass());
-//        Assertions.assertEquals(id1, essaisObtenu.get().getId());
-//        Assertions.assertEquals(idPartie1, essaisObtenu.get().getIdPartie());
-//        Assertions.assertEquals(score1, essaisObtenu.get().getScore1());
-//        Assertions.assertEquals(score2, essaisObtenu.get().getScore2());
-//        Assertions.assertEquals(score3, essaisObtenu.get().getScore3());
-//
-//        Optional<Essais> essaisObtenuFaux = essaisService.convertDtoToEssais(essaisDtoFaux);
-//
-//        Assertions.assertNotNull(essaisObtenuFaux);
-//        Assertions.assertEquals(Optional.empty(), essaisObtenuFaux);
-//
-//    }
 }
