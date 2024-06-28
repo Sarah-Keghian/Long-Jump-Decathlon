@@ -1,5 +1,5 @@
 ### Ignore base de données et logs ###
-/logs
+logs/
 *.log
 *.db
 logs/spring.log
