@@ -29,6 +29,7 @@ public class PartieService {
 
         Partie partie = new Partie();
         partie.setIdJoueur(idJoueur);
+        partie.setScoreFinal(0);
 
         return partieRepo.save(partie);
     }
@@ -53,7 +54,6 @@ public class PartieService {
 
             List<Essais> listeEssais = essaisService.getAllEssais();
             for (Essais essais : listeEssais) {
-
                 if (essais.getIdPartie().equals(id)) {
                     int scoreFinal = Math.max
                             (Math.max(essais.getScore1(), essais.getScore2()), essais.getScore3());
