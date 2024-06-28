@@ -27,10 +27,10 @@ public class Partie implements Comparable<Partie>{
     public int compareTo(Partie other) {
 
         if (this.scoreFinal < other.scoreFinal){
-            return -1;
+            return 1;
         }
         else if (this.scoreFinal > other.scoreFinal){
-            return 1;
+            return -1;
         }
         else {
             return 0;
