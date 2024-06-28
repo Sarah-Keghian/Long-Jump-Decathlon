@@ -62,6 +62,9 @@ public class GroupeDesService {
         Optional<GroupeDes> groupeDesOptional = groupeDesRepo.findById(id);
         if (groupeDesOptional.isPresent()) {
             GroupeDes groupeDes = groupeDesOptional.get();
+            for (Long idDe : groupeDes.getListeDes()) {
+                deService.deleteDe(idDe);
+            }
             groupeDesRepo.deleteById(id);
             return Optional.of(groupeDes);
         } else {
