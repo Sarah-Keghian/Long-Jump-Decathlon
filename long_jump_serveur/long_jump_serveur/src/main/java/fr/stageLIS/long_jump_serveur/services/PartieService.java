@@ -96,6 +96,7 @@ public class PartieService {
 
         LeaderDto leaderDto = new LeaderDto();
         leaderDto.setPlace(this.convertPartieToDto(partie).getPlace());
+        leaderDto.setScore(partie.getScoreFinal());
 
         List<Joueur> listeJoueurs = joueurService.getAllJoueurs();
         for (Joueur joueur : listeJoueurs) {

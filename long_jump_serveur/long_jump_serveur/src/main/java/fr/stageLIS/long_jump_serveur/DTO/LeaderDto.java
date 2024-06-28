@@ -12,4 +12,5 @@ public class LeaderDto {
 
     private String nomJoueur;
     private Integer place;
+    private Integer score;
 }
