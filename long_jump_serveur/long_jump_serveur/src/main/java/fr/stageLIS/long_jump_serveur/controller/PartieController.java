@@ -46,7 +46,7 @@ public class PartieController {
     @PostMapping("/addScoreFinal")
     public ResponseEntity<?> addScoreFinal(@RequestBody Long id) {
 
-        Optional<Partie> partieOptional = partieService.getPartie(id);
+        Optional<Partie> partieOptional = partieService.addScoreFinalPartie(id);
         if (partieOptional.isPresent()) {
             Partie partie = partieOptional.get();
             return ResponseEntity.ok(partieService.convertPartieToDto(partie));
