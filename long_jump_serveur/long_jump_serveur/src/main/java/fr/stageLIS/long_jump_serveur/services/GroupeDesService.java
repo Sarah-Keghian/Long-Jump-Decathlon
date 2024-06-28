@@ -131,7 +131,9 @@ public class GroupeDesService {
         List<DeDto> listeDesDto = new ArrayList<>();
 
         for (Long id : groupeDes.getListeDes()) {
-            listeDesDto.add(deService.convertToDTO(deService.getDe(id).get()));
+            if (deService.getDe(id).isPresent()) {
+                listeDesDto.add(deService.convertToDTO(deService.getDe(id).get()));
+            }
         }
 
         groupeDesDto.setListeDes(listeDesDto);
