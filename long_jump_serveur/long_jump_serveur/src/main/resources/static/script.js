@@ -7,8 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let playerName = prompt("Entrez votre nom :");
     let id_joueur = 0
-    console.log(playerName)
-    let id_player = 0
+    let id_partie = 0
     if (!playerName) {
         playerName = "Joueur";
     }
@@ -20,23 +19,22 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         body: playerName
     })
+        .then(response => response.json())
         .then(response => {
-            id_joueur = response.json()
-                .then (response => {
-                    fetch('/api/Partie/create', {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: id_joueur
-                    })
-                        .then(response => {
-                            id_partie = response.json()
-                            console.log(id_partie)
-                        })
-                        .catch(error => {
-                            console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
-                        })
+            id_joueur = response
+            console.log("id_joueur", id_joueur)
+            fetch('/api/Partie/create', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: id_joueur
+            })
+                .then(response => {
+                    id_partie = response.json()
+                })
+                .catch(error => {
+                    console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
                 })
         })
         .catch(error => {
@@ -283,7 +281,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     actu_frozen[index] = false;
                 }
             });
+        } else {
+            affiche_leaderboard()
         }
+    }
+
+    function affiche_leaderboard() {
+
     }
 
     function freeze(id_de) {
