@@ -57,8 +57,7 @@ public class EssaisController {
 
         Optional<Essais> essaisOptional = essaisService.getEssais(id);
         if (essaisOptional.isPresent()) {
-            Essais essais = essaisService.deleteEssais(id).get();
-            return ResponseEntity.ok(essaisService.convertEssaisToDto(essais));
+            return ResponseEntity.ok().build();
         }
         else {
             return ResponseEntity.notFound().build();

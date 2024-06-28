@@ -42,16 +42,6 @@ public class GroupeDesController {
         }
     }
 
-//    @PutMapping("/update")
-//    public ResponseEntity<GroupeDesDto> updateGroupe(@RequestBody UpdateWrapper<GroupeDesDto> updateWrapper) {
-//
-//        Optional<GroupeDes> newGroupe = groupeDesService.convertToEntity(updateWrapper.getObjet());
-//        if (newGroupe.isPresent()) {
-//
-//        }
-//        Optional<GroupeDes> groupeDes = groupeDesService.updateGroupe(updateWrapper.getId(), groupeDesService.convertToEntity(updateWrapper.getObjet()));
-//        return ResponseEntity.ok(groupeDesService.convertToDto(groupeDes));
-//    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteGroupe(@RequestBody Long id) {
@@ -59,8 +49,7 @@ public class GroupeDesController {
         Optional<GroupeDes> groupedDeletedOptional = groupeDesService.deleteGroupe(id);
 
         if (groupedDeletedOptional.isPresent()) {
-            GroupeDes groupeDeleted = groupedDeletedOptional.get();
-            return ResponseEntity.ok(groupeDesService.convertToDto(groupeDeleted));
+            return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
         }
