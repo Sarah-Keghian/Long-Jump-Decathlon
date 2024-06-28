@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!playerName) {
         playerName = "Joueur";
     }
-    let round = 0
 
     fetch('/api/Joueur/create', {
         method: 'PUT',
@@ -108,6 +107,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function affiche_content(texte) {
+        console.log("0")
+        console.log(texte)
         document.getElementById('dice1').textContent = texte["listeDes"]["0"]["position"];
         document.getElementById('dice2').textContent = texte["listeDes"]["1"]["position"];
         document.getElementById('dice3').textContent = texte["listeDes"]["2"]["position"];
@@ -147,7 +148,6 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         if (possible) {
             reset_game()
-            round = round + 1
             if (document.getElementById('score_total').textContent < document.getElementById('score_jump').textContent) {
                 document.getElementById('score_total').textContent = document.getElementById('score_jump').textContent
             }
@@ -225,41 +225,51 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function reset_game() {
+        document.getElementById('essai').textContent = parseInt(document.getElementById('essai').textContent) + 1
         const score_jump = parseInt(document.getElementById('score_jump').textContent)
-        console.log(id_essai, score_jump)
-        fetch('/api/Essais/addEssai', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({"id": id_essai, "score": score_jump})
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+        if (document.getElementById('essai').textContent <= 3) {
+            bouton_saut.classList.remove('invisible');
+            bouton_suivant.classList.add('invisible');
+            dans_run_up = true
+            document.getElementById('score_run_up').textContent = 0;
+            document.getElementById('score_jump').textContent = 0;
+            de_elimine = [true, 1]
+            console.log(id_essai, score_jump)
+            fetch('/api/Essais/addEssai', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"id": id_essai, "score": score_jump})
+            })
+                .then(response => {
+                    console.log("je passe", response)
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    console.log("je passe apres", response)
+                    return response.json();
+                })
+                .catch(error => {
+                    console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+                })
+            const conteneur_actif = document.getElementById("actif");
+            const conteneur_gele = document.getElementById("gele");
+            des_jetables = false
+            diceElements.forEach((dice, index) => {
+                dice.style.display = 'flex';
+                dice.textContent = "?";
+                unfreeze(id_des[index]);
+                if (conteneur_gele.contains(dice)) {
+                    conteneur_gele.removeChild(dice);
+                    conteneur_actif.appendChild(dice);
+                    dice.classList.remove("dice-frozen");
+                    dice.classList.add("dice");
+                    actu_frozen[index] = false;
                 }
-                return response.json();
-            })
-            .then(response => {
-                console.log(response)
-                affiche_content(response)
-            })
-            .catch(error => {
-                console.log("Il y a eu un problème avec l'opération fetch: " + error);
-            })
+            });
+        }
     }
-    dans_run_up = true;
-    document.getElementById('score_run_up').textContent = 0;
-    document.getElementById('score_jump').textContent = 0;
-    // document.querySelectorAll(".dice").forEach((dice, index) => {
-    //     if (conteneur_gele.contains(dice)) {
-    //         conteneur_gele.removeChild(dice);
-    //         conteneur_actif.appendChild(dice);
-    //     }
-    //     actu_frozen[index] = false;
-    //     dice.textContent = "?";
-    //     unfreeze(id_des[index])
-    // })
 
     function freeze(id_de) {
         fetch('/api/GroupeDes/freeze', {
