@@ -22,7 +22,22 @@ document.addEventListener("DOMContentLoaded", function() {
     })
         .then(response => {
             id_joueur = response.json()
-            console.log(id_joueur)
+                .then (response => {
+                    fetch('/api/Partie/create', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: id_joueur
+                    })
+                        .then(response => {
+                            id_partie = response.json()
+                            console.log(id_partie)
+                        })
+                        .catch(error => {
+                            console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+                        })
+                })
         })
         .catch(error => {
             console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
