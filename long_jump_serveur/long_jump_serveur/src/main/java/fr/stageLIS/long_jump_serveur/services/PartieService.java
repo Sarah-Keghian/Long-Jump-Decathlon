@@ -67,7 +67,9 @@ public class PartieService {
     }
 
     public Optional<Partie> addScoreFinalPartie2(Long id, int scoreFinal) {
+
         Optional<Partie> partieOptional = getPartie(id);
+
         if (partieOptional.isPresent()) {
             Partie partie = partieOptional.get();
             partie.setScoreFinal(scoreFinal);
