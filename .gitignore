@@ -1,0 +1,4 @@
+### Ignore base de données et logs ###
+/logs
+*.log
+*.db
