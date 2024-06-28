@@ -3,11 +3,8 @@ package fr.stageLIS.long_jump_serveur.controller;
 import fr.stageLIS.long_jump_serveur.DTO.EssaisDto;
 import fr.stageLIS.long_jump_serveur.models.Essais;
 import fr.stageLIS.long_jump_serveur.services.EssaisService;
-import fr.stageLIS.long_jump_serveur.wrappers.AddEssaiWrapper;
-import fr.stageLIS.long_jump_serveur.wrappers.UpdateWrapper;
-import lombok.Getter;
+import fr.stageLIS.long_jump_serveur.wrappers.AddScoreWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,9 +39,9 @@ public class EssaisController {
     }
 
     @PostMapping("/addEssai")
-    public ResponseEntity<?> addEssai(@RequestBody AddEssaiWrapper addEssaiWrapper) {
+    public ResponseEntity<?> addEssai(@RequestBody AddScoreWrapper addScoreWrapper) {
 
-        Optional<Essais> essaisOptional = essaisService.addEssai(addEssaiWrapper.getId(), addEssaiWrapper.getScore());
+        Optional<Essais> essaisOptional = essaisService.addEssai(addScoreWrapper.getId(), addScoreWrapper.getScore());
 
         if (essaisOptional.isPresent()) {
             Essais essais = essaisOptional.get();

@@ -4,6 +4,7 @@ import fr.stageLIS.long_jump_serveur.DTO.LeaderDto;
 import fr.stageLIS.long_jump_serveur.DTO.PartieDto;
 import fr.stageLIS.long_jump_serveur.models.Partie;
 import fr.stageLIS.long_jump_serveur.services.PartieService;
+import fr.stageLIS.long_jump_serveur.wrappers.AddScoreWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,19 @@ public class PartieController {
     }
 
     @PostMapping("/addScoreFinal")
+    public ResponseEntity<?> addScoreFinal2(@RequestBody AddScoreWrapper addScoreWrapper) {
+
+        Optional<Partie> partieOptional = partieService.addScoreFinalPartie2(addScoreWrapper.getId(), addScoreWrapper.getScore());
+        if (partieOptional.isPresent()) {
+            Partie partie = partieOptional.get();
+            return ResponseEntity.ok(partieService.convertPartieToDto(partie));
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/addScoreFinalOld")
     public ResponseEntity<?> addScoreFinal(@RequestBody Long id) {
 
         Optional<Partie> partieOptional = partieService.addScoreFinalPartie(id);

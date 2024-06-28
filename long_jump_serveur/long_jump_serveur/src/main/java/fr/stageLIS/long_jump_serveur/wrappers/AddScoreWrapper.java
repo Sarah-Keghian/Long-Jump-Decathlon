@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class AddEssaiWrapper {
+public class AddScoreWrapper {
 
     private Long id;
 

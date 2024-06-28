@@ -66,6 +66,18 @@ public class PartieService {
         return Optional.empty();
     }
 
+    public Optional<Partie> addScoreFinalPartie2(Long id, int scoreFinal) {
+        Optional<Partie> partieOptional = getPartie(id);
+        if (partieOptional.isPresent()) {
+            Partie partie = partieOptional.get();
+            partie.setScoreFinal(scoreFinal);
+            return Optional.of(partieRepo.save(partie));
+        }
+        else {
+            return Optional.empty();
+        }
+    }
+
     public Optional<Partie> deletePartie(Long id) {
 
         Optional<Partie> partieOptional = getPartie(id);
