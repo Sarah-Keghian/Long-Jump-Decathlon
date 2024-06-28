@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", function() {
         playerName = "Joueur";
     }
 
+    localStorage.setItem('playerName', playerName);
+
     fetch('/api/Joueur/create', {
         method: 'PUT',
         headers: {
@@ -66,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: id_groupe
+                    body: id_partie
                 })
                     .then(response => response.json())
                     .then(response => {
@@ -161,9 +163,6 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         if (possible) {
             reset_game()
-            if (document.getElementById('score_total').textContent < document.getElementById('score_jump').textContent) {
-                document.getElementById('score_total').textContent = document.getElementById('score_jump').textContent
-            }
         }
     })
 
@@ -238,9 +237,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function reset_game() {
+        if (parseInt(document.getElementById('score_total').textContent) < parseInt(document.getElementById('score_jump').textContent)) {
+            document.getElementById('score_total').textContent = parseInt(document.getElementById('score_jump').textContent)
+        }
         document.getElementById('essai').textContent = parseInt(document.getElementById('essai').textContent) + 1
         const score_jump = parseInt(document.getElementById('score_jump').textContent)
-        if (document.getElementById('essai').textContent <= 3) {
+        if (document.getElementById('essai').textContent <= 1) {
             bouton_saut.classList.remove('invisible');
             bouton_suivant.classList.add('invisible');
             dans_run_up = true
@@ -282,9 +284,33 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
         } else {
+            bouton_suivant.classList.add('invisible');
+            bouton_saut.classList.add('invisible');
+            bouton_lancer.classList.add('invisible');
+            bouton_leaderboard.classList.remove('invisible')
+            console.log(id_partie, "id partie")
+            fetch('/api/Partie/addScoreFinal', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: id_partie
+            })
+                .then(response => response.json())
+                .then(response => {
+                    console.log("response add_score :", response)
+                })
+                .catch(error => {
+                    console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+                })
             affiche_leaderboard()
         }
     }
+
+    bouton_leaderboard = document.getElementById("bouton_leaderboard")
+    bouton_leaderboard.addEventListener("click", function() {
+        window.open('leaderboard.html', '_blank');
+    });
 
     function affiche_leaderboard() {
 
