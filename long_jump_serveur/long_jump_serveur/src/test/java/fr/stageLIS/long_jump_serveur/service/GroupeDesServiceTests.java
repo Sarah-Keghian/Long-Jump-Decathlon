@@ -234,37 +234,4 @@ public class GroupeDesServiceTests {
         Assertions.assertEquals(GroupeDesDto.class, groupeDesDto.getClass());
         Assertions.assertEquals(groupeDes.getListeDes().size(), groupeDesDto.getListeDes().size());
     }
-
-//    @Test
-//    public void convertToEntity_Test(){
-//
-//        Long id1 = 1L;
-//        Long id2 = 2L;
-//        Long id3 = 3L;
-//        Long idFaux = 4L;
-//        DeDto d1Dto = DeDto.builder().id(id1).idGroupe(2L).position(5).frozen(false).build();
-//        DeDto d2Dto = DeDto.builder().id(id2).idGroupe(2L).position(1).frozen(true).build();
-//
-//        GroupeDes grp1 = GroupeDes.builder().id(id1).listeDes(Arrays.asList(id1, id2)).build();
-//        GroupeDes grp2 = GroupeDes.builder().id(id2).listeDes(List.of(id3)).build();
-//
-//        List<DeDto> listeDtos = Arrays.asList(d1Dto, d2Dto);
-//        GroupeDesDto groupeDto = GroupeDesDto.builder()
-//                .id(id1)
-//                .listeDes(listeDtos).build();
-//        GroupeDesDto groupeDesDtoFaux = GroupeDesDto.builder()
-//                .id(idFaux)
-//                .listeDes(listeDtos).build();
-//        List<GroupeDes> listeGrpDes = Arrays.asList(grp1, grp2);
-//        when(groupeDesRepo.findAll()).thenReturn(listeGrpDes);
-//
-//        Optional<GroupeDes> groupeDes = groupeDesService.convertToEntity(groupeDto);
-//        Assertions.assertNotNull(groupeDes);
-//        Assertions.assertEquals(GroupeDes.class, groupeDes.get().getClass());
-//        Assertions.assertEquals(groupeDto.getId(), groupeDes.get().getId());
-//        Assertions.assertEquals(groupeDto.getListeDes().stream().map(DeDto::getId).toList(), groupeDes.get().getListeDes());
-//
-//        Optional<GroupeDes> groupeDesOptional = groupeDesService.convertToEntity(groupeDesDtoFaux);
-//        Assertions.assertEquals(Optional.empty(), groupeDesOptional);
-//    }
 }
