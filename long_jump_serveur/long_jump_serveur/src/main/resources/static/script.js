@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({"id": id_essai, "score": score_jump})
+            body: JSON.stringify({"id": id_essai, "objet": score_jump})
         })
             .then(response => {
                 if (!response.ok) {
