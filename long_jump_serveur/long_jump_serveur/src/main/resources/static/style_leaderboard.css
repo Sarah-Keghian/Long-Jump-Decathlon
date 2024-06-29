@@ -36,7 +36,7 @@ h1 {
     border-radius: 4px;
     padding: 10px;
     font-size: 1em;
-    color: #555;
+    color: #5a5a5a;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,7 +48,7 @@ h1 {
 
 .player-name {
     font-weight: bold;
-    color: #333;
+    color: #3a3a3a;
 }
 
 #player-1 {
