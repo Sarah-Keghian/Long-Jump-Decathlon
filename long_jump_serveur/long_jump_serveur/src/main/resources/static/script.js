@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(response => {
             id_joueur = response
-            console.log("id_joueur", id_joueur)
             fetch('/api/Partie/create', {
                 method: 'PUT',
                 headers: {
@@ -36,8 +35,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 .then(response => response.json())
                 .then(response => {
                     id_partie = response["id"]
-                    console.log(id_partie, "id_ partie off")
-
                     fetch('/api/Essais/create', {
                         method: 'PUT',
                         headers: {
@@ -47,9 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     })
                         .then(response => response.json())
                         .then(response => {
-                            console.log(response, "essaisssss")
                             id_essai = response["id"]
-                            console.log("id_essai", id_essai)
                         })
                         .catch(error => {
                             console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
@@ -90,36 +85,48 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     bouton_lancer.addEventListener("click", function fetch_lancer() {
+        let lancable = false
+        document.querySelectorAll(".dice, .dice-frozen").forEach((dice, index) => {
+            if (conteneur_actif.contains(dice)) {
+                lancable = true
+            }
+
+        })
         if (de_elimine[0]) {
             de_elimine = [false, 0]
             des_jetables = true
-            document.querySelectorAll(".dice").forEach((dice, index) => {
+            document.querySelectorAll(".dice, .dice-frozen").forEach((dice, index) => {
                 if (conteneur_gele.contains(dice)) {
                     dice.classList.remove("dice")
                     dice.classList.add("dice-frozen")
                 }
                 actu_frozen[index] = false;
             });
-            fetch('/api/GroupeDes/throw', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: id_groupe
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
+
+            if (lancable) {
+                fetch('/api/GroupeDes/throw', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: id_groupe
                 })
-                .then(response => {
-                    console.log(response)
-                    affiche_content(response)
-                })
-                .catch(error => {
-                    console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
-                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(response => {
+                        affiche_content(response)
+                    })
+                    .catch(error => {
+                        console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+                    })
+            } else {
+                alert("Il n'y a pas de dé à jeter !")
+                de_elimine = [true, 1]
+            }
         } else {
             alert("Il faut que vous éliminiez un dé !")
         }
@@ -127,14 +134,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function affiche_content(texte) {
-        console.log("0")
-        console.log(texte)
         document.getElementById('dice1').textContent = texte["listeDes"]["0"]["position"];
         document.getElementById('dice2').textContent = texte["listeDes"]["1"]["position"];
         document.getElementById('dice3').textContent = texte["listeDes"]["2"]["position"];
         document.getElementById('dice4').textContent = texte["listeDes"]["3"]["position"];
         document.getElementById('dice5').textContent = texte["listeDes"]["4"]["position"];
-        console.log(texte)
 }
 
 
@@ -142,12 +146,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const conteneur_gele = document.getElementById("gele");
     bouton_saut.addEventListener("click", function () {
         saut_possible = false
+        saut_oblige = true
         document.querySelectorAll(".dice").forEach((dice, index) => {
             if (conteneur_gele.contains(dice)) {
                 saut_possible = true
             }
+            if (conteneur_actif) {
+                saut_oblige = false
+            }
         })
-        if (de_elimine[0] && saut_possible) {
+        if ((de_elimine[0] && saut_possible) || saut_oblige) {
             if (document.getElementById('score_run_up').textContent > 8) {
                 alert("Votre score de Run up est superieur à 8 !")
                 reset_game()
@@ -224,7 +232,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const conteneur_gele = document.getElementById("gele");
         des_jetables = false
         diceElements.forEach((dice, index) => {
-            console.log("dé dans prep", id_des[index], dice);
             if (conteneur_actif.contains(dice)) {
                 dice.style.display = 'none';
                 freeze(id_des[index]);
@@ -254,7 +261,6 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('score_run_up').textContent = 0;
             document.getElementById('score_jump').textContent = 0;
             de_elimine = [true, 1]
-            console.log(id_essai, score_jump)
             fetch('/api/Essais/addEssai', {
                 method: 'POST',
                 headers: {
@@ -263,11 +269,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 body: JSON.stringify({"id": id_essai, "score": score_jump})
             })
                 .then(response => {
-                    console.log("je passe", response)
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
                     }
-                    console.log("je passe apres", response)
                     return response.json();
                 })
                 .catch(error => {
@@ -294,7 +298,6 @@ document.addEventListener("DOMContentLoaded", function() {
             bouton_lancer.classList.add('invisible');
             bouton_leaderboard.classList.remove('invisible')
             let score = parseInt(document.getElementById('score_total').textContent)
-            console.log(id_partie, "id partieeeeee")
             fetch('/api/Partie/addScoreFinal', {
                 method: 'POST',
                 headers: {
@@ -310,6 +313,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
                 })
+            fetch('/api/GroupeDes/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(id_groupe)
+            })
+                .catch(error => {
+                    console.error("There was a problem with the delete operation:", error.message);
+                });
             affiche_leaderboard()
         }
     }
@@ -333,7 +346,6 @@ document.addEventListener("DOMContentLoaded", function() {
         })
             .then(response => response.json())
             .then(response => {
-                console.log("response freeze :", response, id_de)
             })
             .catch(error => {
                 console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
@@ -350,7 +362,6 @@ document.addEventListener("DOMContentLoaded", function() {
         })
             .then(response => response.json())
             .then(response => {
-                console.log("response unfreeze :", response, id_de)
             })
             .catch(error => {
                 console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
