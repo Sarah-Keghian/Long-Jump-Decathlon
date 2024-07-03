@@ -15,13 +15,11 @@ import java.util.*;
 public class PartieService {
 
     private final PartieRepo partieRepo;
-    private final EssaisService essaisService;
     private final JoueurService joueurService;
 
     @Autowired
-    public PartieService(PartieRepo partieRepo, EssaisService essaisService, JoueurService joueurService) {
+    public PartieService(PartieRepo partieRepo, JoueurService joueurService) {
         this.partieRepo = partieRepo;
-        this.essaisService = essaisService;
         this.joueurService = joueurService;
     }
 
@@ -35,36 +33,14 @@ public class PartieService {
         return partieRepo.save(partie);
     }
 
+
     public Optional<Partie> getPartie(Long id) {
 
         return partieRepo.findById(id);
     }
 
 
-    public Optional<Partie> addScoreFinalPartie(Long id) {
-
-        Optional<Partie> partieOptional = getPartie(id);
-
-
-        if (partieOptional.isPresent()) {
-
-            Partie partie = partieOptional.get();
-
-            List<Essais> listeEssais = essaisService.getAllEssais();
-            for (Essais essais : listeEssais) {
-                if (essais.getIdPartie().equals(id)) {
-                    int scoreFinal = Math.max
-                            (Math.max(essais.getScore1(), essais.getScore2()), essais.getScore3());
-                    partie.setScoreFinal(scoreFinal);
-                    partieRepo.save(partie);
-                    return Optional.of(partie);
-                }
-            }
-        }
-        return Optional.empty();
-    }
-
-    public Optional<Partie> addScoreFinalPartie2(Long id, int scoreFinal) {
+    public Optional<Partie> addScoreFinalPartie(Long id, int scoreFinal) {
 
         Optional<Partie> partieOptional = getPartie(id);
 
@@ -74,18 +50,6 @@ public class PartieService {
             return Optional.of(partieRepo.save(partie));
         }
         else {
-            return Optional.empty();
-        }
-    }
-
-
-    public Optional<Partie> deletePartie(Long id) {
-
-        Optional<Partie> partieOptional = getPartie(id);
-        if (partieOptional.isPresent()) {
-            partieRepo.deleteById(id);
-            return partieOptional;
-        } else {
             return Optional.empty();
         }
     }

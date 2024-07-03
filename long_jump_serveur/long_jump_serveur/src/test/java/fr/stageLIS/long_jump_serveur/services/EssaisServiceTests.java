@@ -24,16 +24,21 @@ public class EssaisServiceTests {
     @InjectMocks
     private EssaisService essaisService;
 
+
+    int score1 = 1;
+    int score2 = 2;
+    int score3 = 3;
+    Long idPartie1 = 1L;
+    Long id1 = 2L;
+    Long idFaux = 20L;
+    Essais essais1 = Essais.builder().score1(-1).score2(-1).score3(-1).idPartie(idPartie1).build();
+
+
+
     @Test
     public void createEssais_Test(){
 
-        Long idPartie1 = 1L;
-        Long id1 = 2L;
-        Essais essais2 = Essais.builder()
-                .id(id1).score1(-1).score2(-1).score3(-1).idPartie(idPartie1).build();
-        Essais essais1 = Essais.builder().score1(-1).score2(-1).score3(-1).idPartie(idPartie1).build();
-
-        when(essaisRepo.save(essais1)).thenReturn(essais2);
+        when(essaisRepo.save(essais1)).thenReturn(essais1);
 
         Essais essaisObtenu = essaisService.createEssais(idPartie1);
         Assertions.assertNotNull(essaisObtenu);
@@ -45,10 +50,6 @@ public class EssaisServiceTests {
 
     @Test
     public void getEssais_Test(){
-
-        Long id1 = 2L;
-        Long idFaux = 3L;
-        Essais essais1 = Essais.builder().id(id1).build();
 
         when(essaisRepo.findById(id1)).thenReturn(Optional.of(essais1));
         when(essaisRepo.findById(idFaux)).thenReturn(Optional.empty());
@@ -65,15 +66,10 @@ public class EssaisServiceTests {
     @Test
     public void addEssai_Test(){
 
-        Long idPartie1 = 1L;
-        Long id1 = 1L;
-        Long id2 = 2L;
-        Long id3 = 3L;
-        Long id4 = 4L;
-        int score1 = 3;
-        int score2 = 4;
-        int score3 = 5;
-        Essais essais1 = Essais.builder().score1(-1).score2(-1).score3(-1).idPartie(idPartie1).id(id1).build();
+        Long id1 = 2L;
+        Long id2 = 3L;
+        Long id3 = 4L;
+        Long id4 = 5L;
         Essais essais2 = Essais.builder().idPartie(idPartie1).id(id2).score1(score1).score2(-1).score3(-1).build();
         Essais essais3 = Essais.builder().idPartie(idPartie1).id(id3)
                 .score1(score1).score2(score2).score3(-1).build();
@@ -133,11 +129,6 @@ public class EssaisServiceTests {
     @Test
     public void deleteEssais_Test(){
 
-        Long idPartie1 = 1L;
-        Long id1 = 1L;
-        Long idFaux = 2L;
-        Essais essais1 = Essais.builder().idPartie(idPartie1).build();
-
         when(essaisService.getEssais(id1)).thenReturn(Optional.of(essais1));
         when(essaisService.getEssais(idFaux)).thenReturn(Optional.empty());
         doNothing().when(essaisRepo).deleteById(id1);
@@ -156,14 +147,6 @@ public class EssaisServiceTests {
 
     @Test
     public void convertEssaisToDto(){
-
-        Long idPartie1 = 1L;
-        Long id1 = 1L;
-        int score1 = 1;
-        int score2 = 2;
-        int score3 = 3;
-        Essais essais1 = Essais.builder().idPartie(idPartie1).id(id1)
-                .score1(score1).score2(score2).score3(score3).build();
 
         EssaisDto essaisDtoObtenu = essaisService.convertEssaisToDto(essais1);
 

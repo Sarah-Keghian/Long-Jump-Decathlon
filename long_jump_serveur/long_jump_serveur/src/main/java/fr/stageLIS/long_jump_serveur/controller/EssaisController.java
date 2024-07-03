@@ -57,6 +57,7 @@ public class EssaisController {
 
         Optional<Essais> essaisOptional = essaisService.getEssais(id);
         if (essaisOptional.isPresent()) {
+            essaisService.deleteEssais(id);
             return ResponseEntity.ok().build();
         }
         else {

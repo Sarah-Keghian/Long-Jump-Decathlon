@@ -47,7 +47,7 @@ public class PartieController {
     @PostMapping("/addScoreFinal")
     public ResponseEntity<?> addScoreFinal2(@RequestBody AddScoreWrapper addScoreWrapper) {
 
-        Optional<Partie> partieOptional = partieService.addScoreFinalPartie2(addScoreWrapper.getId(), addScoreWrapper.getScore());
+        Optional<Partie> partieOptional = partieService.addScoreFinalPartie(addScoreWrapper.getId(), addScoreWrapper.getScore());
         if (partieOptional.isPresent()) {
             Partie partie = partieOptional.get();
             return ResponseEntity.ok(partieService.convertPartieToDto(partie));
@@ -57,32 +57,32 @@ public class PartieController {
         }
     }
 
-    @PostMapping("/addScoreFinalOld")
-    public ResponseEntity<?> addScoreFinal(@RequestBody Long id) {
-
-        Optional<Partie> partieOptional = partieService.addScoreFinalPartie(id);
-        if (partieOptional.isPresent()) {
-            Partie partie = partieOptional.get();
-            return ResponseEntity.ok(partieService.convertPartieToDto(partie));
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deletePartie(@RequestBody Long id) {
-
-        Optional<Partie> partieOptional = partieService.getPartie(id);
-
-        if (partieOptional.isPresent()) {
-            Partie partie = partieService.deletePartie(id).get();
-            return ResponseEntity.ok(partieService.convertPartieToDto(partie));
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @PostMapping("/addScoreFinalOld")
+//    public ResponseEntity<?> addScoreFinal(@RequestBody Long id) {
+//
+//        Optional<Partie> partieOptional = partieService.addScoreFinalPartie(id);
+//        if (partieOptional.isPresent()) {
+//            Partie partie = partieOptional.get();
+//            return ResponseEntity.ok(partieService.convertPartieToDto(partie));
+//        }
+//        else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//
+////    @DeleteMapping("/delete")
+////    public ResponseEntity<?> deletePartie(@RequestBody Long id) {
+////
+////        Optional<Partie> partieOptional = partieService.getPartie(id);
+////
+////        if (partieOptional.isPresent()) {
+////            Partie partie = partieService.deletePartie(id).get();
+////            return ResponseEntity.ok(partieService.convertPartieToDto(partie));
+////        }
+////        else {
+////            return ResponseEntity.notFound().build();
+////        }
+////    }
 
     // RENVOIE UNE LISTE DES 15 MEILLEURS JOUEURS AVEC LE SCORE ASSOCIE
     @GetMapping("/getLeaders")
