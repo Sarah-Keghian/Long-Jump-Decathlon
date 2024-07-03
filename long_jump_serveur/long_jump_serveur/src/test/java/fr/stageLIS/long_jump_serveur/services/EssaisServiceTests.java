@@ -1,9 +1,8 @@
-package fr.stageLIS.long_jump_serveur.service;
+package fr.stageLIS.long_jump_serveur.services;
 
 import fr.stageLIS.long_jump_serveur.DTO.EssaisDto;
 import fr.stageLIS.long_jump_serveur.models.Essais;
 import fr.stageLIS.long_jump_serveur.repositories.EssaisRepo;
-import fr.stageLIS.long_jump_serveur.services.EssaisService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

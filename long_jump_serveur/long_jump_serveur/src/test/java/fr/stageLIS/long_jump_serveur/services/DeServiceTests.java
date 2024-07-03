@@ -1,18 +1,15 @@
-package fr.stageLIS.long_jump_serveur.service;
+package fr.stageLIS.long_jump_serveur.services;
 
 import fr.stageLIS.long_jump_serveur.DTO.DeDto;
 import fr.stageLIS.long_jump_serveur.models.De;
 import fr.stageLIS.long_jump_serveur.repositories.DeRepo;
-import fr.stageLIS.long_jump_serveur.services.DeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import static org.mockito.Mockito.doNothing;

@@ -1,15 +1,11 @@
-package fr.stageLIS.long_jump_serveur.service;
+package fr.stageLIS.long_jump_serveur.services;
 
 import fr.stageLIS.long_jump_serveur.DTO.LeaderDto;
 import fr.stageLIS.long_jump_serveur.DTO.PartieDto;
 import fr.stageLIS.long_jump_serveur.models.Essais;
 import fr.stageLIS.long_jump_serveur.models.Joueur;
 import fr.stageLIS.long_jump_serveur.models.Partie;
-import fr.stageLIS.long_jump_serveur.repositories.JoueurRepo;
 import fr.stageLIS.long_jump_serveur.repositories.PartieRepo;
-import fr.stageLIS.long_jump_serveur.services.EssaisService;
-import fr.stageLIS.long_jump_serveur.services.JoueurService;
-import fr.stageLIS.long_jump_serveur.services.PartieService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

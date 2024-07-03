@@ -1,9 +1,8 @@
-package fr.stageLIS.long_jump_serveur.service;
+package fr.stageLIS.long_jump_serveur.services;
 
 import fr.stageLIS.long_jump_serveur.DTO.JoueurDto;
 import fr.stageLIS.long_jump_serveur.models.Joueur;
 import fr.stageLIS.long_jump_serveur.repositories.JoueurRepo;
-import fr.stageLIS.long_jump_serveur.services.JoueurService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,12 +10,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.text.html.Option;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

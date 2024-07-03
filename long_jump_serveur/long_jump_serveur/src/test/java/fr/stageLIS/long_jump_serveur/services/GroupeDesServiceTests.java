@@ -1,11 +1,9 @@
-package fr.stageLIS.long_jump_serveur.service;
+package fr.stageLIS.long_jump_serveur.services;
 
 import fr.stageLIS.long_jump_serveur.DTO.GroupeDesDto;
 import fr.stageLIS.long_jump_serveur.models.De;
 import fr.stageLIS.long_jump_serveur.models.GroupeDes;
 import fr.stageLIS.long_jump_serveur.repositories.GroupeDesRepo;
-import fr.stageLIS.long_jump_serveur.services.DeService;
-import fr.stageLIS.long_jump_serveur.services.GroupeDesService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,8 +33,6 @@ public class GroupeDesServiceTests {
     Long idGroupe = 1L;
     Long idD1 = 1L;
     Long idD2 = 2L;
-    Long idD3 = 3L;
-    Long idD4 = 4L;
     Long idFaux = 20L;
     De d1 = De.builder().id(idD1).position(2).idGroupe(2L).frozen(false).build();
     De d2 = De.builder().id(idD2).position(4).idGroupe(2L).frozen(true).build();
