@@ -109,27 +109,31 @@ public class PartieServiceTests {
     }
 
 
-//    @Test
-//    public void convertToLeaderDto_Test() {
-//
-//        Joueur joueur1 = Joueur.builder().nom("Joueur1").id(1L).build();
-//        Joueur joueur2 = Joueur.builder().nom("Joueur2").id(2L).build();
-//        Partie partie = Partie.builder().scoreFinal(23).idJoueur(1L).id(1L).build();
-//        PartieDto partieDto = PartieDto.builder().scoreFinal(23).idJoueur(1L).id(1L).place(3).build();
-//        List<Joueur> listeJoueurs = Arrays.asList(joueur1, joueur2);
-//
-//
-//        when(joueurService.getAllJoueurs()).thenReturn(listeJoueurs);
-//        when(partieService.convertPartieToDto(partie)).thenReturn(partieDto);
-//
-//        LeaderDto leaderDtoObtenu = partieService.convertToLeaderDto(partie);
-//
-//        Assertions.assertNotNull(leaderDtoObtenu);
-//        Assertions.assertEquals(LeaderDto.class, leaderDtoObtenu.getClass());
-//        Assertions.assertEquals(partieDto.getPlace(), leaderDtoObtenu.getPlace());
-//        Assertions.assertEquals(joueur1.getNom(), leaderDtoObtenu.getNomJoueur());
-//        Assertions.assertEquals(partie.getScoreFinal(), leaderDtoObtenu.getScore());
-//    }
+    @Test
+    public void convertToLeaderDto_Test() {
+
+        PartieService partieService1 = new PartieService(partieRepo, joueurService);
+        PartieService spyPartieService1 = spy(partieService1);
+
+        Joueur joueur1 = Joueur.builder().nom("Joueur1").id(1L).build();
+        Joueur joueur2 = Joueur.builder().nom("Joueur2").id(2L).build();
+        Partie partie = Partie.builder().scoreFinal(23).idJoueur(1L).id(1L).build();
+        PartieDto partieDto = PartieDto.builder().scoreFinal(23).idJoueur(1L).id(1L).place(3).build();
+        List<Joueur> listeJoueurs = Arrays.asList(joueur1, joueur2);
+
+
+        when(joueurService.getAllJoueurs()).thenReturn(listeJoueurs);
+        doReturn(partieDto).when(spyPartieService1).convertPartieToDto(partie);
+//        when(partieService1.convertPartieToDto(partie)).thenReturn(partieDto);
+
+        LeaderDto leaderDtoObtenu = partieService.convertToLeaderDto(partie);
+
+        Assertions.assertNotNull(leaderDtoObtenu);
+        Assertions.assertEquals(LeaderDto.class, leaderDtoObtenu.getClass());
+        Assertions.assertEquals(partieDto.getPlace(), leaderDtoObtenu.getPlace());
+        Assertions.assertEquals(joueur1.getNom(), leaderDtoObtenu.getNomJoueur());
+        Assertions.assertEquals(partie.getScoreFinal(), leaderDtoObtenu.getScore());
+    }
 
 
 //    @Test
@@ -182,6 +186,7 @@ public class PartieServiceTests {
         Assertions.assertEquals(4, partiesListeObtenue.size());
         Assertions.assertEquals(listePartiesTri, partiesListeObtenue);
     }
+
 
 //    @Test
 //    public void getLeadersParties_Test(){
